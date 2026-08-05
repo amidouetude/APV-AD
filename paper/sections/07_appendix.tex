@@ -1,0 +1,183 @@
+
+% APPENDIX
+% File: sections/07_appendix.tex
+% ---------------------------------------------------------------------------
+
+\section{: Differential Evolution Algorithm — Complete Pseudocode}
+\label{app:de}
+
+\hspace{1cm}Algorithm~\ref{alg:de} provides the complete pseudocode
+of the Differential Evolution procedure used to maximise the eLER
+objective function (Equation~\ref{eq:eler}) across the six-dimensional
+APV--AD design space. The algorithm is implemented in Python using
+\texttt{scipy.optimize.differential\_evolution} with the settings
+described in Section~\ref{sec:optimizer}, followed by
+\texttt{scipy.optimize.minimize} with the L-BFGS-B method for local
+polishing.
+
+
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+	\small
+	\caption{Differential Evolution for APV--AD eLER maximisation}
+	\label{alg:de}
+	
+	\KwIn{$\mathbf{lb},\mathbf{ub}\in\mathbb{R}^6$; $NP=90$; $F\in[0.5,1.0]$; $Cr=0.7$; $G_{\max}=50$; seed $=42$}
+	\KwOut{$\mathbf{x}^*$; $eLER^*$}
+	
+	\textbf{Initialisation}\;
+	\For{$i=1$ \KwTo $NP$}{
+		$\mathbf{x}_i^{(0)}\sim\mathcal{U}(\mathbf{lb},\mathbf{ub})$ via LHS\;
+		$f_i^{(0)}\leftarrow eLER(\mathbf{x}_i^{(0)})$\;
+		\If{infeasible}{$f_i^{(0)}\leftarrow-\infty$}
+	}
+	
+	\textbf{Main loop}\;
+	\For{$g=1$ \KwTo $G_{\max}$}{
+		\For{$i=1$ \KwTo $NP$}{
+			$r_1,r_2,r_3$ distinct $\neq i$; $F_g\sim\mathcal{U}(0.5,1.0)$\;
+			$\mathbf{v}_i\leftarrow \mathbf{x}_{r_1}^{(g-1)}+F_g(\mathbf{x}_{r_2}^{(g-1)}-\mathbf{x}_{r_3}^{(g-1)})$; Clip\;
+			$j_{\text{rand}}\sim\mathcal{U}\{1,\ldots,6\}$\;
+			\For{$j=1$ \KwTo $6$}{
+				\eIf{$\mathcal{U}(0,1)\le Cr$ ou $j=j_{\text{rand}}$}{$u_{ij}\leftarrow v_{ij}$}{$u_{ij}\leftarrow x_{ij}^{(g-1)}$}
+			}
+			$f_{\mathbf{u}}\leftarrow eLER(\mathbf{u}_i)$; \If{infeasible}{$f_{\mathbf{u}}\leftarrow-\infty$}
+			\eIf{$f_{\mathbf{u}}\ge f_i^{(g-1)}$}{
+				$\mathbf{x}_i^{(g)}\leftarrow\mathbf{u}_i$; $f_i^{(g)}\leftarrow f_{\mathbf{u}}$
+			}{
+				$\mathbf{x}_i^{(g)}\leftarrow\mathbf{x}_i^{(g-1)}$; $f_i^{(g)}\leftarrow f_i^{(g-1)}$
+			}
+		}
+	}
+	
+	\BlankLine
+	\textbf{Local polishing (L-BFGS-B)}\;
+	$\mathbf{x}^* \leftarrow
+	\underset{i}{\arg\max}\ f_i^{(G_{\max})}$\;
+	$\mathbf{x}^* \leftarrow
+	\texttt{L-BFGS-B}\!\left(\mathbf{x}^*,\,
+	\mathbf{lb},\,\mathbf{ub}\right)$\;
+	$eLER^* \leftarrow eLER(\mathbf{x}^*)$\;
+	
+	\Return $\mathbf{x}^*,\ eLER^*$\;
+	
+\end{algorithm}
+
+\bigskip
+
+
+
+\section{: Model Parameters — Complete Reference Table}
+\label{app:params}
+
+\hspace{1cm}Table~\ref{tab:allparams} consolidates all fixed model
+parameters used throughout the study for reproducibility.
+
+\begin{table}[H]
+	\caption{Complete list of fixed model parameters.}
+	\label{tab:allparams}
+	\centering
+	\small
+	\begin{tabular}{lllll}
+		\toprule
+		\textbf{Parameter} & \textbf{Symbol} & \textbf{Value}
+		& \textbf{Unit} & \textbf{Source} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{PV module (Jinko Tiger Neo 550\,W$_p$
+				bifacial)}} \\
+		Rated power (STC)        & $P_{\text{STC}}$     & 550
+		& W$_p$                & \citet{jinko} \\
+		Module length            & $L_m$                & 2.278
+		& m                    & \citet{jinko} \\
+		Module width             & $W_m$                & 1.134
+		& m                    & \citet{jinko} \\
+		Bifaciality factor       & $\phi$               & 0.70
+		& ---                  & \citet{jinko} \\
+		Temp. coefficient        & $\beta_p$            & $-$0.0035
+		& K$^{-1}$             & \citet{jinko} \\
+		System losses            & $\eta_{\text{loss}}$ & 0.12
+		& ---                  & \citet{jordan2013} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{PV thermal model (Faiman 2008)}} \\
+		Free convection coeff.   & $U_0$                & 25
+		& W\,m$^{-2}$\,K$^{-1}$  & \citet{faiman2008} \\
+		Wind convection coeff.   & $U_1$                & 6.84
+		& W\,s\,m$^{-3}$\,K$^{-1}$ & \citet{faiman2008} \\
+		Ground albedo            & $\rho_g$             & 0.25
+		& ---                  & \citet{monteith2008} \\
+		Rear irradiance fraction & $f_{\text{rear}}$    & 0.12
+		& ---                  & \citet{gorjian2022} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{Crop yield model}} \\
+		PAR fraction of GHI      & $f_{\text{PAR}}$     & 0.48
+		& ---                  & \citet{mccree1971} \\
+		Tomato PAR saturation    & $PAR_{\text{sat}}$   & 174
+		& W\,m$^{-2}$          & \citet{mohammedi2023} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{ET reduction model}} \\
+		ET shading coefficient   & $\alpha_{\text{shade}}$ & 0.40
+		& ---                  & \citet{elamri2018} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{Anaerobic digestion model}} \\
+		Reference BMP            & $BMP_{\text{ref}}$   & 300
+		& NmL\,CH$_4$\,gVS$^{-1}$ & \citet{lallement2023} \\
+		Reference temperature    & $T_{\text{ref}}$     & 37
+		& \si{\celsius}        & \citet{lindorfer2008} \\
+		Arrhenius coefficient    & $\theta$             & 0.069
+		& \si{\celsius^{-1}}   & \citet{pilarski2025} \\
+		Min. operating temp.     & $T_{\text{min}}$     & 26
+		& \si{\celsius}        & \citet{lindorfer2008} \\
+		Temp. boost above ambient & ---                 & 5
+		& \si{\celsius}        & \citet{lindorfer2008} \\
+		Methane fraction         & $f_{\text{CH}_4}$   & 0.60
+		& vol/vol              & \citet{marchaim1992} \\
+		Methane LHV              & $LHV_{\text{CH}_4}$ & 35.8
+		& MJ\,Nm$^{-3}$        & \citet{marchaim1992} \\
+		Wall heat transfer coeff.& $U_{\text{eff}}$     & 0.8
+		& W\,m$^{-2}$\,K$^{-1}$ & \citet{lindorfer2008} \\
+		Substrate density        & $\rho_s$             & 1\,020
+		& kg\,m$^{-3}$         & standard \\
+		Substrate specific heat  & $C_p$                & 4.2
+		& kJ\,kg$^{-1}$\,K$^{-1}$ & standard \\
+		Inlet temperature        & $T_{\text{in}}$      & 15
+		& \si{\celsius}        & assumed \\
+		Reaction heat fraction   & ---                  & 0.05
+		& ---                  & \citet{pal2024} \\
+		Tomato residue DM        & $DM$                 & 0.06
+		& kg\,kg$^{-1}$        & \citet{mohammedi2023} \\
+		Residue VS fraction      & $VS_f$               & 0.85
+		& kg\,kg$^{-1}$        & \citet{lallement2023} \\
+		Manure DM                & $DM_m$               & 0.20
+		& kg\,kg$^{-1}$        & \citet{pilarski2025} \\
+		Manure VS fraction       & $VS_m$               & 0.80
+		& kg\,kg$^{-1}$        & \citet{pilarski2025} \\
+		Residue-to-fruit ratio   & $R_{\text{res}}$     & 0.80
+		& kg\,kg$^{-1}$        & \citet{mohammedi2023} \\
+		\midrule
+		\multicolumn{5}{l}{\textit{Economic analysis}} \\
+		Project lifetime         & $N$                  & 20
+		& yr                   & standard \\
+		O\&M rate                & $f_{\text{O\&M}}$    & 1.5
+		& \%\,CAPEX\,yr$^{-1}$ & \citet{irena2022} \\
+		PV CAPEX (APV)           & $c_{\text{PV}}$      & 0.63
+		& \$\,W$_p^{-1}$       & \citet{irena2022} \\
+		AD CAPEX                 & $c_{\text{AD}}$      & 800
+		& \$\,m$^{-3}$         & \citet{pal2024} \\
+		Agricultural CAPEX       & $c_{\text{agri}}$    & 2\,500
+		& \$\,ha$^{-1}$        & FAO \\
+		BOP fraction             & $f_{\text{BOP}}$     & 15
+		& \% of (PV+AD)        & standard \\
+		Natural gas EF           & $EF_{\text{gas}}$    & 0.202
+		& tCO$_2$\,MWh$^{-1}$ & \citet{ipcc2022} \\
+		Digestate N content      & ---                  & 0.003
+		& kg\,N\,kg$^{-1}$     & \citet{lallement2023} \\
+		N credit price           & $p_N$                & 1.20
+		& \$\,kg$^{-1}$\,N     & market \\
+		LPG equivalent price     & $p_{\text{LPG}}$     & 0.18
+		& \$\,kWh$^{-1}$       & \citet{iea2025} \\
+		Biomethane premium (S5)  & ---                  & 5.5$\times p_{\text{elec}}$
+		& ---                  & \citet{nikzad2026} \\
+		\bottomrule
+	\end{tabular}
+\end{table}

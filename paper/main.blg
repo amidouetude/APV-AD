@@ -1,0 +1,182 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: unsrtnat.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--entry type for "pvgis" isn't style-file defined
+--line 1830 of file references.bib
+Warning--entry type for "urraca2017" isn't style-file defined
+--line 1944 of file references.bib
+Warning--entry type for "irena2022" isn't style-file defined
+--line 1977 of file references.bib
+Warning--entry type for "ec2022" isn't style-file defined
+--line 1993 of file references.bib
+Warning--entry type for "eba2025" isn't style-file defined
+--line 2000 of file references.bib
+Warning--entry type for "iea2025" isn't style-file defined
+--line 2007 of file references.bib
+Warning--entry type for "rabobank2025" isn't style-file defined
+--line 2014 of file references.bib
+Warning--entry type for "dlg2023" isn't style-file defined
+--line 2048 of file references.bib
+Warning--entry type for "allen1998" isn't style-file defined
+--line 2080 of file references.bib
+Repeated entry---line 2153 of file references.bib
+ : @misc{jinko
+ :            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2162 of file references.bib
+ : @article{jordan2013
+ :                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2173 of file references.bib
+ : @article{roldanporta2023
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2213 of file references.bib
+ : @article{alengebawy2024
+ :                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2238 of file references.bib
+ : @article{ketzer2020
+ :                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2252 of file references.bib
+ : @misc{pvgis
+ :            ,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "gorjian2022"
+Warning--empty year in fao2017
+Warning--empty year in fao2017
+Warning--empty journal in dinesh2016
+Warning--empty year in dinesh2016
+Warning--empty year in dinesh2016
+Warning--empty journal in goetzberger1982
+Warning--empty year in goetzberger1982
+Warning--empty year in goetzberger1982
+Warning--empty journal in dupraz2011
+Warning--empty year in dupraz2011
+Warning--empty year in dupraz2011
+Warning--empty journal in marrou2013
+Warning--empty year in marrou2013
+Warning--empty year in marrou2013
+Warning--empty journal in barron2019
+Warning--empty year in barron2019
+Warning--empty year in barron2019
+Warning--empty journal in elamri2018
+Warning--empty year in elamri2018
+Warning--empty year in elamri2018
+Warning--empty journal in semeraro2024
+Warning--empty year in semeraro2024
+Warning--empty year in semeraro2024
+Warning--empty journal in mead1980
+Warning--empty year in mead1980
+Warning--empty year in mead1980
+Warning--empty journal in riaz2022
+Warning--empty year in riaz2022
+Warning--empty year in riaz2022
+Warning--empty year in mazzeo2025
+Warning--empty journal in mohammedi2023
+Warning--empty year in mohammedi2023
+Warning--empty year in mohammedi2023
+Warning--empty journal in pilarski2025
+Warning--empty year in pilarski2025
+Warning--empty year in pilarski2025
+Warning--empty journal in lallement2023
+Warning--empty year in lallement2023
+Warning--empty year in lallement2023
+Warning--empty journal in lindorfer2008
+Warning--empty year in lindorfer2008
+Warning--empty year in lindorfer2008
+Warning--empty journal in zainali2023
+Warning--empty year in zainali2023
+Warning--empty year in zainali2023
+Warning--empty journal in pal2024
+Warning--empty year in pal2024
+Warning--empty year in pal2024
+Warning--empty journal in temiz2024
+Warning--empty year in temiz2024
+Warning--empty year in temiz2024
+Warning--empty journal in angelidaki_defining_2009
+Warning--empty year in angelidaki_defining_2009
+Warning--empty year in angelidaki_defining_2009
+Warning--empty journal in mata-alvarez_critical_2014
+Warning--empty year in mata-alvarez_critical_2014
+Warning--empty year in mata-alvarez_critical_2014
+Warning--empty journal in alengebawy2024
+Warning--empty year in alengebawy2024
+Warning--empty year in alengebawy2024
+Warning--empty journal in feng2013
+Warning--empty year in feng2013
+Warning--empty year in feng2013
+Warning--empty year in pvgis
+Warning--empty journal in huld2012
+Warning--empty year in huld2012
+Warning--empty year in huld2012
+Warning--empty year in urraca2017
+Warning--empty journal in liu1960
+Warning--empty year in liu1960
+Warning--empty year in liu1960
+Warning--empty year in monteith2008
+Warning--empty year in monteith2008
+Warning--empty journal in faiman2008
+Warning--empty year in faiman2008
+Warning--empty year in faiman2008
+Warning--empty journal in gorjian_progress_2022
+Warning--empty year in gorjian_progress_2022
+Warning--empty year in gorjian_progress_2022
+Warning--empty journal in mccree1971
+Warning--empty year in mccree1971
+Warning--empty year in mccree1971
+Warning--empty journal in jacovides2006
+Warning--empty year in jacovides2006
+Warning--empty year in jacovides2006
+Warning--empty publisher in heuvelink2005
+Warning--there's a number but no series in marchaim1992
+Warning--empty journal in storn1997
+Warning--empty year in storn1997
+Warning--empty year in storn1997
+You've used 55 entries,
+            2481 wiz_defined-function locations,
+            903 strings with 16134 characters,
+and the built_in function-call counts, 21566 in all, are:
+= -- 1820
+> -- 1121
+< -- 33
++ -- 444
+- -- 334
+* -- 1821
+:= -- 3478
+add.period$ -- 235
+call.type$ -- 55
+change.case$ -- 108
+chr.to.int$ -- 55
+cite$ -- 147
+duplicate$ -- 982
+empty$ -- 1899
+format.name$ -- 411
+if$ -- 4441
+int.to.chr$ -- 1
+int.to.str$ -- 56
+missing$ -- 47
+newline$ -- 352
+num.names$ -- 159
+pop$ -- 530
+preamble$ -- 1
+purify$ -- 55
+quote$ -- 0
+skip$ -- 546
+stack$ -- 0
+substring$ -- 932
+swap$ -- 83
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 373
+warning$ -- 90
+while$ -- 167
+width$ -- 0
+write$ -- 789
+(There were 6 error messages)

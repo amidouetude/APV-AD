@@ -1,0 +1,369 @@
+% ===========================================================================
+% RELATED WORKS
+% File: sections/02_related_works.tex
+% Built sub-section by sub-section
+% ===========================================================================
+
+\section{Related Works}
+\label{sec:related}
+
+% ---------------------------------------------------------------------------
+\subsection{Agrivoltaic Systems: Architecture, Crop Response, and
+Land-Use Efficiency}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The concept of co-locating solar panels and crops on the same
+land parcel was first proposed by \citet{goetzberger1982}, who noted that
+partial shade from PV modules could reduce transpiration stress while the
+modules themselves benefited from evaporative cooling. The idea remained
+largely theoretical until \citet{dupraz2011} published the first rigorous
+field experiment and introduced the Land Equivalent Ratio (LER) as the
+standard metric for the dual land-use advantage. Measuring durum wheat
+yield and PV output simultaneously in southern France, they demonstrated
+LER values of 1.35--1.73 depending on shade level, establishing the
+foundational result that the combined system outperforms two separate
+monocultures by 35--73\% on the same land area.
+
+Subsequent field studies confirmed that the benefit extends beyond
+electricity and yield. \citet{marrou2013} demonstrated that the microclimate
+under APV panels --- characterised by soil temperature reductions of
+1.3--2.3\,$^{\circ}$C and reduced peak radiation load --- can partially
+offset or reverse the yield penalty of reduced PAR for shade-adapted
+lettuce, cucumber, and wheat. In semi-arid Arizona, \citet{barron2019}
+showed that agrivoltaics simultaneously increased jalapeno yield by
+3$\times$, reduced water consumption by 65\%, and improved panel
+efficiency by 1--9 percentage points through evaporative cooling,
+providing the first comprehensive food-energy-water nexus evidence for
+the technology.
+
+The integration of bifacial modules --- which harvest both direct
+front-side and diffuse rear-side irradiance --- represents a significant
+performance advance. \citet{riaz2022} developed a Light-Productivity-Factor
+(LPF) framework that accounts for the PAR saturation threshold of the
+specific crop. Applied to bifacial tomato production in Arizona, this
+approach yielded the highest published two-component LER of 1.94,
+demonstrating that crop-specific geometry optimization can push the
+land-use advantage substantially beyond geometry-agnostic designs. The
+PAR saturation concept introduced by \citet{riaz2022} --- the observation
+that above a crop-specific irradiance threshold, additional light generates
+no additional photosynthesis and the surplus can be productively captured
+as electricity --- forms the theoretical basis for the crop yield model
+adopted in the present study.
+
+\citet{mazzeo2025} extended this approach to open-field lettuce in Italy,
+achieving LER = 1.85 under optimised panel density and identifying the
+circular reference problem in LER$_{\text{PV}}$ calculation: using the
+same APV array as both system and reference inflates the LER value
+artificially. This issue motivates the independent dense-pack PV reference
+(Definition~A) adopted here. At the system scale, a meta-analysis of 127
+agrivoltaic case studies by \citet{semeraro2024} found a mean LER of
+$1.34 \pm 0.18$, with higher values consistently associated with bifacial
+modules, shade-tolerant crops, and optimised row spacing. Water savings
+from APV shading, quantified by \citet{elamri2018} across a lettuce trial
+in southern France, reached 14--29\% of growing-season ET$_0$ --- a range
+consistent with the corrected values reported in the present study.
+
+Despite this body of evidence, all cited agrivoltaic studies share a common
+limitation: the crop residue stream is treated as waste or a soil amendment,
+severing the link between the agrivoltaic system and the biogas economy that
+the same semi-arid farming regions are increasingly participating in.
+
+\subsection{Anaerobic Digestion: Fundamentals, Feedstocks, and
+Thermal Management}
+% ---------------------------------------------------------------------------
+ 
+\hspace{1cm}Anaerobic digestion is a multi-stage biological process in
+which consortia of microorganisms decompose organic matter in the absence
+of oxygen, producing biogas --- typically 55--70\% methane and 30--45\%
+CO$_2$ --- and a nutrient-rich liquid digestate~\citep{angelidaki_defining_2009,mata-alvarez_critical_2014}. The four sequential stages --- hydrolysis, acidogenesis,
+acetogenesis, and methanogenesis --- each involve distinct microbial
+communities with different kinetic sensitivities to temperature, pH, and
+substrate composition~\citep{alengebawy2024}. This sequential dependency
+makes methanogenesis the rate-limiting step and temperature the dominant
+operational parameter: a 10\,$^{\circ}$C decrease in digester temperature
+below the mesophilic optimum (37\,$^{\circ}$C) can suppress methane yield
+by 30--50\%, following an Arrhenius-type relationship~\citep{lindorfer2008}.
+ 
+The biochemical methane potential (BMP) of a substrate quantifies the
+maximum volume of methane recoverable per unit of volatile solids (VS)
+under controlled conditions. \citet{lallement2023} reported BMP values
+of 200--280\,NmL\,CH$_4$\,gVS$^{-1}$ for cattle manure and
+250--350\,NmL\,CH$_4$\,gVS$^{-1}$ for tomato plant residues --- ranges
+that bracket the reference value of 300\,NmL\,CH$_4$\,gVS$^{-1}$ at
+37\,$^{\circ}$C adopted in the present study. \citet{feng2013} provided
+a five-point temperature response curve for tomato plant residues from
+20\,$^{\circ}$C to 40\,$^{\circ}$C, demonstrating that BMP drops from
+300\,NmL\,gVS$^{-1}$ at 37\,$^{\circ}$C to approximately
+195\,NmL\,gVS$^{-1}$ at 20\,$^{\circ}$C --- a 35\% suppression that is
+directly relevant to cold-season operation at Konya and Freiburg. This
+dataset provides the empirical basis for the V2 model validation reported
+in Section~\ref{sec:results}. \citet{pilarski2025} extended this analysis
+to cereal straw and vegetable mixtures, confirming the Arrhenius coefficient
+$\theta = 0.069$\,$^{\circ}$C$^{-1}$ used throughout the present study and
+reporting that co-digestion of crop residues with cattle manure at a 1:3
+VS ratio increases BMP by 12--18\% through synergistic microbial diversity.
+ 
+The thermal energy demand of a continuously stirred tank reactor (CSTR)
+digester operating under mesophilic conditions in a temperate climate is
+substantial. \citet{lindorfer2008} showed that maintaining a 37\,$^{\circ}$C
+digester against a 0\,$^{\circ}$C ambient requires heat input equivalent
+to 15--30\% of gross biogas energy, depending on insulation quality and
+substrate inlet temperature. This self-consumption directly reduces the
+net energy yield and economic return of the plant. Solar thermal
+collectors~\citep{temiz2024} and PV-powered electrical resistance
+heating~\citep{pal2024} have both been proposed as alternatives to
+biogas self-consumption. \citet{pal2024} demonstrated that replacing
+biogas self-heating with PV electricity in a grid-connected configuration
+can improve the NPV of a biogas plant by up to 8.7$\times$ compared to
+a non-heated reference, by redirecting the saved biogas to higher-value
+grid injection. Their analysis, however, treats the PV array as a
+separate installation without modelling the agrivoltaic geometry or crop
+yield effects.
+ 
+On the feedstock supply side, the strategic importance of agricultural
+biogas and biomethane is reflected in accelerating policy commitments.
+The EU REPowerEU Plan targets 35\,billion m$^3$ of sustainable biomethane
+per year by 2030~\citep{ec2022}, requiring a nine-fold increase from 2022
+levels. Germany's EEG 2023 and the EU RED III mandate feed-in premiums
+for biomethane grid injection, creating a market price approximately
+5.5 times the wholesale electricity price in Central European
+markets~\citep{nikzad2026, eba2025, rabobank2025}. In Sub-Saharan Africa,
+where Burkina Faso's national grid relies on 63\% diesel generation, the
+IEA projects biogas from agricultural residues as a priority pathway for
+rural electrification and LPG substitution by 2030~\citep{iea2025}.
+These policy contexts directly motivate the site-specific biomethane
+premium scenarios (S5) and carbon credit scenarios (S6) evaluated in the
+present study.
+
+% ---------------------------------------------------------------------------
+\subsection{PV--Biogas Hybrid Systems: Architecture and Economics}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The complementarity between solar PV and biogas is
+thermodynamic as much as economic. PV generation is intermittent and
+peaks in summer, while biogas is dispatchable and its heating demand
+peaks in winter --- a seasonal anti-correlation that makes the two
+technologies natural partners in a hybrid energy
+system~\citep{pal2024, temiz2024}. Early hybrid configurations
+focused on off-grid rural electrification, combining a biogas generator
+for baseload with PV for daytime peak demand and battery storage for
+overnight supply. More recently, grid-connected configurations that
+exploit feed-in premiums for both electricity and biomethane have
+become the dominant economic model in European
+markets~\citep{eba2025, nikzad2026}.
+
+Techno-economic analyses of PV--biogas hybrids consistently report
+that the optimal configuration depends critically on the local
+electricity tariff structure and the relative prices of grid
+electricity, LPG, and biomethane. \citet{pal2024} showed that in
+markets where grid electricity is cheap relative to biogas, using PV
+electricity to heat the digester (rather than burning biogas for
+self-heating) frees the entire biogas output for sale, improving IRR
+by 3--8 percentage points. \citet{temiz2024} demonstrated that a
+heat pump powered by APV electricity can maintain thermophilic
+digestion (52\,$^{\circ}$C) year-round in a continental climate,
+achieving full thermal self-sufficiency with a coefficient of
+performance (COP) of 3.2--4.1, equivalent to a 70\% reduction in
+heating energy relative to direct resistance heating.
+
+Multi-generation system analyses --- simultaneously producing
+electricity, heat, biomethane, and digestate fertilizer --- have
+been explored by \citet{roldanporta2023}, who reported that joint
+optimization of all four output streams increases system NPV by
+22--34\% compared to single-output optimization. Their framework,
+however, does not include a land-use efficiency metric or crop yield
+modelling, treating the agricultural component only as a feedstock
+source.
+
+A critical gap in all cited PV--biogas studies is the absence of
+agrivoltaic geometry modelling: the PV array is treated as an
+independent installation with no interaction with the underlying
+crop canopy. This simplification ignores the fact that in an
+integrated APV--AD system, the panel geometry simultaneously
+determines PV yield, crop PAR availability, residue production,
+and VS input to the digester --- four interlinked variables that
+must be co-optimized rather than treated sequentially.
+
+% ---------------------------------------------------------------------------
+\subsection{The Land Equivalent Ratio: History, Extensions,
+and Limitations}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The Land Equivalent Ratio was introduced by
+\citet{mead1980} for intercropping systems, where it quantifies
+the relative land area under separate monocultures that would be
+required to produce the same combined yields as an intercropped
+system. An LER of 1.4, for example, means that 40\% more land
+would be needed under monoculture to achieve the same total
+output --- a powerful argument for integration in land-constrained
+contexts. \citet{dupraz2011} adapted the metric to agrivoltaics
+by replacing one of the two intercrop outputs with PV electricity,
+defining the two-component agrivoltaic LER as:
+\[
+    LER_{2C} = \frac{Y_{\text{crop,APV}}}{Y_{\text{crop,open}}}
+             + \frac{E_{\text{PV,APV}}}{E_{\text{PV,ref}}}
+\]
+where the denominators are the yields of the same crop and PV
+technology operated separately on equivalent land areas.
+
+The choice of reference system for the PV denominator has emerged
+as a methodological fault line in the agrivoltaic literature.
+Three definitions are in common use, each yielding substantially
+different numerical LER values for the same physical system.
+The first --- used by \citet{dupraz2011} and most early studies
+--- compares APV electricity output to a dense-pack ground-mount
+array at the same tilt, giving a rigorous independent reference
+(Definition~A in the present study). The second compares the APV
+output to the same APV array itself, making LER$_{\text{PV}}$
+equal to the Ground Coverage Ratio by definition --- a circular
+reference identified and criticised by \citet{mazzeo2025}.
+The third normalizes by actual irradiance received rather than
+potential output, conflating system performance with resource
+availability. \citet{mazzeo2025} showed that the choice between
+Definition~A and the circular definition changes reported LER
+values by 0.15--0.35, making cross-study comparisons unreliable
+unless the reference is stated explicitly. The present study
+reports results under both Definition~A (primary) and
+Definition~B (circular, for literature comparability), and
+flags the numerical difference explicitly in the Results section.
+
+A second unresolved limitation of the classical LER framework is
+its restriction to two outputs. In an integrated APV--AD system,
+three distinct land-use outputs are produced simultaneously:
+crop yield, PV electricity, and biogas energy. Collapsing the
+third output into the economic analysis --- as a revenue item
+in an NPV calculation --- obscures its contribution to land-use
+efficiency and prevents direct comparison with classical LER
+values. No prior study has proposed a three-component LER
+formulation that preserves the dimensional consistency and
+interpretive clarity of the original metric while accommodating
+a biogas energy term. The eLER proposed in the present study
+fills this gap, defining $LER_{\text{biogas}}$ as the ratio of
+APV-system biogas output to the output of a standalone AD unit
+processing the same land area under open-field conditions, and
+summing all three components into a single dimensionless indicator
+of multi-output land productivity.
+
+
+ % ---------------------------------------------------------------------------
+\subsection{The APV--AD Frontier: First Integration Studies}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The first study to explicitly couple agrivoltaic and
+anaerobic digestion optimization was \citet{nikzad2026}, who applied
+a techno-economic framework to a grid-connected APV--AD plant in
+northern Italy. Their system integrates single-axis tracking PV panels
+above an agricultural field, with biogas produced from on-site biomass
+feeding a combined heat and power (CHP) unit or a biomethane upgrading
+system for grid injection. Using NPV as the objective function and land
+occupation as a secondary constraint, they found that on-grid
+configurations with heat pump integration require 17--20 times less
+land than off-grid alternatives and achieve NPV values up to
+\texteuro2.88 million at the optimised design. The biomethane grid
+injection scenario, valued at 5.5 times the electricity purchase price
+under EEG 2023 and RED III incentives, emerged as the economically
+dominant valorisation strategy --- a finding that directly motivates
+Scenario S5 of the present study.
+
+Despite its pioneering contribution, the work of \citet{nikzad2026}
+has four significant limitations that the present study addresses.
+First, the analysis is geographically limited to a single
+Mediterranean location (northern Italy, Cfb climate), preventing
+any inference about how the APV--AD synergy varies with solar
+resource, ambient temperature, or growing-season length.
+Second, the crop beneath the panels is treated exclusively as a
+biomass feedstock source: no crop yield model is implemented,
+and the effect of panel shading on photosynthesis, PAR
+distribution, or harvest quantity is not quantified.
+Third, no land-use efficiency metric is defined beyond raw land
+occupation; the eLER concept --- or any equivalent multi-output
+indicator --- is absent, making it impossible to assess how
+efficiently the integrated system uses land relative to three
+separate monocultures.
+Fourth, the optimization searches only the economic design space
+(CHP vs. biomethane, on-grid vs. off-grid) without jointly
+optimizing the APV geometry (tilt, row spacing, module height)
+and AD design (digester volume, HRT, heating fraction)
+simultaneously.
+
+Table~\ref{tab:positioning} summarises the positioning of the
+present study relative to the most relevant prior works across
+the agrivoltaic, AD integration, and LER literatures.
+
+\begin{table}[H]
+\caption{Positioning of the present study relative to key prior works.
+\checkmark~=~fully addressed; $\circ$~=~partially addressed;
+$\times$~=~not addressed.}
+\label{tab:positioning}
+\centering
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Study} &
+\textbf{Multi-} &
+\textbf{Crop} &
+\textbf{AD} &
+\textbf{Joint} &
+\textbf{LER} &
+\textbf{4E} \\
+& \textbf{climate} &
+\textbf{yield} &
+\textbf{thermal} &
+\textbf{optim.} &
+\textbf{metric} &
+\textbf{analysis} \\
+\midrule
+\citet{dupraz2011}    & $\times$ & \checkmark & $\times$ & $\times$ & \checkmark & $\times$ \\
+\citet{riaz2022}      & $\times$ & \checkmark & $\times$ & $\times$ & \checkmark & $\times$ \\
+\citet{mazzeo2025}    & $\times$ & \checkmark & $\times$ & $\circ$  & \checkmark & $\times$ \\
+\citet{zainali2023}   & $\circ$  & $\times$   & $\times$ & $\times$ & $\times$   & $\times$ \\
+\citet{pal2024}       & $\times$ & $\times$   & \checkmark & $\times$ & $\times$ & $\circ$  \\
+\citet{temiz2024}     & $\times$ & $\times$   & \checkmark & $\times$ & $\times$ & $\circ$  \\
+\citet{nikzad2026}    & $\times$ & $\times$   & \checkmark & $\circ$  & $\times$ & $\circ$  \\
+\textbf{This study}   & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\subsection{Multi-Climate Comparative Studies and Research Positioning}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Multi-site comparative analyses in agrivoltaic research
+remain rare. \citet{zainali2023} modelled shading factors and POA
+irradiance across five European locations using a validated geometric
+model, but without crop yield, economic, or water analysis. Their study
+confirmed that the shading geometry is strongly latitude-dependent ---
+the same panel configuration produces significantly different ground
+irradiance distributions at 38°N (Spain) versus 52°N (Netherlands) ---
+motivating the multi-latitude design of the present study. \citet{semeraro2024}
+conducted a meta-analysis across 127 agrivoltaic case studies spanning
+Europe, Asia, and North America, finding that climate zone explains
+approximately 18\% of LER variance after controlling for crop species
+and panel technology, but without isolating the mechanism.
+
+No prior study has applied an integrated APV--AD framework to more than
+one climate zone, nor has any study included a site from tropical
+Sub-Saharan Africa (BSh tropical), where the combination of year-round
+near-optimal digester temperatures (ambient T$_{\text{amb}} \geq$
+22\,$^{\circ}$C throughout the year), high solar irradiance
+(\SI{2050}{kWh\,m^{-2}}), and acute energy poverty creates arguably
+the strongest case for integrated APV--AD deployment. The inclusion of
+Ouagadougou, Burkina Faso in the present study --- alongside Konya
+(BSk), Almer\'{i}a (BSh hot), and Freiburg (Cfb) --- enables the first
+quantitative comparison of APV--AD performance across the full
+semi-arid-to-temperate spectrum.
+
+The present study is, to the authors' knowledge, the first to:
+(i) apply a joint APV--AD optimizer across four climate zones,
+(ii) introduce a three-component eLER as the optimization objective,
+(iii) identify and mechanistically explain a non-monotone relationship
+between annual solar resource and eLER through the PAR-saturation
+mechanism, and
+(iv) provide a 4E analysis --- Energetic, Economic, Energo-economic,
+and Environmental --- for an integrated APV--AD system across
+contrasting climate zones. Together, these contributions address
+the six research gaps identified in Section~\ref{sec:intro} and
+establish a replicable framework for the site-specific deployment
+assessment of integrated APV--AD systems in food-energy-water nexus
+planning.

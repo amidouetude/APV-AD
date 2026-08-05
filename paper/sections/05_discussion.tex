@@ -1,0 +1,464 @@
+% ===========================================================================
+% Discussion
+% File: sections/05_Discussion.tex
+% Built sub-section by sub-section
+% ===========================================================================
+
+\section{Discussion}
+\label{sec:discussion}
+
+% ---------------------------------------------------------------------------
+
+% ---------------------------------------------------------------------------
+\subsection{The PAR-Saturation Mechanism: Implications for Site
+	Selection and Crop Choice}
+\label{sec:discussion_par}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The non-monotone relationship between annual solar resource
+and eLER --- Freiburg (GHI = 1\,150\,kWh\,m$^{-2}$) outperforming
+Konya (GHI = 1\,650\,kWh\,m$^{-2}$) --- is the most physically
+significant finding of this study and requires careful mechanistic
+interpretation before deployment implications can be drawn.
+
+The mechanism operates through the PAR integral denominator in
+Equation~\ref{eq:lercrop}. In an open field, the denominator
+$\int_{t_0}^{t_1} PAR_{\text{open}}(t)\,dt$ accumulates all incoming
+PAR without a ceiling. At Konya, with a mean growing-season daytime
+GHI of approximately \SI{450}{W\,m^{-2}}, the corresponding open-field
+PAR of $450 \times 0.48 = \SI{216}{W\,m^{-2}}$ exceeds
+$PAR_{\text{sat}} = \SI{174}{W\,m^{-2}}$ for the majority of daylight
+hours. The denominator therefore grows faster than the numerator ---
+which is clipped at $PAR_{\text{sat}}$ in both the APV and the open
+field --- making $LER_{\text{crop}}$ structurally lower at
+high-irradiance sites regardless of the panel geometry.
+
+At Freiburg, mean growing-season daytime GHI is approximately
+\SI{320}{W\,m^{-2}}, giving open-field PAR of
+\SI{154}{W\,m^{-2}} --- below $PAR_{\text{sat}}$. The denominator
+accumulates proportionally less uncapped PAR, and the ratio remains
+more favourable. This is not a statement about absolute crop yield:
+Freiburg produces less tomato per hectare in absolute terms
+(30\,t\,ha$^{-1}$) than Konya (60\,t\,ha$^{-1}$). It is a statement
+about the \textit{relative} efficiency of land use: at Freiburg, the
+APV system captures a larger fraction of the agronomically useful
+PAR, because the open-field reference does not accumulate as much
+PAR above the saturation point.
+
+\textbf{Generalisation to other crops.} The PAR-saturation mechanism
+is crop-specific. Tomato has a high light saturation point
+($PAR_{\text{sat}} = \SI{174}{W\,m^{-2}}$), making it sensitive to
+the mechanism at the irradiance levels of all four study sites. For
+shade-tolerant crops with lower saturation points --- lettuce
+(\SI{76}{W\,m^{-2}}), spinach (\SI{80}{W\,m^{-2}}), or basil
+(\SI{100}{W\,m^{-2}}) --- the denominator would be clipped at a much
+lower threshold, and open-field PAR would exceed $PAR_{\text{sat}}$
+for a larger fraction of daylight hours at \textit{all} sites,
+potentially eliminating the eLER difference between high- and
+low-irradiance locations. For high-saturation crops such as maize
+($PAR_{\text{sat}} \approx \SI{400}{W\,m^{-2}}$), the mechanism
+would be reversed: open-field PAR rarely reaches saturation, the
+denominator grows proportionally with irradiance, and high-irradiance
+sites would achieve higher $LER_{\text{crop}}$, restoring a monotone
+eLER--GHI relationship. Multi-crop generalisation is therefore
+identified as the highest-priority extension of the present framework.
+
+\textbf{Site selection implication.} The conventional wisdom in
+agrivoltaic deployment --- that high-irradiance semi-arid sites
+are preferable because they maximise PV revenue --- requires
+qualification when high-PAR crops such as tomato are cultivated.
+The present results suggest that moderate-irradiance temperate
+sites offer a comparable or superior eLER for tomato, because the
+PAR available in those climates is more fully utilisable by the
+crop. From a food-energy-water nexus perspective, the optimal site
+is not the site with the most sun, but the site where the solar
+resource best matches the crop's photosynthetic capacity.
+This reframes the site selection problem from a single-objective
+(maximise PV output) to a multi-objective (maximise eLER) decision,
+consistent with the optimization framework developed in this study.
+
+% ---------------------------------------------------------------------------
+\subsection{Boundary Convergence: Physical Meaning and the
+	Access Trade-off}
+\label{sec:discussion_boundary}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The convergence of the optimizer to the lower bounds of
+both row spacing ($d_{\text{row}}^* = \SI{3.03}{m}$) and module
+height ($H_m^* = \SI{1.50}{m}$) at all four sites is a structural
+result that reveals the shape of the eLER landscape and has direct
+practical implications for APV system design and agricultural
+operations.
+
+\textbf{Why the optimizer converges to the boundary.}
+Increasing panel density --- reducing $d_{\text{row}}$ and $H_m$
+toward their lower bounds --- has two simultaneous effects on eLER.
+First, it increases $LER_{\text{PV}}$: more modules per hectare
+generates more electricity from the same land area, raising the
+numerator $E_{\text{PV,sold}}$ relative to the reference. Second,
+it increases $F_{\text{shad}}$, which reduces $PAR_{\text{open}}$
+denominator in Equation~\ref{eq:lercrop} by intercepting more
+incident radiation. Both effects push eLER upward. The only
+countervailing force is the reduction in $LER_{\text{crop}}$: more
+shading reduces PAR available to the crop, lowering the numerator
+$\int\min(PAR_{\text{AV}}, PAR_{\text{sat}})\,dt$. The optimizer
+converges to the physical constraint boundary because, at the
+parameter values of this study (tomato, GHI = 1\,150--2\,050
+kWh\,m$^{-2}$), the PV density gain and denominator reduction
+outweigh the crop yield penalty up to the point where physical
+overlap between rows prevents further densification.
+
+\textbf{The eLER penalty of mechanical access.}
+In practice, agricultural machinery requires a minimum inter-row
+clearance for tractors, harvesters, and irrigation equipment. Typical
+tractor widths of 1.8--2.2\,m, combined with operational clearance,
+require row spacings of 3.5--5.0\,m in mechanised farming systems.
+The eLER cost of this access requirement can be quantified from the
+boundary convergence result: since the optimizer seeks the minimum
+feasible $d_{\text{row}}$ at all sites, each additional metre of
+required row spacing represents a deviation from the eLER optimum.
+From the sensitivity of eLER to $d_{\text{row}}$ in the neighbourhood
+of the boundary solution, the eLER penalty is approximately
+$-$0.04 to $-$0.06 per additional metre of row spacing, with the
+exact value depending on site irradiance and tilt angle. A mechanised
+farming system requiring $d_{\text{row}} = \SI{5.0}{m}$ instead of
+\SI{3.03}{m} would sacrifice approximately 0.08--0.12\,eLER units
+--- a penalty of 5--7\% relative to the boundary optimum.
+
+\textbf{Practical design recommendations.}
+Three design strategies can partially recover the access penalty
+while maintaining agricultural operability:
+
+\begin{enumerate}[leftmargin=*, noitemsep]
+	
+	\item \textbf{Smallholder manual cultivation.} For systems
+	serving smallholder farmers who operate without mechanised
+	equipment --- the predominant farming model in Burkina Faso
+	and much of the semi-arid developing world --- the minimum
+	physical clearance of \SI{3.03}{m} is operationally feasible.
+	Manual cultivation, hand harvesting, and drip irrigation
+	require only 0.8--1.2\,m of working clearance, making the
+	boundary-convergence design directly deployable at Ouagadougou-type
+	sites.
+	
+	\item \textbf{Increased module height.} Raising $H_m$ from
+	\SI{1.50}{m} to \SI{2.5}{m} allows agricultural machinery to
+	pass beneath the panels even at reduced row spacing, recovering
+	mechanical access without increasing $d_{\text{row}}$.
+	The eLER cost of this height increase is modest: $H_m$ affects
+	$F_{\text{shad}}$ only through the shadow length formula
+	(Equation~\ref{eq:shading}), and at $d_{\text{row}} = \SI{3.03}{m}$
+	the shading fraction is already near its maximum for the relevant
+	solar elevation angles.
+	
+	\item \textbf{Shade-adapted crop selection.} Choosing crops with
+	lower $PAR_{\text{sat}}$ (lettuce, spinach, herbs) reduces the
+	eLER penalty of increased row spacing because the crop is less
+	sensitive to the absolute PAR reduction under denser panel
+	configurations. For such crops, a wider $d_{\text{row}}$ may
+	achieve a similar or higher $LER_{\text{crop}}$ as the
+	boundary-convergence design for tomato.
+	
+\end{enumerate}
+
+\textbf{Comparison with prior literature.} The boundary convergence
+on row spacing is consistent with the findings of \citet{mazzeo2025},
+who reported that LER is monotonically increasing with GCR for
+lettuce up to GCR = 0.65 before levelling off, and with
+\citet{riaz2022}, who found that the LPF-optimal design for bifacial
+tomato in Arizona converged to the maximum permissible GCR under
+their access constraints. The present study extends these findings
+by providing an explicit quantification of the access penalty and
+by demonstrating that the boundary convergence is climate-independent
+--- it occurs at all four sites despite GHI varying by a factor of
+1.8 and mean annual temperature varying by 17\,\si{\celsius}.
+
+% ---------------------------------------------------------------------------
+\subsection{The eLER Metric: Interpretation, Definitions,
+	and Structural Properties}
+\label{sec:discussion_eler}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Three structural properties of the eLER metric require
+explicit interpretation to avoid misreading the numerical results
+reported in Section~\ref{sec:results_eler}.
+
+\textbf{Property 1 --- $LER_{\text{biogas}} < 1$ is a coupling
+	consequence, not a system failure.}
+The result $LER_{\text{biogas}} = 0.615$--$0.727$ at all sites
+means that the APV--AD system produces less biogas than a standalone
+reference AD unit processing the same land area under open-field
+conditions. This is not a design failure or an inefficiency of the
+integrated system: it is a direct and unavoidable consequence of the
+shading-residue coupling. When panels shade the crop, $LER_{\text{crop}}
+< 1$, meaning fewer crop residues are harvested per hectare. Fewer
+residues reduce VS input to the digester, which reduces biogas output.
+The reference AD unit, by contrast, operates with open-field residues
+at $LER_{\text{crop}} = 1.0$ --- maximum residue production.
+The ratio of the two biogas outputs is therefore structurally less
+than 1.0 whenever shading is present.
+
+This coupling has an important implication for the interpretation of
+the eLER sum. The three eLER components are not independent:
+$LER_{\text{crop}}$ and $LER_{\text{biogas}}$ are negatively
+correlated through the shading-residue pathway. Increasing GCR
+raises $LER_{\text{PV}}$ and reduces $LER_{\text{crop}}$, which in
+turn reduces $LER_{\text{biogas}}$. The optimizer finds the design
+that maximises the sum of all three components, accepting the
+biogas penalty in exchange for the larger PV gain.
+
+\textbf{Property 2 --- An alternative $LER_{\text{biogas}}$
+	definition changes the interpretation but not the system physics.}
+An alternative reference for $LER_{\text{biogas}}$ could use a
+standalone AD unit operating \textit{without} PV heating --- at
+ambient temperature rather than at the PV-assisted
+$T_{\text{dig,eff}}$. Under this definition:
+\begin{equation}
+	LER_{\text{biogas,alt}} =
+	\frac{E_{\text{biogas,APV}}}{E_{\text{biogas,ambient}}}
+	\label{eq:lerbiogas_alt}
+\end{equation}
+where $E_{\text{biogas,ambient}}$ is computed using
+$T_{\text{dig,eff}} = T_{\text{amb}}$ without the 5\,\si{\celsius}
+boost or the $[26,\,37]$\,\si{\celsius} clip. Under this definition,
+$LER_{\text{biogas,alt}} > 1$ at Konya and Freiburg in winter months,
+explicitly quantifying the PV thermal subsidy to AD performance. This
+alternative is conceptually more informative about the PV--AD synergy
+but harder to compare across studies because the reference changes
+with ambient temperature. The primary definition used throughout this
+paper (Equation~\ref{eq:lerbiogas}) was chosen for consistency with
+the classical LER framework, in which all references are
+activity-specific open-field monocultures operating under the same
+boundary conditions as the integrated system.
+
+\textbf{Property 3 --- ESR $\gg$ 1 is a design identity, not a
+	performance finding.}
+ESR values of 533--1\,413 at the optimised designs reflect the
+fundamental size mismatch between the PV array (which generates
+electricity at the scale of MWh\,ha$^{-1}$\,yr$^{-1}$) and the
+small farm-scale digester (which demands heat at the scale of
+MWh\,ha$^{-1}$\,yr$^{-1}$ --- the same unit but three orders of
+magnitude smaller in absolute value). With $V_{\text{dig}}^* =
+3.10$--$4.14$\,m$^3$ and heat demand of only
+1.12--2.08\,MWh\,ha$^{-1}$, even 5\% of PV output provides
+55--79\,MWh of thermal energy --- 27--70 times the annual heat
+demand. The ESR is therefore more a confirmation of the PV array
+being appropriately scaled to the land area than a meaningful
+performance indicator for the AD system. Future studies operating
+at larger scale (community digesters serving multiple hectares)
+would achieve lower ESR values that are more informative about the
+thermal balance between PV and AD.
+
+\textbf{Definition A versus Definition B: when to use each.}
+Definition~A ($LER_{\text{PV}}$ referenced to a dense-pack
+independent array) is the scientifically rigorous choice for
+studies that aim to quantify the net land-use benefit of the APV
+configuration relative to what could be achieved with two separate
+monocultures. Definition~B ($LER_{\text{PV}} \equiv GCR$) is
+appropriate only for literature comparison with studies that have
+used the circular reference, and its numerical values should always
+be flagged as such. The difference between the two definitions is
+0.031--0.032 in $LER_{\text{PV}}$ and 0.031--0.032 in eLER at the
+optimised designs of this study (Table~\ref{tab:eLER}), which is
+small relative to the between-site eLER variation (0.105) but
+non-negligible relative to the between-site $LER_{\text{crop}}$
+variation (0.034). Standardisation of the PV reference definition
+--- ideally through an agreed protocol analogous to the IEC 61724
+standard for PV performance reporting --- is identified as a
+priority for the agrivoltaic community.
+
+% ---------------------------------------------------------------------------
+\subsection{Economic Viability and Policy Implications}
+\label{sec:discussion_economics}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The 4E analysis reveals a wide range of economic
+performance across the four sites, from strongly viable
+(Ouagadougou, IRR = 31.1\%) to marginal but positive (Konya,
+IRR = 11.8\% against an 8\% discount rate). Three policy-relevant
+implications emerge from the economic results.
+
+\textbf{Electricity tariff structure is the primary economic
+	determinant.} The dominant revenue stream at all four sites is PV
+electricity sales, which accounts for 73--84\% of gross revenue
+under Scenario S0. The electricity price therefore has a
+disproportionate influence on project economics relative to tomato
+price, biogas price, or carbon credit. At Konya, the low Turkish
+electricity tariff (\$0.06\,kWh$^{-1}$) is the binding constraint
+on IRR: with the same PV output as Almer\'{i}a (which also receives
+approximately 1\,500\,MWh\,ha$^{-1}$\,yr$^{-1}$ at optimal design),
+Konya generates 33\% less PV revenue simply because the tariff is
+33\% lower (\$0.06 vs.\ \$0.09\,kWh$^{-1}$). A sensitivity
+analysis shows that a Turkish electricity price increase to
+\$0.09\,kWh$^{-1}$ --- consistent with the regional trend as
+fossil fuel subsidies are progressively reduced --- would raise
+Konya's IRR to approximately 16\%, comparable to Freiburg and
+well above the discount rate. This underscores that APV--AD
+investment viability in semi-arid developing economies is primarily
+a function of energy price reform, not of solar resource or
+technology cost.
+
+\textbf{The carbon credit scenario (S6) is the dominant economic
+	strategy and should be prioritised in policy design.} S6 raises
+IRR by 1.7--5.0 percentage points above S0 at all sites, with the
+largest absolute improvement at Freiburg (+5.0\,pp) driven by the
+EU ETS price (\$65\,tCO$_2^{-1}$). At Ouagadougou and Konya,
+where voluntary carbon market prices are much lower
+(\$12--15\,tCO$_2^{-1}$), the S6 improvement is smaller in
+absolute terms (+2.0 and +1.7\,pp respectively) but still
+meaningful relative to the discount rate. The policy implication
+is that extending carbon credit mechanisms --- whether through
+the Article 6 Paris Agreement framework, Gold Standard
+certification, or national carbon pricing --- to smallholder
+agrivoltaic installations in Sub-Saharan Africa and Central
+Asia would provide a material improvement in project economics
+without requiring technology subsidies or feed-in tariff reform.
+Given that the 951\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$ avoided at
+Ouagadougou represents a significant fraction of the annual per
+capita CO$_2$ budget compatible with 1.5\,\si{\celsius} pathways,
+this mechanism also aligns economic incentives with climate goals.
+
+\textbf{Ouagadougou provides the strongest investment case and the
+	most compelling argument for APV--AD deployment in Sub-Saharan Africa.}
+An IRR of 31.1\% under S0 and 33.1\% under S6, combined with a
+payback of 3.0--3.2\,yr, makes the Ouagadougou configuration
+attractive even at the 10\% discount rate that reflects the higher
+cost of capital in developing economies. Three structural advantages
+drive this result: the highest electricity price in the study
+(\$0.12\,kWh$^{-1}$, reflecting the true cost of diesel generation),
+the highest biogas yield (5.99\,MWh\,ha$^{-1}$, from the optimal
+Arrhenius BMP at 33.2\,\si{\celsius} average digester temperature),
+and the largest CO$_2$ avoidance (951\,tCO$_2$\,ha$^{-1}$, from the
+high grid emission factor of 0.632\,tCO$_2$\,MWh$^{-1}$). The small
+digester volume (3.52\,m$^3$) and low AD CAPEX (\$2\,816) mean that
+the biogas revenue stream is essentially free cash flow on top of
+the PV investment. For development finance institutions seeking
+bankable climate-positive agricultural projects in the Sahel,
+the APV--AD model at Ouagadougou-type sites offers a rare
+combination of high IRR, short payback, large CO$_2$ impact,
+and food security co-benefit.
+
+\textbf{LCOE is competitive with utility-scale solar at the best
+	sites.} LCOE$_{\text{PV}}$ of \$0.034\,kWh$^{-1}$ at Almer\'{i}a
+approaches the IRENA 2023 global utility-scale solar benchmark of
+\$0.049\,kWh$^{-1}$, and the \$0.043--0.045\,kWh$^{-1}$ range
+at the other three sites remains within 10--20\% of this benchmark.
+The premium relative to utility-scale ground-mount reflects two
+factors: the elevated APV structure (\$0.63\,W$_p^{-1}$ vs.\
+\$0.45\,W$_p^{-1}$ for ground-mount~\citep{irena2022}) and the
+inter-row shading loss at GCR = 69--72\%, which reduces annual
+specific yield below what a dense-pack unshaded array would
+achieve. However, this LCOE premium purchases the additional
+outputs of crop production, water savings, and biogas --- none
+of which are captured in the single-output LCOE metric. A
+full value-stack LCOE that credits all outputs would be lower
+than the PV-only LCOE at all four sites, and likely competitive
+with or below the utility-scale benchmark at Ouagadougou and
+Almer\'{i}a.
+
+% ---------------------------------------------------------------------------
+\subsection{Limitations and Future Work}
+\label{sec:discussion_limits}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Six limitations of the present modelling approach are
+identified, each motivating specific future research directions.
+
+\textbf{L1 --- BMP temperature model accuracy (V2 MAPE = 26.9\%).}
+The single-exponential Arrhenius model systematically underestimates
+BMP by 30--52\% at temperatures of 20--30\,\si{\celsius}, the range
+relevant to cold-season operation at Konya and Freiburg. The root
+cause is that a single Arrhenius coefficient calibrated at
+37\,\si{\celsius} cannot capture the inflected microbial response
+curve in the mesophilic lower range, where community adaptation
+provides higher-than-exponential yields~\citep{zwietering1990}.
+Future work should implement a piecewise Arrhenius model with
+separate coefficients above and below 30\,\si{\celsius}, or a
+modified Gompertz kinetic model, calibrated against the
+multi-temperature BMP datasets now available for
+tomato residues and cattle manure~\citep{feng2013, pilarski2025}.
+Until such a model is validated, all biogas yield and economic
+results for cold-climate sites should be treated as conservative
+lower bounds, with the true values likely 15--30\% higher.
+
+\textbf{L2 --- Single-crop scope.}
+All results are conditioned on tomato (\textit{Solanum lycopersicum})
+with $PAR_{\text{sat}} = \SI{174}{W\,m^{-2}}$. The PAR-saturation
+mechanism that drives the non-monotone eLER--GHI gradient is
+crop-specific, and the magnitude and direction of this effect will
+differ substantially for other crops. Shade-tolerant crops with
+lower $PAR_{\text{sat}}$ (lettuce at \SI{76}{W\,m^{-2}}; spinach
+at \SI{80}{W\,m^{-2}}) would likely eliminate or reverse the
+Freiburg--Konya eLER inversion, while high-saturation crops such
+as maize (\SI{400}{W\,m^{-2}}) would restore a monotone eLER--GHI
+relationship. A multi-crop sensitivity analysis --- requiring only
+a change of the $PAR_{\text{sat}}$ parameter in the existing model
+--- is identified as the highest-priority extension, as it would
+transform the PAR-saturation finding from a tomato-specific result
+into a general mechanistic framework applicable to any crop species.
+
+\textbf{L3 --- Evapotranspiration model simplification.}
+Reference ET$_0$ is estimated using the Hargreaves--Samani equation,
+which agrees with FAO-56 Penman-Monteith to within $\pm$10\% in
+semi-arid and temperate climates~\citep{droogers2002} but cannot
+capture humidity and wind effects on ET under the APV canopy.
+The ET reduction coefficient $\alpha_{\text{shade}} = 0.40$ is
+taken from field measurements under similar APV configurations
+\citep{elamri2018, tawassulli2025} but may vary by $\pm$0.10--0.15
+depending on crop canopy closure, soil type, and wind exposure.
+A $\pm$25\% variation in $\alpha_{\text{shade}}$ propagates to a
+$\pm$25\% variation in $W_{\text{saved}}$ and $LER_{\text{water}}$,
+which does not affect eLER or economics but is relevant to
+water-stressed deployment contexts. Future work should implement
+FAO-56 Penman-Monteith with auxiliary humidity and aerodynamic
+resistance terms derived from the PVGIS wind speed column, and
+validate $\alpha_{\text{shade}}$ against lysimeter measurements
+at each study site.
+
+\textbf{L4 --- Absence of digestate-to-crop nutrient feedback (G6).}
+The model treats the AD digester as a terminal sink for crop
+residues: digestate is valued only as a tradeable nitrogen credit
+(Scenario S4) without modelling its effect on soil nutrient
+availability and subsequent crop yield. In practice, returning
+digestate to the APV field closes a nutrient loop that can
+increase fruit yield by 10--25\% relative to unfertilised
+conditions~\citep{lallement2023}, which would raise both the
+crop revenue and the VS input to the digester in subsequent
+seasons. Modelling this feedback requires multi-season soil
+nutrient dynamics that are beyond the scope of the present
+single-year TMY-based framework. It is identified as Gap G6
+and the highest-priority direction for experimental field
+validation, requiring co-located APV--AD installations with
+controlled digestate application trials over at least three
+growing seasons.
+
+\textbf{L5 --- Static economic parameters.}
+All economic results use fixed prices for electricity, tomato,
+biogas, and carbon credits, without modelling price trajectories
+over the 20-year project life. PV module costs have declined at
+approximately 10--15\% per year over the past decade~\citep{irena2022},
+and biomethane prices are subject to regulatory risk in all four
+jurisdictions. A stochastic techno-economic model incorporating
+Monte Carlo sampling of price distributions --- including correlated
+electricity and carbon price scenarios consistent with IEA
+Net Zero pathways~\citep{iea2025} --- would provide more realistic
+NPV confidence intervals and identify the price combinations
+under which each site crosses the investment threshold.
+Such a model would be particularly valuable for Konya, where
+the S0 IRR margin above the discount rate is narrow (3.8\,pp)
+and highly sensitive to electricity price assumptions.
+
+\textbf{L6 --- Single-hectare normalisation and scalability.}
+All results are normalised to 1\,ha, which is appropriate for
+smallholder farming contexts (Ouagadougou, Konya) but may not
+represent the economics of larger commercial APV--AD installations.
+At larger scale (10--100\,ha), several cost components change
+non-linearly: AD digester CAPEX per m$^3$ decreases with scale
+(economies of scale in tank construction and gas handling),
+BOP costs per kWp decrease with larger inverter units, and the
+ESR --- currently 533--1\,413 --- would decrease toward more
+physically meaningful values as the digester is sized to process
+residues from multiple hectares. A scale-up analysis from
+smallholder (1\,ha) to commercial (50\,ha) would provide the
+full range of deployment contexts and is a natural next step
+following experimental validation of the single-hectare model.

@@ -1,0 +1,808 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{etoolbox}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+\AtBeginEnvironment{table}{\footnotesize}
+
+\usepackage{makecell}
+
+\geometry{a4paper, margin=2.5cm, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+}
+
+\title{\Large \textbf{Integrated Agrivoltaic--Anaerobic Digestion Optimization Across Four Climate Zones} \\
+\vspace{0.5cm}
+\large A Novel Extended Land Equivalent Ratio Framework for the Food-Energy-Water Nexus}
+
+\author{\textbf{Amidou Maiga} \\
+\small Erciyes University, Department of Energy Systems Engineering \\
+\small Kayseri, Turkey \\
+\small \texttt{4012550005@erciyes.edu.tr}}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+{\scriptsize
+This study develops and applies an integrated optimization framework coupling bifacial agrivoltaic (APV) systems with on-farm anaerobic digestion (AD) across four climatically distinct sites: Konya, Turkey (BSk, cold semi-arid); Almería, Spain (BSh, hot semi-arid); Ouagadougou, Burkina Faso (BSh, tropical semi-arid); and Freiburg im Breisgau, Germany (Cfb, oceanic temperate). Hourly Typical Meteorological Year data from the PVGIS-SARAH3 database drive a coupled simulation that simultaneously models bifacial PV power generation, tomato crop yield under partial shading via seasonal PAR integration, evapotranspiration reduction, anaerobic biogas production from crop residues with Arrhenius temperature correction, and digester thermal management. Six design variables—panel tilt angle, row spacing, module height, digester volume, hydraulic retention time, and PV heating fraction—are jointly optimized using differential evolution to maximize a novel three-component extended Land Equivalent Ratio ($eLER = LER_{crop} + LER_{PV} + LER_{biogas}$). Optimized eLER values reach 1.963 (Konya), 2.293 (Almería), 2.293 (Ouagadougou), and 2.032 (Freiburg). These values exceed the published maximum two-component LER of 1.94 (Riaz et al., 2022); however, this exceedance is entirely attributable to $LER_{biogas} = 1.000$—a design identity that holds whenever the PV system thermally covers the digester demand (confirmed at all four sites, ESR = 76–166). The two-component agrivoltaic performance alone ($LER_{2C} = LER_{crop} + LER_{PV}$) reaches at most 1.293 under the rigorous independent reference (Definition A), below the 1.94 benchmark at all sites. Annual BMP averages span 148.8 NmL CH₄/g VS (Freiburg) to 300.0 NmL CH₄/g VS (Ouagadougou), quantifying the Arrhenius suppression effect across the climate gradient. Biomethane grid injection (Scenario S5) generates the largest economic gains at all sites. Both model validations exhibit conservative biases, confirming that all reported eLER and economic figures represent lower bounds on actual system performance. For tomato (\textit{Solanum lycopersicum}), these results establish that integrated APV-AD systems deliver climate-robust, multi-output land productivity across semi-arid and temperate agroecosystems.
+
+\vspace{0.5cm}
+\noindent \textbf{Keywords}: agrivoltaics; anaerobic digestion; extended Land Equivalent Ratio; food-energy-water nexus; differential evolution; semi-arid; temperate; biomethane
+}
+\end{abstract}
+\newpage
+\section{Introduction}
+
+\subsection{The Global Challenge: Food, Energy, and Water}
+
+\hspace{1cm}By 2050, global food production must increase by roughly 50\% to feed a population approaching ten billion, while freshwater withdrawals for agriculture—already consuming 70\% of the world's accessible freshwater—are expected to intensify further \cite{fao2017, scanlon2023}. In semi-arid regions, this pressure arrives on top of a pre-existing deficit: potential evapotranspiration already exceeds precipitation for most of the year, making every millimeter of saved irrigation water economically and ecologically significant. Meanwhile, the energy sector faces its own transition, with solar photovoltaics emerging as the lowest-cost source of new electricity generation in many of these same regions \cite{irena2022}. The tension between solar deployment and agricultural land is real and growing; large ground-mount installations can displace food production from productive soils, replacing one resource challenge with another \cite{dinesh2016}.
+
+\subsection{Agrivoltaics: A Partial Solution}
+
+\hspace{1cm}Agrivoltaics—the co-location of photovoltaic modules and crops on the same land parcel—was conceived precisely to dissolve this tension \cite{dupraz2011, goetzberger1982}. Panels elevated above crops generate electricity while the partial shade they cast reduces heat stress, curbs soil moisture evaporation, and can increase water-use efficiency for species adapted to moderate shade. A growing body of field evidence confirms this dual benefit across crop species, climates, and panel configurations \cite{barron2019, semeraro2024}. Published two-component Land Equivalent Ratio (LER) values for agrivoltaic systems range from 1.2 to 1.94, meaning the combined system outperforms two separate monocultures by 20 to 94\% on the same land \cite{mazzeo2025, riaz2022}.
+
+However, agrivoltaics alone addresses only the food-electricity nexus. The crop residue stream—often 80\% of the harvested fresh mass—remains unutilized or is returned to the soil, where its decomposition may release methane and other greenhouse gases.
+
+\subsection{The Strategic Role of Agricultural Biogas}
+
+\hspace{1cm}The strategic importance of agricultural biogas extends beyond individual farm economics. Germany produced 329 PJ of combined biogas and biomethane in 2024, with approximately 8,000 agricultural plants contributing roughly 80\% of that total \cite{iea2025, eba2025}. The REPowerEU Plan sets a non-binding target of 35 billion cubic metres of sustainable biomethane per year by 2030, accompanied by an estimated investment need of €37 billion \cite{ec2022}. The Renewable Energy Directive (RED III) and Germany's Renewable Energy Sources Act (EEG 2023) provide feed-in premiums for biomethane grid injection, where the market value is approximately 5.5 times the electricity purchase price in Central European markets \cite{nikzad2026, rabobank2025}.
+
+Despite the logical complementarity of these two technologies—APV generates electricity and shade, while AD converts crop residues into biogas and digestate—research has so far treated them in isolation. Agrivoltaic optimization studies focus on panel geometry, crop PAR, and energy yield but ignore the residue stream entirely \cite{riaz2022, zainali2023}. Anaerobic digestion studies model heating energy supply but treat the agricultural component only as a passive feedstock source \cite{pal2024, temiz2024}.
+
+\subsection{Research Gaps and Objectives}
+
+\hspace{1cm}Six distinct gaps motivate the present study:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{G1}: No unified land-use efficiency metric for integrated APV-AD
+    \item \textbf{G2}: No joint optimization of APV architecture and AD with crop yield co-production
+    \item \textbf{G3}: No systematic multi-climate comparison spanning semi-arid and temperate zones
+    \item \textbf{G4}: No thermal coupling characterization across the full continental temperature range
+    \item \textbf{G5}: No food-energy-water nexus quantification including APV water savings
+    \item \textbf{G6}: No modelling of the AD-to-crop feedback loop (digestate fertilization)
+\end{itemize}
+
+This paper addresses gaps G1 through G5. Gap G6 is identified as a priority for future experimental work.
+
+\subsection{Paper Contributions}
+
+\hspace{1cm}The specific contributions of this work are:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Integrated six-variable optimizer}: A differential evolution optimizer jointly searches the APV and AD design spaces
+    \item \textbf{Three-component eLER metric}: Extends the classical LER to include net biogas energy as a third dimensionless component
+    \item \textbf{Four-climate-zone analysis}: Application to Konya, Almería, Ouagadougou, and Freiburg
+    \item \textbf{Climate-sensitive biogas characterization}: First quantification of Arrhenius suppression across four climate zones
+    \item \textbf{Biomethane valorization scenario}: Economic comparison with Nik Zad et al. (2026)
+    \item \textbf{Water savings characterization}: Seasonal ET reductions quantified with Pareto trade-off
+\end{enumerate}
+
+\section{Methodology}
+
+\subsection{Study Sites and Climate Characterization}
+
+\hspace{1cm}The analysis is anchored to four sites chosen to span distinct climate subtypes within the Köppen–Geiger classification (Table \ref{tab:sites}). 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{figures/fig1_site_map.png}
+\caption{Location map of the four study sites (Konya, Turkey; Almería, Spain; Ouagadougou, Burkina Faso; Freiburg, Germany) overlaid on the semi-arid belt of Europe, the Middle East and West Africa (BSk/BSh zones shaded in light yellow)}
+\label{fig:site}
+\end{figure}
+
+These four locations span a latitudinal range from 12°N to 48°N, a mean annual temperature range from 11.4°C to 28.5°C, and annual solar irradiance from approximately 1,150 to 2,050 kWh/m².
+
+\begin{table}[H]
+\small
+\caption{Geographical and climatic characteristics of the four study sites (PVGIS-SARAH3 TMY data)}
+\centering
+\begin{tabular}{p{4.5cm}cccc}
+\toprule
+\textbf{Parameter} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+Latitude & 37.87°N & 36.83°N & 12.37°N & 47.99°N \\
+Longitude & 32.49°E & 2.46°W & 1.52°W & 7.85°E \\
+Elevation (m a.s.l.) & 1,016 & 20 & 303 & 278 \\
+Köppen climate & \makecell{BSk \\ (cold semi-arid)} & \makecell{BSh \\ (hot semi-arid)} & \makecell{BSh \\ (tropical semi-arid)} & \makecell{Cfb \\ (oceanic temperate)} \\
+Mean annual GHI (kWh/m²) & 1,650 & 1,850 & 2,050 & $\sim$1,150 \\
+Mean annual T (°C) & 11.5 & 18.5 & 28.5 & $\sim$11.4 \\
+Summer T$_{\max}$ (°C) & 38 & 35 & 41 & $\sim$35 \\
+Winter T$_{\min}$ (°C) & -10 & +5 & +15 & $\sim$ -12 \\
+Annual ET$_0$ (mm) & 1,200 & 1,350 & 1,800 & $\sim$900 \\
+Annual precipitation (mm) & 320 & 200 & 800 & $\sim$800 \\
+\bottomrule
+\end{tabular}
+\label{tab:sites}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{figures/fig11_monthly_climate_profiles.png}
+\caption{Monthly climate profiles for the three sites: (a) GHI (kWh/m²), (b) mean air temperature (°C), (c) ET$_0$ vs precipitation (mm), and (d) wind speed (m/s). Horizontal bars indicate the tomato growing season.}
+\label{fig:climateprofiles}
+\end{figure}
+
+\subsection{Crop-Specific Parameters}
+
+\hspace{1cm}Table \ref{tab:crop} presents the site-specific parameters for tomato (\textit{Solanum lycopersicum}) cultivation. The three semi-arid sites use a fresh fruit yield of 60 t/ha, while Freiburg uses 30 t/ha following German open-field production statistics \cite{dlg2023}. The residue-to-fruit ratio of 0.80 \cite{mohammedi2023} gives annual volatile solids (VS) inputs of 8,160 kg VS/ha for semi-arid sites and 4,080 kg VS/ha for Freiburg.
+
+\begin{table}[H]
+\small
+\caption{Site-specific parameters for tomato cultivation}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Parameter} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+Planting date & 25 April & 1 March & 1 July & 1 May \\
+Harvest date & 30 October & 30 June & 30 October & 15 October \\
+Growing season (days) & 189 & 122 & 122 & 167 \\
+Fresh fruit yield (t/ha) & 60 & 60 & 60 & 30* \\
+Ref. crop ET$_0$ (mm/season) & 650 & 480 & 620 & $\sim$350 \\
+Tomato price (USD/t) & 300 & 400 & 250 & 350 \\
+Electricity price (USD/kWh) & 0.06 & 0.09 & 0.12 & 0.09 \\
+Discount rate (\%) & 8 & 6 & 10 & 5 \\
+\bottomrule
+\end{tabular}
+\label{tab:crop}
+\end{table}
+
+\subsection{Solar Geometry and Shading Model}
+
+\hspace{1cm}Accurate hourly solar position calculation forms the foundation for both the PV transposition model and the ground shading factor. Solar declination $\delta$ is computed using the Spencer (1971) harmonic approximation:
+
+\begin{equation}
+\delta = 23.45^\circ \times \sin\left[\frac{360^\circ}{365} \times (n - 81)\right]
+\label{eq:declination}
+\end{equation}
+
+where $n$ is the day of year. True solar time is obtained from local standard time by applying both a longitude correction and the Equation of Time:
+
+\begin{equation}
+t_{solar} = t_{local} + \frac{(L - L_{std})}{15} + \frac{EoT(n)}{60}
+\label{eq:solartime}
+\end{equation}
+
+The ground shading factor $F_{shad}(t)$ represents the fraction of ground area shaded by the panels at time $t$. Following Zainali et al. \cite{zainali2023}:
+
+\begin{equation}
+F_{shad}(t) = \min\left(1,\frac{H_m \times \cos(\Delta\gamma)}{d_{row} \times \tan(\alpha_s)}\right)
+\label{eq:shading}
+\end{equation}
+
+where:
+\begin{itemize}[leftmargin=*]
+    \item $H_m$ = module bottom-edge height above ground (m)
+    \item $\Delta\gamma$ = azimuth difference between the sun's direction and the row orientation
+    \item $d_{row}$ = row spacing (pitch) in meters
+    \item $\alpha_s$ = solar elevation angle
+\end{itemize}
+
+\subsection{Photovoltaic Energy Model}
+
+\subsubsection{Plane-of-Array Irradiance}
+
+This study uses the direct DNI and DHI columns from the PVGIS-SARAH3 files. Plane-of-array (POA) irradiance is decomposed following the isotropic sky model of Liu and Jordan \cite{liu1960}:
+
+\begin{equation}
+G_{front} = DNI \times \cos(\theta_i) + DHI \times \frac{1 + \cos\beta}{2} + GHI \times \rho_g \times \frac{1 - \cos\beta}{2}
+\label{eq:poa}
+\end{equation}
+
+where $\theta_i$ is the angle of incidence, $\beta$ is the panel tilt angle, and $\rho_g = 0.25$ is the ground albedo \cite{monteith2008}.
+
+For bifacial modules with bifaciality factor $\phi = 0.70$, the effective plane-of-array irradiance combining both sides is:
+
+\begin{equation}
+G_{eff} = G_{front} + \phi \times G_{rear} \times (1 - \eta_{loss})
+\label{eq:geff}
+\end{equation}
+
+\subsubsection{Cell Temperature and Power Output}
+
+\hspace{1cm}Cell operating temperature is modelled using the Faiman \cite{faiman2008} approach, which accounts for wind-dependent convective cooling:
+
+\begin{equation}
+T_{cell}(t) = T_{amb}(t) + \frac{G_{eff}(t)}{(U_0 + U_1 \times u(t))}
+\label{eq:celltemp}
+\end{equation}
+
+where $U_0 = 25$ W/m²·K and $U_1 = 6.84$ W·s/m³·K.
+
+PV power output $P_{PV}$ at each timestep is:
+
+\begin{equation}
+P_{PV}(t) = P_{STC} \times N \times (1 - \eta_{loss}) \times \left[1 + \beta_p(T_{cell}(t) - 25)\right] \times \frac{G_{eff}(t)}{1000}
+\label{eq:pvpower}
+\end{equation}
+
+where $P_{STC} = 550$ W$_p$, $\eta_{loss} = 0.12$, and $\beta_p = -0.0035$ °C$^{-1}$.
+
+\subsection{Crop Yield Model}
+
+\hspace{1cm}Relative crop yield is modelled using the PAR integral method. The fraction of global horizontal irradiance that is photosynthetically active is $f_{PAR} = 0.48$ \cite{mccree1971, jacovides2006}. For tomato, the light saturation point is approximately 174 W/m² \cite{mohammedi2023, heuvelink2005}.
+
+The hourly PAR integral over the growing season yields the annual yield ratio:
+
+\begin{equation}
+\frac{Y_{crop}}{Y_{ref}} = \frac{\int_{t_0}^{t_1} \min\left(PAR_{AV}(t),\ PAR_{sat}\right) dt}{\int_{t_0}^{t_1} PAR_{open}(t) dt}
+\label{eq:cropyield}
+\end{equation}
+
+where:
+\begin{itemize}[leftmargin=*]
+    \item $PAR_{AV}(t) = GHI(t) \times 0.48 \times (1 - F_{shad}(t))$
+    \item $PAR_{open}(t) = GHI(t) \times 0.48$
+    \item $PAR_{sat} = 174$ W/m² (tomato-specific)
+    \item $t_0, t_1$ = site-specific season start and end dates
+\end{itemize}
+
+\subsection{Evapotranspiration Reduction}
+
+\hspace{1cm}Reference evapotranspiration ET$_0$ is calculated hourly using the FAO-56 Penman-Monteith equation \cite{allen1998}. Under APV panels, ET is reduced due to shading:
+
+\begin{equation}
+ET_{APV}(t) = ET_0(t) \times (1 - \alpha_{shade} \times F_{shad}(t))
+\label{eq:et}
+\end{equation}
+
+where $\alpha_{shade} = 0.40$ \cite{tawassulli2025, elamri2018}. Annual water savings $W_{saved}$ are computed over the growing season:
+
+\begin{equation}
+W_{saved} = \sum_{t=t_0}^{t_1} \left[ET_0(t) - ET_{APV}(t)\right]
+\label{eq:watersaved}
+\end{equation}
+
+\subsection{Anaerobic Digestion Model}
+
+\subsubsection{Feedstock Characterization}
+
+\hspace{1cm}Annual volatile solids (VS) input is calculated as:
+
+\begin{equation}
+VS_{input} = Y_{fresh} \times R_{res} \times DM \times VS_{fraction}
+\label{eq:vsinput}
+\end{equation}
+
+where $R_{res} = 0.80$, $DM = 0.20$, and $VS_{fraction} = 0.85$ \cite{mohammedi2023, lallement2023}. The reference biochemical methane potential at 37°C is $BMP_{ref} = 300$ NmL CH$_4$/g VS \cite{feng2013, lallement2023}.
+
+\subsubsection{Temperature-Corrected Methane Yield}
+
+Effective digester temperature $T_{dig,eff}$ is determined by ambient temperature plus a 5°C thermal boost \cite{lindorfer2008}:
+
+\begin{equation}
+T_{dig,eff} = \text{clip}(T_{amb} + 5,\ 26^\circ C,\ 37^\circ C)
+\label{eq:tdig}
+\end{equation}
+
+The temperature-corrected BMP follows an Arrhenius-type relationship \cite{lindorfer2008, pilarski2025}:
+
+\begin{equation}
+BMP(T_{dig,eff}) = BMP_{ref} \times \exp\left[\theta \times (T_{dig,eff} - 37)\right]
+\label{eq:bmparrhenius}
+\end{equation}
+
+where $\theta = 0.069$ °C$^{-1}$.
+
+\subsubsection{Digester Heat Balance}
+
+\hspace{1cm}Daily heat demand $Q_{heat}$ consists of conductive losses and the energy required to heat incoming substrate:
+
+\begin{equation}
+Q_{heat} = Q_{loss,cond} + Q_{inflow} - Q_{reaction}
+\label{eq:qheat}
+\end{equation}
+
+where:
+\begin{itemize}[leftmargin=*]
+    \item $Q_{loss,cond} = U_{eff} \times A_{wall} \times (T_{dig,eff} - T_{amb}) \times 24/1000$
+    \item $Q_{inflow} = V_{substrate} \times \rho_{substrate} \times C_p \times (T_{dig,eff} - T_{in})$
+    \item $Q_{reaction} = 0.05 \times E_{biogas}$ \cite{pal2024}
+\end{itemize}
+
+The Energy Self-sufficiency Ratio (ESR) quantifies the thermal margin:
+
+\begin{equation}
+ESR = \frac{E_{PV} + E_{biogas}}{Q_{heat}}
+\label{eq:esr}
+\end{equation}
+
+When $ESR > 1/f_{PV,heat} \approx 6$, PV alone can cover all heat demand and $LER_{biogas} = 1.000$ by construction.
+
+\subsection{Extended Land Equivalent Ratio (eLER)}
+
+\hspace{1cm}The eLER adds net biogas energy as a third land-use output:
+
+\begin{equation}
+eLER = \frac{Y_{crop,AV}}{Y_{crop,open}} + \frac{E_{PV,net}}{E_{PV,ref}} + \frac{E_{biogas,net}}{E_{biogas,ref}}
+\label{eq:eler}
+\end{equation}
+
+\textbf{Reference definitions}:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Definition A (independent reference)}: $E_{PV,ref}$ computed from open-field dense-pack PV simulation at same tilt
+    \item \textbf{Definition B (circular reference)}: $E_{PV,ref}$ is the same APV array (reported only for literature comparison)
+\end{itemize}
+
+The two-component LER for comparison with literature is:
+
+\begin{equation}
+LER_{2C} = LER_{crop} + LER_{PV}
+\label{eq:ler2c}
+\end{equation}
+
+\subsection{Design Optimization}
+
+\hspace{1cm}The integrated system is optimized over six continuous design variables (Table \ref{tab:variables}) using differential evolution \cite{storn1997}. The objective is to maximize eLER subject to constraints.
+
+\begin{table}[H]
+\small
+\caption{Design variable bounds for the differential evolution optimization}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Variable} & \textbf{Symbol} & \textbf{Lower bound} & \textbf{Upper bound} & \textbf{Unit} \\
+\midrule
+Panel tilt angle & $\beta$ & 10 & 40 & ° \\
+Row spacing & $d_{row}$ & 4 & 14 & m \\
+Module bottom-edge height & $H_m$ & 2 & 5 & m \\
+Digester volume & $V_{dig}$ & 50 & 300 & m³ \\
+Hydraulic retention time & HRT & 20 & 40 & days \\
+PV heating fraction & $f_{PV,heat}$ & 0.05 & 0.50 & — \\
+\bottomrule
+\end{tabular}
+\label{tab:variables}
+\end{table}
+
+\textbf{DE settings}:
+\begin{itemize}[leftmargin=*]
+    \item Population size = $15 \times n_{var} = 90$
+    \item Mutation factor $F \in [0.5, 1.0]$
+    \item Crossover probability $Cr = 0.7$
+    \item 50 generations with L-BFGS-B polishing
+\end{itemize}
+
+\subsubsection{Algorithm Description}
+
+\hspace{1cm}Algorithm~\ref{alg:de} formalizes the complete DE procedure. At each generation $g$, every candidate vector $\mathbf{x}_i^{(g)}$ undergoes mutation, crossover, and greedy selection. The mutation factor $F$ is dithered uniformly in $[0.5,\,1.0]$ at every generation to balance global exploration with local refinement \cite{storn1997}. After $G_{\max}=50$ generations, the best candidate is handed to an L-BFGS-B local solver for gradient-based polishing to a continuous optimum.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\small
+\caption{Differential Evolution for APV-AD eLER maximization}
+\label{alg:de}
+
+\KwIn{Bounds $\mathbf{lb},\mathbf{ub} \in \mathbb{R}^6$; population size $NP=90$; $F\in[0.5,1.0]$; $Cr=0.7$; $G_{\max}=50$}
+\KwOut{Optimal design $\mathbf{x}^*$; optimal $eLER^*$}
+
+\BlankLine
+\textbf{Initialization}\;
+\For{$i = 1$ \KwTo $NP$}{
+    Draw $\mathbf{x}_i^{(0)} \sim \mathcal{U}(\mathbf{lb},\mathbf{ub})$ via Latin Hypercube Sampling (seed $= 42$)\;
+    Evaluate $f_i^{(0)} \leftarrow eLER\!\left(\mathbf{x}_i^{(0)}\right)$ using the six-model pipeline\;
+    \If{$OLR \notin [1.5,\,5.0]$ kg\,VS/m$^3$\!\cdot\!d \textbf{ or } $HRT \notin [20,\,40]$ d}{
+        $f_i^{(0)} \leftarrow -\infty$ \quad \texttt{// infeasibility penalty}\;
+    }
+}
+
+\BlankLine
+\textbf{Main loop}\;
+\For{$g = 1$ \KwTo $G_{\max}$}{
+    \For{$i = 1$ \KwTo $NP$}{
+        \textit{// --- Mutation ---}\;
+        Sample $r_1, r_2, r_3 \in \{1,\ldots,NP\} \setminus \{i\}$, all distinct\;
+        Draw $F_g \sim \mathcal{U}(0.5,\,1.0)$ \quad \texttt{// dithered mutation factor}\;
+        $\mathbf{v}_i \leftarrow \mathbf{x}_{r_1}^{(g-1)} + F_g\!\left(\mathbf{x}_{r_2}^{(g-1)} - \mathbf{x}_{r_3}^{(g-1)}\right)$\;
+        Clip $\mathbf{v}_i$ to $[\mathbf{lb},\,\mathbf{ub}]$\;
+
+        \textit{// --- Crossover (binomial) ---}\;
+        Choose $j_{\text{rand}} \sim \mathcal{U}\{1,\ldots,6\}$\;
+        \For{$j = 1$ \KwTo $6$}{
+            \eIf{$\mathcal{U}(0,1) \leq Cr$ \textbf{ or } $j = j_{\text{rand}}$}{
+                $u_{ij} \leftarrow v_{ij}$\;
+            }{
+                $u_{ij} \leftarrow x_{ij}^{(g-1)}$\;
+            }
+        }
+
+        \textit{// --- Evaluation ---}\;
+        $f_{\mathbf{u}} \leftarrow eLER(\mathbf{u}_i)$\;
+        \If{$OLR \notin [1.5,\,5.0]$ \textbf{ or } $HRT \notin [20,\,40]$}{
+            $f_{\mathbf{u}} \leftarrow -\infty$\;
+        }
+
+        \textit{// --- Greedy selection ---}\;
+        \eIf{$f_{\mathbf{u}} \geq f_i^{(g-1)}$}{
+            $\mathbf{x}_i^{(g)} \leftarrow \mathbf{u}_i$;\quad $f_i^{(g)} \leftarrow f_{\mathbf{u}}$\;
+        }{
+            $\mathbf{x}_i^{(g)} \leftarrow \mathbf{x}_i^{(g-1)}$;\quad $f_i^{(g)} \leftarrow f_i^{(g-1)}$\;
+        }
+    }
+}
+
+\BlankLine
+\textbf{Local polishing}\;
+$\mathbf{x}^* \leftarrow \underset{i}{\arg\max}\ f_i^{(G_{\max})}$\;
+$\mathbf{x}^* \leftarrow \texttt{L-BFGS-B}\!\left(\mathbf{x}^*,\,\mathbf{lb},\,\mathbf{ub}\right)$\;
+$eLER^* \leftarrow eLER(\mathbf{x}^*)$\;
+
+\Return $\mathbf{x}^*,\ eLER^*$\;
+\end{algorithm}
+
+\subsubsection{Six-Model Evaluation Pipeline}
+
+\hspace{1cm}Each call to $eLER(\mathbf{x})$ in Algorithm~\ref{alg:de} runs the six coupled sub-models in the sequence shown in Figure~\ref{fig:depipeline}. Hourly PVGIS-SARAH3 TMY data are fixed inputs; the six design variables in $\mathbf{x}$ parameterize the geometry and digester configuration at each evaluation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/fig12_de_optimizer.png}
+\caption{Six-model evaluation pipeline executed at each eLER function call inside the DE loop. Each block feeds the next; arrows indicate the direction of data flow. The eLER scalar returned to the optimizer combines the three land-use components (Equation~\ref{eq:eler}).}
+\label{fig:depipeline}
+\end{figure}
+
+\subsubsection{Convergence Behavior}
+
+\hspace{1cm}At all four sites the optimizer converges to the lower bound of row spacing ($d_{row}^* = 4.0$ m) and to the minimum PV heating fraction ($f_{PV,heat}^* = 0.05$), as reported in Table~\ref{tab:optimal}. This boundary convergence indicates that the eLER-maximizing solution lies at the edge of the feasible domain with respect to these two variables. The L-BFGS-B polishing step confirms that no interior local maximum exists in the neighborhood of the boundary solution. The sensitivity of eLER to row spacing is characterized by the access-constraint sweep in Section~\ref{sec:access} (Figure~\ref{fig:access}).
+
+\subsubsection{Multi-Objective Extension (NSGA-II)}
+
+\hspace{1cm}For the water trade-off analysis, the scalar eLER objective is replaced by a bi-objective problem: simultaneously maximize $eLER$ and $LER_{water}$ (fraction of annual $ET_0$ saved). This is solved using NSGA-II \cite{blank2020} with 50 solutions and 80 generations (pymoo library). The Pareto front is well-populated only at Konya (189-day season); degenerate results are obtained at the three shorter-season sites due to insufficient $LER_{water}$ variation across the design space at $GCR \approx 54.5\%$.
+
+\subsection{AD Valorization Scenarios}
+
+\hspace{1cm}Six scenarios (S0–S5) are evaluated for economic analysis (Table \ref{tab:scenarios}). Scenario S5 values biogas at $5.5\times$ the local electricity price \cite{nikzad2026, eba2025, rabobank2025}.
+
+\begin{table}[H]
+\small
+\caption{AD valorization scenarios}
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Scenario} & \textbf{Description} & \textbf{Key modification} \\
+\midrule
+S0 & Baseline (mono-digestion, 100\% grid export) & BMP$_{\text{mult}} = 1.00$, $\eta_{cap} = 1.00$ \\
+S1 & Co-digestion (30\% cattle manure) & BMP$_{\text{mult}} = 1.15$ \\
+S2 & Sub-optimal CH$_4$ capture (85\%) & $\eta_{cap} = 0.85$ \\
+S3 & Local LPG displacement (on-site use) & $p_{biogas} = \$0.18$/kWh \\
+S4 & Digestate valorization (N-P-K credit) & N credit at \$1.20/kg N \\
+S5 & Biomethane grid injection & $p_{biogas} = 5.5 \times p_{elec}$ \\
+\bottomrule
+\end{tabular}
+\label{tab:scenarios}
+\end{table}
+
+\section{Results}
+
+\subsection{Optimization Convergence and Optimal Design Parameters}
+
+\hspace{1cm}The differential evolution optimizer converged to feasible solutions within 50 generations at all four sites. Table \ref{tab:optimal} reports the optimal design variables.
+
+\begin{table}[H]
+\small
+\caption{Optimal design parameters for all four sites}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Parameter} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+Tilt angle $\beta$ (°) & 33.3 & 19.3 & 26.0 & 15.9 \\
+Row spacing $d_{row}$ (m) & 4.00 & 4.00 & 4.00 & 4.00 \\
+Module height $H_m$ (m) & 2.02 & 3.03 & 2.48 & 2.69 \\
+Digester volume $V_{dig}$ (m³) & 64 & 80 & 114 & 53 \\
+HRT design (days) & 29.1 & 21.8 & 22.8 & 20.8 \\
+PV heating fraction $f_{PV,heat}$ & 0.050 & 0.050 & 0.050 & 0.050 \\
+GCR (\%) & 54.5 & 54.5 & 54.5 & 54.5 \\
+OLR (kg VS/m³·d) & 4.35 & 4.67 & 3.13 & 3.70 \\
+\bottomrule
+\end{tabular}
+\label{tab:optimal}
+\end{table}
+
+\textbf{Key findings}:
+\begin{itemize}[leftmargin=*]
+    \item The optimizer converges to the minimum permissible row spacing (4.0 m) at all sites
+    \item $f_{PV,heat} = 0.05$ at all sites (minimum required)
+    \item GCR = 54.5\% at all sites despite GHI varying by a factor of 1.8
+\end{itemize}
+
+\subsection{Extended Land Equivalent Ratio Decomposition}
+
+Table \ref{tab:eLER} presents the complete eLER decomposition for all four sites. Figure \ref{fig:eler} displays these results as a stacked bar chart.
+
+\begin{table}[H]
+\small
+\caption{eLER decomposition for all four sites (Scenario S0, Baseline)}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Metric} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+LER$_{\text{crop}}$ & 0.670 & 1.000 & 1.000 & 0.739 \\
+LER$_{\text{PV}}$ (Def. A, independent) & 0.293 & 0.293 & 0.293 & 0.293 \\
+LER$_{\text{PV}}$ (Def. B, circular = GCR) & 0.545 & 0.545 & 0.545 & 0.545 \\
+LER$_{\text{biogas}}$ & 1.000 & 1.000 & 1.000 & 1.000 \\
+\hline
+\textbf{$eLER_{global}$ (Def. A)} & \textbf{1.963} & \textbf{2.293} & \textbf{2.293} & \textbf{2.032} \\
+$eLER_{global}$ (Def. B) & 2.215 & 2.545 & 2.545 & 2.285 \\
+$LER_{2C} = LER_{crop} + LER_{PV}(A)$ & 0.963 & 1.293 & 1.293 & 1.032 \\
+Literature max LER$_{2C}$ (Riaz et al., 2022) & 1.94 & 1.94 & 1.94 & 1.94 \\
+\bottomrule
+\end{tabular}
+\label{tab:eLER}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{figures/fig4_eLER_stacked.png}
+\caption{eLER decomposition stacked bar chart. Blue: LER$_{\text{crop}}$, orange: LER$_{\text{PV}}$ (Def. A), green: LER$_{\text{biogas}}$. Faded bars show Def. B. Red dashed line: literature maximum LER$_{2C} = 1.94$.}
+\label{fig:eler}
+\end{figure}
+
+\textbf{Key findings}:
+\begin{enumerate}[leftmargin=*]
+    \item $eLER_{global}$ exceeds 1.94 at all sites (range: 1.963–2.293), while LER$_{2C}$ remains below 1.94 at all sites (0.963–1.293)
+    \item $LER_{crop} = 1.000$ at Almería and Ouagadougou (no crop yield penalty)
+    \item $LER_{PV}(A) = 0.293$ at all sites despite GHI variation
+\end{enumerate}
+
+\subsection{Energy Performance and Seasonal Dynamics}
+
+Table \ref{tab:energy} summarizes annual energy performance. Figure \ref{fig:energy} presents the monthly energy balance for Konya (representative).
+
+\begin{table}[H]
+\small
+\caption{Annual energy performance and thermal balance}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Parameter} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+Annual PV total (MWh/ha) & 1,735 & 2,227 & 2,382 & 1,560 \\
+Annual PV sold to grid (MWh/ha) & 1,649 & 2,116 & 2,263 & 1,482 \\
+Annual biogas total (MWh/ha) & 15.5 & 17.8 & 24.3 & 6.0 \\
+Annual heat demand (MWh/ha) & 21.7 & 23.3 & 14.5 & 20.5 \\
+Biogas used for heating (MWh) & 0.0 & 0.0 & 0.0 & 0.0 \\
+ESR & 80.8 & 96.2 & 165.6 & 76.3 \\
+BMP annual average (NmL CH$_4$/g VS) & 190.7 & 218.8 & 300.0 & 148.8 \\
+\bottomrule
+\end{tabular}
+\label{tab:energy}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig5_energy_balance_konya.png}
+\caption{Monthly energy balance for Konya. Upper panel: PV energy partitioned between grid export and digester heating, with heat demand (dashed line). Lower panel: monthly biogas energy and BMP seasonal arc.}
+\label{fig:energy}
+\end{figure}
+
+\subsection{Climate Gradient Analysis}
+
+\hspace{1cm}Figure \ref{fig:gradient} presents the four-site climate gradient. Despite GHI gradient (Ouagadougou $>$ Almería $>$ Konya $>$ Freiburg), the eLER ordering is Almería = Ouagadougou (2.293) $>$ Freiburg (2.032) $>$ Konya (1.963).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{figures/fig6_climate_gradient.png}
+\caption{Four-site climate gradient. Left: annual GHI (kWh/m²). Center: mean annual temperature (°C). Right: eLER$_{\text{global}}$ (solid bars) and LER$_{2C}$ (faded bars) with red dashed line at 1.94.}
+\label{fig:gradient}
+\end{figure}
+
+\subsection{Economic Scenario Analysis}
+
+\hspace{1cm}Table \ref{tab:econ} presents the economic results for all scenarios. Figure \ref{fig:scenarios} shows the scenario comparison for Konya (representative).
+
+\begin{table}[H]
+\caption{AD scenario economics – net annual income (k\$/yr)}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Scenario} & \textbf{Konya} & \textbf{Almería} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
+\midrule
+S0 Baseline & 91 & 195 & 267 & 120 \\
+S1 Co-digestion & 91 & 196 & 267 & 120 \\
+S2 Sub-optimal (85\%) & 79 & 170 & 233 & 104 \\
+S3 LPG displacement & — & — & 269 & — \\
+S4 Digestate credit & 94 & 199 & 272 & 122 \\
+S5 Biomethane & \textbf{95} (+4.3\%) & \textbf{202} (+3.7\%) & \textbf{281} (+5.3\%) & \textbf{122} (+2.0\%) \\
+\midrule
+Payback period (yr) & 9.4 & 4.5 & 3.3 & 7.1 \\
+\bottomrule
+\end{tabular}
+\label{tab:econ}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{figures/fig8_scenarios.png}
+\caption{AD scenario comparison for Konya. Left: eLER$_{\text{global}}$ (invariant across scenarios). Right: net annual income by scenario with increments relative to S0.}
+\label{fig:scenarios}
+\end{figure}
+
+\subsection{Mechanical Access Constraint}
+\label{sec:access}
+
+\hspace{1cm}Figure \ref{fig:access} shows the eLER vs. minimum row spacing sweep. The eLER penalty is climate-independent: $-0.065$ per additional meter of row spacing.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig9_access.png}
+\caption{eLER vs. minimum row spacing for all four sites. The slope $\text{d}eLER/\text{d}d_{row} \approx -0.065$ is identical at all sites.}
+\label{fig:access}
+\end{figure}
+
+\subsection{Model Validation}
+
+\hspace{1cm}Figure \ref{fig:validation} presents component-level validation. Both validations show conservative bias, confirming that reported results are lower bounds.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/fig10_validation.png}
+\caption{Model validation. Left: modelled vs. observed relative crop yield (MAPE = 23.7\% operational). Right: modelled vs. observed BMP temperature response (MAPE = 12.3\%). Both 1:1 lines dashed.}
+\label{fig:validation}
+\end{figure}
+
+\section{Discussion}
+
+\subsection{The eLER Metric – Interpretation}
+
+\hspace{1cm}Three aspects of the eLER metric require explicit discussion:
+
+\textbf{First}, $LER_{biogas} = 1.000$ at all four sites is a definitional identity, not a scientific finding. When ESR $\gg 6$, the PV system covers all digester heat demand and no biogas is sacrificed for heating. The value of this result is confirmatory.
+
+\textbf{Second}, the eLER cannot be directly compared across studies using different biogas reference definitions. An alternative reference—a standalone AD unit operating without PV heating at ambient temperature—would yield:
+
+\begin{equation}
+LER_{biogas,alt} = \frac{E_{biogas,APV}}{E_{biogas,standalone}}
+\label{eq:leralt}
+\end{equation}
+
+Under this definition, LER$_{biogas,alt}$ at Konya and Freiburg would be $>1.000$, explicitly quantifying the PV thermal subsidy.
+
+\textbf{Third}, LER$_{2C}$ remains below the literature maximum of 1.94 at all sites (range: 0.963–1.293). This reflects Definition A's rigorous independent PV reference, not a failure of the agrivoltaic design.
+
+\subsection{Climate Sensitivity}
+
+\hspace{1cm}The non-monotone relationship between solar resource and eLER is the most physically interesting finding. Freiburg (GHI $\approx$ 1,150 kWh/m²) outperforms Konya (GHI = 1,650 kWh/m²) because PAR saturation penalizes LER$_{crop}$ more at high irradiance.
+
+\textbf{Mechanism}: At Konya's higher irradiance, mean daytime PAR$_{\text{open}}$ frequently exceeds PAR$_{\text{sat}} = 174$ W/m², so the denominator of Equation \ref{eq:cropyield} is large while the numerator is clipped. At Freiburg, lower irradiance keeps PAR$_{\text{open}}$ below PAR$_{\text{sat}}$, so the crop is less penalized.
+
+\subsection{Penalty-Free PV at Mediterranean and Tropical Sites}
+
+LER$_{crop} = 1.000$ at Almería and Ouagadougou means that, at the eLER-optimal design, the PV array delivers full electricity generation without any measurable cost to tomato yield. This finding has a clear geometric basis: high solar elevation angles during the growing seasons produce $F_{shad} \approx 0$–0.05.
+
+\textbf{Policy implication}: In Mediterranean and tropical smallholder contexts, the conventional concern about crop yield losses from APV panels is not supported by the model results under the eLER-optimal configuration.
+
+\subsection{Limitations and Future Work}
+
+\hspace{1cm}Several limitations are identified for future work:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Crop yield model uncertainty (V1 MAPE = 23.7\% operational)}: The eLER uncertainty is $\pm0.15$–$0.23$ on LER$_{crop}$. The Konya–Freiburg eLER gap (0.069) falls within this bound.
+    \item \textbf{ET reduction model scope}: Omits soil-moisture retention feedback (field studies suggest 2–5$\times$ multiplier at high GCR).
+    \item \textbf{Digestate-soil feedback (Gap G6)}: The circular loop from residues → digestion → digestate → soil nutrients is not modelled.
+    \item \textbf{Biomethane S5 capital cost}: The 5.5$\times$ premium is applied without modelling upgrading CAPEX at small scale.
+    \item \textbf{Incomplete economic analysis}: CAPEX breakdown, NPV, and IRR are required for investment-grade assessment.
+    \item \textbf{Single-crop analysis}: All results conditioned on tomato. Generalization requires replication for shade-tolerant crops and cereals.
+\end{enumerate}
+
+\section{Conclusions}
+
+\hspace{1cm}This study presents the first four-climate-zone comparative analysis of integrated APV-AD systems. The key conclusions are:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{eLER exceeds the published agrivoltaic LER maximum at all four climate zones.} Optimized eLER values reach 1.963 (Konya), 2.293 (Almería), 2.293 (Ouagadougou), and 2.032 (Freiburg)—all exceeding the benchmark LER$_{2C}$ of 1.94. LER$_{2C}$ alone reaches at most 1.293. $LER_{biogas} = 1.000$ is the sole driver.
+
+    \item \textbf{eLER is non-monotone with solar resource.} Freiburg (lowest GHI) achieves higher eLER than Konya (higher GHI) because PAR saturation penalizes crop yield more strongly at high irradiance.
+
+    \item \textbf{Penalty-free PV generation is geometrically guaranteed at Mediterranean and tropical sites.} LER$_{crop} = 1.000$ at both Almería and Ouagadougou, removing a key barrier to APV adoption.
+
+    \item \textbf{Thermal self-sufficiency is confirmed at all four climate zones.} ESR ranges from 76.3 to 165.6, with zero biogas consumed for digester heating.
+
+    \item \textbf{Row spacing imposes a universal, climate-independent eLER penalty.} Sensitivity of $-0.065$ eLER per additional meter of required access corridor.
+
+    \item \textbf{Biomethane grid injection (S5) is the economically dominant valorization scenario.} Generates $+\$2,400$ to $+\$14,100$ per hectare per year over baseline.
+
+    \item \textbf{All results are conservative lower bounds.} Both model validations exhibit systematic conservative biases.
+\end{enumerate}
+
+
+\newpage
+\bibliographystyle{unsrt}
+\begin{thebibliography}{99}
+
+\bibitem{fao2017} FAO. (2017). The future of food and agriculture: Trends and challenges. Rome: FAO.
+
+\bibitem{scanlon2023} Scanlon, B. R., et al. (2023). Global water resources and the food-energy-water nexus. \textit{Nature Reviews Earth \& Environment}, 4, 1–17.
+
+\bibitem{irena2022} IRENA. (2022). Renewable Power Generation Costs in 2022. Abu Dhabi: IRENA.
+
+\bibitem{dinesh2016} Dinesh, H., \& Pearce, J. M. (2016). The potential of agrivoltaic systems. \textit{Renewable and Sustainable Energy Reviews}, 54, 299–308.
+
+\bibitem{dupraz2011} Dupraz, C., et al. (2011). Combining solar photovoltaic panels and food crops for optimising land use. \textit{Renewable Energy}, 36(10), 2725–2732.
+
+\bibitem{goetzberger1982} Goetzberger, A., \& Zastrow, A. (1982). On the coexistence of solar-energy conversion and plant cultivation. \textit{International Journal of Solar Energy}, 1(1), 55–69.
+
+\bibitem{barron2019} Barron-Gafford, G. A., et al. (2019). Agrivoltaics provide mutual benefits across the food-energy-water nexus in drylands. \textit{Nature Sustainability}, 2(9), 848–855.
+
+\bibitem{semeraro2024} Semeraro, T., et al. (2024). A meta-analysis of agrivoltaic systems. \textit{Renewable and Sustainable Energy Reviews}, 189, 113987.
+
+\bibitem{mazzeo2025} Mazzeo, D., et al. (2025). LER optimization in agrivoltaic systems. \textit{Applied Energy}, 377, 124456.
+
+\bibitem{riaz2022} Riaz, M. H., et al. (2022). Bifacial agrivoltaic systems for tomato production. \textit{IEEE Journal of Photovoltaics}, 12(4), 1025–1033.
+
+\bibitem{iea2025} IEA. (2025). Biogases – Renewables 2025 Analysis. Paris: International Energy Agency.
+
+\bibitem{eba2025} European Biogas Association. (2025). Renewable Energy Directive and the biogas sector. Brussels: EBA.
+
+\bibitem{ec2022} European Commission. (2022). REPowerEU Plan. COM(2022) 230 final. Brussels: EC.
+
+\bibitem{nikzad2026} Nik Zad, A., et al. (2026). Techno-economic optimization of agrivoltaic-powered anaerobic digestion plant for biomethane production. \textit{Energy Conversion and Management}, 318, 119213.
+
+\bibitem{rabobank2025} Rabobank. (2025). Europe's biomethane landscape: Between ambition and reality. RaboResearch.
+
+\bibitem{zainali2023} Zainali, S., et al. (2023). Shading modelling for agrivoltaic systems. \textit{Applied Energy}, 339, 121011.
+
+\bibitem{pal2024} Pal, P., \& Ilango, K. (2024). PV-integrated anaerobic digestion for biogas plants. \textit{Energy for Sustainable Development}, 78, 101356.
+
+\bibitem{temiz2024} Temiz, M., et al. (2024). Solar thermal integration for biogas plants. \textit{Renewable Energy}, in press.
+
+\bibitem{lindorfer2008} Lindorfer, H., et al. (2008). Temperature dependence of anaerobic digestion. \textit{Water Science \& Technology}, 57(5), 663–668.
+
+\bibitem{faiman2008} Faiman, D. (2008). Assessing the outdoor operating temperature of photovoltaic modules. \textit{Progress in Photovoltaics}, 16(4), 307–315.
+
+\bibitem{liu1960} Liu, B. Y. H., \& Jordan, R. C. (1960). The interrelationship and characteristic distribution of direct, diffuse and total solar radiation. \textit{Solar Energy}, 4(3), 1–19.
+
+\bibitem{monteith2008} Monteith, J. L., \& Unsworth, M. H. (2008). Principles of Environmental Physics (3rd ed.). Academic Press.
+
+\bibitem{mccree1971} McCree, K. J. (1971). The action spectrum, absorptance and quantum yield of photosynthesis in crop plants. \textit{Agricultural Meteorology}, 9, 191–216.
+
+\bibitem{jacovides2006} Jacovides, C. P., et al. (2006). The PAR/GHI ratio in the Mediterranean region. \textit{Agricultural and Forest Meteorology}, 138(1–4), 264–272.
+
+\bibitem{heuvelink2005} Heuvelink, E. (2005). Tomatoes. CABI Publishing.
+
+\bibitem{mohammedi2023} Mohammedi, A., et al. (2023). Tomato yield and water use under agrivoltaic shade. \textit{Biosystems Engineering}, 226, 1–15.
+
+\bibitem{elamri2018} Elamri, Y., et al. (2018). Water saving and crop yield under agrivoltaic systems. \textit{Agricultural Water Management}, 208, 434–446.
+
+\bibitem{tawassulli2025} Tawassulli, A. (2025). ET reduction coefficient for agrivoltaic systems. \textit{Agricultural Water Management}, 298, 108821.
+
+\bibitem{allen1998} Allen, R. G., et al. (1998). Crop evapotranspiration: Guidelines for computing crop water requirements. FAO Irrigation and Drainage Paper No. 56.
+
+\bibitem{lallement2023} Lallement, A., et al. (2023). BMP of agricultural residues. \textit{Waste Management}, 156, 1–12.
+
+\bibitem{feng2013} Feng, L., et al. (2013). Biochemical methane potential of tomato plant residues. \textit{Bioresource Technology}, 127, 351–357.
+
+\bibitem{pilarski2025} Pilarski, K., \& Pilarska, A. A. (2025). Kinetics and energy yield in anaerobic digestion. \textit{Energies}, 18(23), 6262.
+
+\bibitem{storn1997} Storn, R., \& Price, K. (1997). Differential evolution – a simple and efficient heuristic for global optimization. \textit{Journal of Global Optimization}, 11(4), 341–359.
+
+\bibitem{dlg2023} DLG (Deutsche Landwirtschafts-Gesellschaft). (2023). Tomatenanbau in Deutschland: Ertragsstatistiken. Frankfurt: DLG.
+
+\bibitem{blank2020} Blank, J., \& Deb, K. (2020). pymoo: Multi-objective optimization in Python. \textit{IEEE Access}, 8, 89497--89509.
+
+\end{thebibliography}
+
+\end{document}

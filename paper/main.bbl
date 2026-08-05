@@ -1,0 +1,439 @@
+\begin{thebibliography}{55}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{FAO}()]{fao2017}
+{FAO}.
+\newblock \emph{The future of food and agriculture: trends and challenges}.
+\newblock Food and Agriculture Organization of the United Nations.
+\newblock ISBN 978-92-5-109551-5.
+
+\bibitem[Scanlon(2023)]{scanlon2023}
+B.~R. et~al. Scanlon.
+\newblock Global water resources and the food-energy-water nexus.
+\newblock \emph{Nature Reviews Earth \& Environment}, 4:\penalty0 1--17, 2023.
+
+\bibitem[IRENA(2022)]{irena2022}
+IRENA.
+\newblock Renewable power generation costs in 2022, 2022.
+
+\bibitem[Dinesh and Pearce()]{dinesh2016}
+Harshavardhan Dinesh and Joshua~M. Pearce.
+\newblock The potential of agrivoltaic systems.
+\newblock 54:\penalty0 299--308.
+\newblock ISSN 13640321.
+\newblock \doi{10.1016/j.rser.2015.10.024}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S136403211501103X}.
+
+\bibitem[Ketzer(2020)]{ketzer2020}
+D.~et~al. Ketzer.
+\newblock Land use conflicts between biomass and wind energy production at the
+  municipality level.
+\newblock \emph{Renewable and Sustainable Energy Reviews}, 120:\penalty0
+  109674, 2020.
+
+\bibitem[Goetzberger and Zastrow()]{goetzberger1982}
+A.~Goetzberger and A.~Zastrow.
+\newblock On the coexistence of solar-energy conversion and plant cultivation.
+\newblock 1\penalty0 (1):\penalty0 55--69.
+\newblock ISSN 0142-5919.
+\newblock \doi{10.1080/01425918208909875}.
+\newblock URL
+  \url{http://www.tandfonline.com/doi/abs/10.1080/01425918208909875}.
+
+\bibitem[Dupraz et~al.()Dupraz, Marrou, Talbot, Dufour, Nogier, and
+  Ferard]{dupraz2011}
+C.~Dupraz, H.~Marrou, G.~Talbot, L.~Dufour, A.~Nogier, and Y.~Ferard.
+\newblock Combining solar photovoltaic panels and food crops for optimising
+  land use: Towards new agrivoltaic schemes.
+\newblock 36\penalty0 (10):\penalty0 2725--2732.
+\newblock ISSN 09601481.
+\newblock \doi{10.1016/j.renene.2011.03.005}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0960148111001194}.
+
+\bibitem[Marrou et~al.()Marrou, Guilioni, Dufour, Dupraz, and Wery]{marrou2013}
+H.~Marrou, L.~Guilioni, L.~Dufour, C.~Dupraz, and J.~Wery.
+\newblock Microclimate under agrivoltaic systems: Is crop growth rate affected
+  in the partial shade of solar panels?
+\newblock 177:\penalty0 117--132.
+\newblock ISSN 01681923.
+\newblock \doi{10.1016/j.agrformet.2013.04.012}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0168192313000890}.
+
+\bibitem[Barron-Gafford et~al.()Barron-Gafford, Pavao-Zuckerman, Minor, Sutter,
+  Barnett-Moreno, Blackett, Thompson, Dimond, Gerlak, Nabhan, and
+  Macknick]{barron2019}
+Greg~A. Barron-Gafford, Mitchell~A. Pavao-Zuckerman, Rebecca~L. Minor,
+  Leland~F. Sutter, Isaiah Barnett-Moreno, Daniel~T. Blackett, Moses Thompson,
+  Kirk Dimond, Andrea~K. Gerlak, Gary~P. Nabhan, and Jordan~E. Macknick.
+\newblock Agrivoltaics provide mutual benefits across the food–energy–water
+  nexus in drylands.
+\newblock 2\penalty0 (9):\penalty0 848--855.
+\newblock ISSN 2398-9629.
+\newblock \doi{10.1038/s41893-019-0364-5}.
+\newblock URL \url{https://www.nature.com/articles/s41893-019-0364-5}.
+
+\bibitem[Elamri et~al.()Elamri, Cheviron, Lopez, Dejean, and
+  Belaud]{elamri2018}
+Y.~Elamri, B.~Cheviron, J.-M. Lopez, C.~Dejean, and G.~Belaud.
+\newblock Water budget and crop modelling for agrivoltaic systems: Application
+  to irrigated lettuces.
+\newblock 208:\penalty0 440--453.
+\newblock ISSN 03783774.
+\newblock \doi{10.1016/j.agwat.2018.07.001}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0378377418309545}.
+
+\bibitem[Semeraro et~al.()Semeraro, Scarano, Curci, Leggieri, Lenucci, Basset,
+  Santino, Piro, and De~Caroli]{semeraro2024}
+Teodoro Semeraro, Aurelia Scarano, Lorenzo~Maria Curci, Angelo Leggieri,
+  Marcello Lenucci, Alberto Basset, Angelo Santino, Gabriella Piro, and Monica
+  De~Caroli.
+\newblock Shading effects in agrivoltaic systems can make the difference in
+  boosting food security in climate change.
+\newblock 358:\penalty0 122565.
+\newblock ISSN 03062619.
+\newblock \doi{10.1016/j.apenergy.2023.122565}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0306261923019293}.
+
+\bibitem[Mead and Willey()]{mead1980}
+R.~Mead and R.~W. Willey.
+\newblock The concept of a ‘land equivalent ratio’ and advantages in yields
+  from intercropping.
+\newblock 16\penalty0 (3):\penalty0 217--228.
+\newblock ISSN 0014-4797, 1469-4441.
+\newblock \doi{10.1017/S0014479700010978}.
+\newblock URL
+  \url{https://www.cambridge.org/core/product/identifier/S0014479700010978/type/journal_article}.
+
+\bibitem[Riaz et~al.()Riaz, Imran, Alam, Alam, and Butt]{riaz2022}
+Muhammad~Hussnain Riaz, Hassan Imran, Habeel Alam, Muhammad~Ashraful Alam, and
+  Nauman~Zafar Butt.
+\newblock Crop-specific optimization of bifacial {PV} arrays for agrivoltaic
+  food-energy production: The light-productivity-factor approach.
+\newblock 12\penalty0 (2):\penalty0 572--580.
+\newblock ISSN 2156-3381, 2156-3403.
+\newblock \doi{10.1109/JPHOTOV.2021.3136158}.
+\newblock URL \url{https://ieeexplore.ieee.org/document/9674806/}.
+
+\bibitem[Mazzeo et~al.()Mazzeo, Di~Zio, Pesenti, and Leva]{mazzeo2025}
+Domenico Mazzeo, Andrea Di~Zio, Claudio Pesenti, and Sonia Leva.
+\newblock Optimizing agrivoltaic systems: A comprehensive analysis of design,
+  crop productivity and energy performance in open-field configurations.
+\newblock URL \url{https://www.ssrn.com/abstract=5082169}.
+
+\bibitem[Mohammedi et~al.()Mohammedi, Dragonetti, Admane, and
+  Fouial]{mohammedi2023}
+Serine Mohammedi, Giovanna Dragonetti, Naouel Admane, and Abdelouahid Fouial.
+\newblock The impact of agrivoltaic systems on tomato crop: A case study in
+  southern italy.
+\newblock 11\penalty0 (12):\penalty0 3370.
+\newblock ISSN 2227-9717.
+\newblock \doi{10.3390/pr11123370}.
+\newblock URL \url{https://www.mdpi.com/2227-9717/11/12/3370}.
+
+\bibitem[Pilarski and Pilarska()]{pilarski2025}
+Krzysztof Pilarski and Agnieszka~A. Pilarska.
+\newblock Kinetics and energy yield in anaerobic digestion: Effects of
+  substrate composition and fundamental operating conditions.
+\newblock 18\penalty0 (23):\penalty0 6262.
+\newblock ISSN 1996-1073.
+\newblock \doi{10.3390/en18236262}.
+\newblock URL \url{https://www.mdpi.com/1996-1073/18/23/6262}.
+
+\bibitem[Lallement et~al.()Lallement, Peyrelasse, Lagnet, Barakat, Schraauwers,
+  Maunas, and Monlau]{lallement2023}
+Audrey Lallement, Christine Peyrelasse, Camille Lagnet, Abdellatif Barakat,
+  Blandine Schraauwers, Samuel Maunas, and Florian Monlau.
+\newblock A detailed database of the chemical properties and methane potential
+  of biomasses covering a large range of common agricultural biogas plant
+  feedstocks.
+\newblock 1\penalty0 (1):\penalty0 195--227.
+\newblock ISSN 2813-0391.
+\newblock \doi{10.3390/waste1010014}.
+\newblock URL \url{https://www.mdpi.com/2813-0391/1/1/14}.
+
+\bibitem[{European Commission}(2022)]{ec2022}
+{European Commission}.
+\newblock {REPowerEU Plan. COM(2022) 230 final}, 2022.
+
+\bibitem[Nik~Zad(2026)]{nikzad2026}
+A.~et~al. Nik~Zad.
+\newblock Techno-economic optimization of agrivoltaic-powered anaerobic
+  digestion plant for biomethane production.
+\newblock \emph{Energy Conversion and Management}, 318:\penalty0 119213, 2026.
+
+\bibitem[{European Biogas Association}(2025)]{eba2025}
+{European Biogas Association}.
+\newblock {EBA Statistical Report 2025}, 2025.
+
+\bibitem[{Rabobank}(2025)]{rabobank2025}
+{Rabobank}.
+\newblock {Europe's biomethane landscape: Between ambition and reality}, 2025.
+
+\bibitem[{IEA}(2025)]{iea2025}
+{IEA}.
+\newblock {Biogases -- Renewables 2025 Analysis}, 2025.
+
+\bibitem[Lindorfer et~al.()Lindorfer, Waltenberger, Köllner, Braun, and
+  Kirchmayr]{lindorfer2008}
+H.~Lindorfer, R.~Waltenberger, K.~Köllner, R.~Braun, and R.~Kirchmayr.
+\newblock New data on temperature optimum and temperature changes in energy
+  crop digesters.
+\newblock 99\penalty0 (15):\penalty0 7011--7019.
+\newblock ISSN 09608524.
+\newblock \doi{10.1016/j.biortech.2008.01.034}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0960852408000345}.
+
+\bibitem[Zainali et~al.()Zainali, Ma~Lu, Stridh, Avelin, Amaducci, Colauzzi,
+  and Campana]{zainali2023}
+Sebastian Zainali, Silvia Ma~Lu, Bengt Stridh, Anders Avelin, Stefano Amaducci,
+  Michele Colauzzi, and Pietro~Elia Campana.
+\newblock Direct and diffuse shading factors modelling for the most
+  representative agrivoltaic system layouts.
+\newblock 339:\penalty0 120981.
+\newblock ISSN 03062619.
+\newblock \doi{10.1016/j.apenergy.2023.120981}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0306261923003458}.
+
+\bibitem[Pal and Ilango()]{pal2024}
+Ankit Pal and G.~Saravana Ilango.
+\newblock Design and techno-economic analysis of an off-grid integrated
+  {PV}-biogas system with a constant temperature digester for a cost-effective
+  rural application.
+\newblock 287:\penalty0 129671.
+\newblock ISSN 03605442.
+\newblock \doi{10.1016/j.energy.2023.129671}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0360544223030657}.
+
+\bibitem[Temiz et~al.()Temiz, Sinbuathong, and Dincer]{temiz2024}
+Mert Temiz, Nusara Sinbuathong, and Ibrahim Dincer.
+\newblock Development and assessment of a new agrivoltaic‐biogas energy
+  system for sustainable communities.
+
+\bibitem[Angelidaki et~al.()Angelidaki, Alves, Bolzonella, Borzacconi, Campos,
+  Guwy, Kalyuzhnyi, Jenicek, and Van~Lier]{angelidaki_defining_2009}
+I.~Angelidaki, M.~Alves, D.~Bolzonella, L.~Borzacconi, J.~L. Campos, A.~J.
+  Guwy, S.~Kalyuzhnyi, P.~Jenicek, and J.~B. Van~Lier.
+\newblock Defining the biomethane potential ({BMP}) of solid organic wastes and
+  energy crops: a proposed protocol for batch assays.
+\newblock 59\penalty0 (5):\penalty0 927--934.
+\newblock ISSN 0273-1223, 1996-9732.
+\newblock \doi{10.2166/wst.2009.040}.
+\newblock URL
+  \url{https://iwaponline.com/wst/article/59/5/927/15563/Defining-the-biomethane-potential-BMP-of-solid}.
+
+\bibitem[Mata-Alvarez et~al.()Mata-Alvarez, Dosta, Romero-Güiza, Fonoll,
+  Peces, and Astals]{mata-alvarez_critical_2014}
+J.~Mata-Alvarez, J.~Dosta, M.S. Romero-Güiza, X.~Fonoll, M.~Peces, and
+  S.~Astals.
+\newblock A critical review on anaerobic co-digestion achievements between 2010
+  and 2013.
+\newblock 36:\penalty0 412--427.
+\newblock ISSN 13640321.
+\newblock \doi{10.1016/j.rser.2014.04.039}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S1364032114002664}.
+
+\bibitem[Alengebawy et~al.()Alengebawy, Ran, Osman, Jin, Samer, and
+  Ai]{alengebawy2024}
+Ahmed Alengebawy, Yi~Ran, Ahmed~I. Osman, Keda Jin, Mohamed Samer, and Ping Ai.
+\newblock Anaerobic digestion of agricultural waste for biogas production and
+  sustainable bioenergy recovery: a review.
+\newblock 22\penalty0 (6):\penalty0 2641--2668.
+\newblock ISSN 1610-3653, 1610-3661.
+\newblock \doi{10.1007/s10311-024-01789-1}.
+\newblock URL \url{https://link.springer.com/10.1007/s10311-024-01789-1}.
+
+\bibitem[Feng et~al.()Feng, Li, Chen, Liu, Xiao, Ma, Zhang, He, and
+  Liu]{feng2013}
+Lu~Feng, Yeqing Li, Chang Chen, Xiaoying Liu, Xiao Xiao, Xinxin Ma, Ruihong
+  Zhang, Yanfeng He, and Guangqing Liu.
+\newblock Biochemical methane potential ({BMP}) of vinegar residue and the
+  influence of feed to inoculum ratios on biogas production.
+\newblock 8\penalty0 (2):\penalty0 2487--2498.
+\newblock ISSN 1930-2126.
+\newblock \doi{10.15376/biores.8.2.2487-2498}.
+\newblock URL
+  \url{https://bioresources.cnr.ncsu.edu/resources/biochemical-methane-potential-bmp-of-vinegar-residue-and-the-influence-of-feed-to-inoculum-ratios-on-biogas-production/}.
+
+\bibitem[Rold{\'a}n-Porta(2023)]{roldanporta2023}
+C.~et~al. Rold{\'a}n-Porta.
+\newblock Economic viability of a hybrid renewable energy community for rural
+  electrification.
+\newblock \emph{Applied Sciences}, 13:\penalty0 12016, 2023.
+
+\bibitem[pvg()]{pvgis}
+{JRC} photovoltaic geographical information system ({PVGIS}) - european
+  commission.
+\newblock URL \url{https://re.jrc.ec.europa.eu/pvg_tools/en/}.
+
+\bibitem[Huld et~al.()Huld, Müller, and Gambardella]{huld2012}
+Thomas Huld, Richard Müller, and Attilio Gambardella.
+\newblock A new solar radiation database for estimating {PV} performance in
+  europe and africa.
+\newblock 86\penalty0 (6):\penalty0 1803--1815.
+\newblock ISSN 0038092X.
+\newblock \doi{10.1016/j.solener.2012.03.006}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0038092X12001119}.
+
+\bibitem[urr()]{urraca2017}
+{JRC} photovoltaic geographical information system ({PVGIS}) - european
+  commission.
+\newblock URL \url{https://re.jrc.ec.europa.eu/pvg_tools/en/}.
+
+\bibitem[{DLG}(2023)]{dlg2023}
+{DLG}.
+\newblock {Tomatenanbau in Deutschland: Ertragsstatistiken}, 2023.
+
+\bibitem[Liu and Jordan()]{liu1960}
+Benjamin Y~H Liu and Richard~C Jordan.
+\newblock Characteristic distribution total solar radiation.
+
+\bibitem[Monteith and Unsworth()]{monteith2008}
+John~Lennox Monteith and M.~H. Unsworth.
+\newblock \emph{Principles of environmental physics}.
+\newblock Elsevier, 3rd ed edition.
+\newblock ISBN 978-0-12-505103-3.
+
+\bibitem[Faiman()]{faiman2008}
+David Faiman.
+\newblock Assessing the outdoor operating temperature of photovoltaic modules.
+\newblock 16\penalty0 (4):\penalty0 307--315.
+\newblock ISSN 1062-7995, 1099-159X.
+\newblock \doi{10.1002/pip.813}.
+\newblock URL \url{https://onlinelibrary.wiley.com/doi/10.1002/pip.813}.
+
+\bibitem[{Jinko Solar}(2023)]{jinko}
+{Jinko Solar}.
+\newblock Tiger neo n-type 72hl4-bdv 550wp bifacial module datasheet, 2023.
+\newblock URL \url{https://www.jinkosolar.com}.
+
+\bibitem[Jordan and Kurtz(2013)]{jordan2013}
+D.~C. Jordan and S.~R. Kurtz.
+\newblock Photovoltaic degradation rates — an analytical review.
+\newblock \emph{Progress in Photovoltaics}, 21:\penalty0 12--29, 2013.
+
+\bibitem[Gorjian et~al.()Gorjian, Bousi, Özdemir, Trommsdorff, Kumar, Anand,
+  Kant, and Chopra]{gorjian_progress_2022}
+Shiva Gorjian, Erion Bousi, Özal~Emre Özdemir, Max Trommsdorff,
+  Nallapaneni~Manoj Kumar, Abhishek Anand, Karunesh Kant, and Shauhrat~S.
+  Chopra.
+\newblock Progress and challenges of crop production and electricity generation
+  in agrivoltaic systems using semi-transparent photovoltaic technology.
+\newblock 158:\penalty0 112126.
+\newblock ISSN 13640321.
+\newblock \doi{10.1016/j.rser.2022.112126}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S1364032122000545}.
+
+\bibitem[{McCree}()]{mccree1971}
+K.J. {McCree}.
+\newblock The action spectrum, absorptance and quantum yield of photosynthesis
+  in crop plants.
+\newblock 9:\penalty0 191--216.
+\newblock ISSN 00021571.
+\newblock \doi{10.1016/0002-1571(71)90022-7}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/0002157171900227}.
+
+\bibitem[Jacovides et~al.()Jacovides, Tymvios, Assimakopoulos, and
+  Kaltsounides]{jacovides2006}
+C.P. Jacovides, F.S. Tymvios, V.D. Assimakopoulos, and N.A. Kaltsounides.
+\newblock Comparative study of various correlations in estimating hourly
+  diffuse fraction of global solar radiation.
+\newblock 31\penalty0 (15):\penalty0 2492--2504.
+\newblock ISSN 09601481.
+\newblock \doi{10.1016/j.renene.2005.11.009}.
+\newblock URL
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0960148105003538}.
+
+\bibitem[Heuvelink(2005)]{heuvelink2005}
+E.~Heuvelink.
+\newblock \emph{Tomatoes}.
+\newblock 2005.
+
+\bibitem[Hargreaves and Samani(1985)]{hargreaves1985}
+G.~H. Hargreaves and Z.~A. Samani.
+\newblock Reference crop evapotranspiration from temperature.
+\newblock \emph{Applied Engineering in Agriculture}, 1\penalty0 (2):\penalty0
+  96--99, 1985.
+\newblock \doi{10.13031/2013.26773}.
+
+\bibitem[Allen(1998)]{allen1998}
+R.~G. et~al. Allen.
+\newblock Crop evapotranspiration: Guidelines for computing crop water
+  requirements. fao irrigation and drainage paper no. 56, 1998.
+
+\bibitem[Droogers and Allen(2002)]{droogers2002}
+P.~Droogers and R.~G. Allen.
+\newblock Estimating reference evapotranspiration under inaccurate data
+  conditions.
+\newblock \emph{Irrigation and Drainage Systems}, 16\penalty0 (1):\penalty0
+  33--45, 2002.
+\newblock \doi{10.1023/A:1015508322413}.
+
+\bibitem[Tawassulli(2025)]{tawassulli2025}
+A.~Tawassulli.
+\newblock Et reduction coefficient for agrivoltaic systems.
+\newblock \emph{Agricultural Water Management}, 298:\penalty0 108821, 2025.
+
+\bibitem[Marchaim(1992)]{marchaim1992}
+U.~Marchaim.
+\newblock \emph{Biogas Processes for Sustainable Development}.
+\newblock Number~95. FAO Agricultural Services Bulletin, Rome, 1992.
+\newblock ISBN 92-5-103126-6.
+
+\bibitem[Storn()]{storn1997}
+Rainer Storn.
+\newblock Differential evolution - a simple and efficient adaptive scheme for
+  global optimization over continuous spaces.
+
+\bibitem[Oprea and B\^{a}ra(2024)]{oprea2024}
+S.~V. Oprea and A.~B\^{a}ra.
+\newblock Differential evolution algorithms for renewable energy systems
+  optimization: A systematic review.
+\newblock \emph{Renewable and Sustainable Energy Reviews}, 189:\penalty0
+  113946, 2024.
+\newblock \doi{10.1016/j.rser.2023.113946}.
+
+\bibitem[Das et~al.(2011)Das, Mullick, and Suganthan]{das2011}
+S.~Das, S.~S. Mullick, and P.~N. Suganthan.
+\newblock Differential evolution: A survey of the state-of-the-art.
+\newblock \emph{IEEE Transactions on Evolutionary Computation}, 15\penalty0
+  (1):\penalty0 4--31, 2011.
+\newblock \doi{10.1109/TEVC.2010.2059031}.
+
+\bibitem[Blank and Deb(2020)]{blank2020}
+J.~Blank and K.~Deb.
+\newblock pymoo: Multi-objective optimization in python.
+\newblock \emph{IEEE Access}, 8:\penalty0 89497--89509, 2020.
+
+\bibitem[{IPCC}(2022)]{ipcc2022}
+{IPCC}.
+\newblock Climate change 2022: Mitigation of climate change. annex {II}:
+  Emissions and mitigation pathways.
+\newblock Technical report, Intergovernmental Panel on Climate Change,
+  Cambridge, UK, 2022.
+\newblock Working Group III contribution to the Sixth Assessment Report.
+
+\bibitem[Zwietering et~al.(1990)Zwietering, Jongenburger, Rombouts, and van~'t
+  Riet]{zwietering1990}
+M.~H. Zwietering, I.~Jongenburger, F.~M. Rombouts, and K.~van~'t Riet.
+\newblock Modeling of the bacterial growth curve.
+\newblock \emph{Applied and Environmental Microbiology}, 56\penalty0
+  (6):\penalty0 1875--1881, 1990.
+\newblock \doi{10.1128/aem.56.6.1875-1881.1990}.
+
+\end{thebibliography}

@@ -1,0 +1,210 @@
+% ===========================================================================
+% INTRODUCTION
+% File: sections/01_introduction.tex
+% ===========================================================================
+
+\section{Introduction}
+\label{sec:intro}
+
+% ---------------------------------------------------------------------------
+\subsection{The Global Challenge: Food, Energy, and Water Under Climate Pressure}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}By 2050, global food production must increase by approximately
+50\% to feed a projected population of nearly ten billion, while freshwater
+withdrawals for agriculture --- already accounting for 70\% of the world's
+accessible surface water --- are expected to intensify
+further~\citep{fao2017, scanlon2023}. In semi-arid and arid regions, which
+host some of the fastest-growing populations on Earth, this pressure is
+compounded by a pre-existing structural deficit: annual potential
+evapotranspiration exceeds precipitation, making every millimetre of saved
+irrigation water both economically and ecologically significant.
+
+At the same time, the global energy transition is accelerating the
+deployment of ground-mounted solar photovoltaic (PV) installations.
+Solar PV has become the least-cost source of new electricity generation
+across large parts of the semi-arid belt --- from Southern Europe and the
+Middle East to Sub-Saharan Africa and Central Asia~\citep{irena2022}.
+However, ground-mounted installations require productive agricultural land,
+and the spatial overlap between high-irradiance zones and high-value
+irrigated cropland is not coincidental: both are concentrated in the
+same semi-arid river basins and coastal plains~\citep{dinesh2016,
+ketzer2020}. The result is a land-use conflict that threatens to replace
+one resource challenge with another.
+
+% ---------------------------------------------------------------------------
+\subsection{Agrivoltaics: Dissolving the Land-Use Conflict}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Agrivoltaics --- the deliberate co-location of photovoltaic
+modules and agricultural crops on the same land parcel --- was proposed
+precisely to dissolve this tension. Conceived by \citet{goetzberger1982}
+and experimentally validated by \citet{dupraz2011}, the approach rests on
+the observation that partial shade from elevated PV panels can simultaneously
+generate electricity, reduce crop heat stress, curb soil moisture evaporation,
+and increase water-use efficiency for a wide range of
+species~\citep{marrou2013, barron2019, elamri2018, semeraro2024}.
+
+The standard metric for quantifying this dual benefit is the Land Equivalent
+Ratio (LER), which measures how much land under separate monocultures would
+be required to produce the same combined output as an integrated
+system~\citep{mead1980}. Published agrivoltaic LER values range from 1.2 to
+1.94, with the highest values consistently associated with bifacial modules,
+crop-specific panel geometry, and shade-tolerant
+species~\citep{riaz2022, mazzeo2025}. A two-component LER of 1.94 means
+the integrated system uses land 94\% more efficiently than two separate
+operations.
+
+Despite this progress, agrivoltaic research has a systematic blind spot:
+the organic residue stream. In a typical tomato production system, crop
+residues --- stems, leaves, non-marketable fruit --- amount to approximately
+80\% of the harvested fresh mass~\citep{mohammedi2023}. When returned to the
+soil, this biomass undergoes aerobic decomposition that can release methane
+and nitrous oxide. When combusted, the embodied energy is lost. Neither
+outcome is consistent with the circular economy ambitions that motivate
+agrivoltaic deployment in the first place.
+
+% ---------------------------------------------------------------------------
+\subsection{Anaerobic Digestion: Closing the Residue Loop}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Anaerobic digestion (AD) converts organic biomass into biogas
+and digestate, a nutrient-rich bio-fertilizer. For agricultural systems,
+on-farm AD offers three interconnected benefits: it valorizes residues that
+would otherwise be wasted, provides dispatchable energy that can offset grid
+imports, and returns nitrogen, phosphorus, and potassium to the soil in
+plant-available form~\citep{pilarski2025, lallement2023}.
+
+The strategic importance of agricultural biomethane is substantial.
+The EU REPowerEU Plan targets 35\,billion m$^3$ of sustainable biomethane
+per year by 2030~\citep{ec2022}, and Germany's EEG 2023 and the EU RED III
+provide feed-in premiums where biomethane commands approximately 5.5 times
+the electricity purchase price~\citep{nikzad2026, eba2025, rabobank2025}.
+In Sub-Saharan Africa, biogas from agricultural residues provides an
+alternative to imported LPG and diesel in the same farming communities
+that stand to benefit most from agrivoltaics~\citep{iea2025}.
+
+A critical thermal challenge limits AD in temperate climates: maintaining
+mesophilic conditions (35--40\,$^{\circ}$C) against winter ambient
+temperatures below 0\,$^{\circ}$C requires a reliable heat supply.
+Conventionally, up to 30\% of biogas is combusted for self-heating,
+reducing net energy yield~\citep{lindorfer2008}. PV electricity, abundant
+in summer when heating demand is lowest, is a natural complement to
+this requirement.
+
+% ---------------------------------------------------------------------------
+\subsection{The Missing Integration: APV Meets AD}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The co-location of agrivoltaics and anaerobic digestion is
+logically compelling: APV produces electricity and shade; the crop produces
+residues; the digester converts residues to biogas and digestate; digestate
+fertilizes the crop. The AD footprint is small and can be sited beneath or
+adjacent to the APV array at no additional land cost.
+
+Yet the two technologies have been studied in isolation. Agrivoltaic studies
+focus on PV yield and crop PAR, ignoring the residue
+stream~\citep{riaz2022, zainali2023, mazzeo2025}. AD studies that include
+a PV component treat the solar array as a generic electricity source without
+modeling agrivoltaic geometry or crop yield
+effects~\citep{pal2024, temiz2024}. The first study to couple APV and AD
+optimization was ~\citet{nikzad2026}, limited to one Mediterranean site
+without crop yield modeling or a land-use efficiency metric. The consequence
+is a systematic gap: no unified metric captures all three land-use outputs,
+no optimizer jointly searches both design spaces, and no multi-climate
+comparison exists.
+
+% ---------------------------------------------------------------------------
+\subsection{Research Gaps}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Six specific knowledge gaps motivate this study:
+
+\begin{itemize}[leftmargin=*, label=\textbf{G\arabic*:}]
+
+    \item \textbf{No unified land-use metric for integrated APV--AD.}
+    The classical two-component LER omits biogas energy. A three-component
+    metric is needed to capture the full multi-output land productivity.
+
+    \item \textbf{No joint design optimization.}
+    APV geometry and AD design are coupled through crop yield, residue
+    production, and digester heating. Separate optimization misses
+    cross-variable interactions that determine system-level efficiency.
+
+    \item \textbf{No multi-climate comparative analysis.}
+    The sensitivity of the APV--AD synergy to solar resource, temperature,
+    and growing-season length has not been systematically characterized
+    across contrasting climate zones.
+
+    \item \textbf{No thermal coupling characterization across the
+    continental temperature range.}
+    Arrhenius BMP suppression ranges from negligible (tropical semi-arid)
+    to severe (cold temperate). This variability has not been quantified
+    across a four-zone study.
+
+    \item \textbf{No corrected water savings metric.}
+    Prior studies report water savings as a fraction of annual ET$_0$,
+    systematically underestimating the agronomic benefit by diluting
+    growing-season savings with off-season months.
+
+    \item \textbf{No modelling of the AD-to-crop nutrient feedback.}
+    The digestate-to-soil loop is absent from all existing agrivoltaic
+    studies, preventing a true circular economy assessment.
+
+\end{itemize}
+
+This paper addresses gaps G1--G5. Gap G6 is deferred to future
+experimental work requiring multi-season field data from co-located
+APV--AD installations.
+
+% ---------------------------------------------------------------------------
+\subsection{Contributions of This Work}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}The specific, verifiable contributions of this paper are:
+
+\begin{enumerate}[leftmargin=*, label=\textbf{C\arabic*:}]
+
+    \item \textbf{Novel three-component eLER metric} (G1): $eLER =
+    LER_{\text{crop}} + LER_{\text{PV}} + LER_{\text{biogas}}$,
+    referenced against three independent monocultures using a
+    non-circular PV reference (Definition~A).
+
+    \item \textbf{Integrated six-variable Differential Evolution optimizer}
+    (G2): simultaneously searches APV geometry and AD design spaces
+    with OLR and inter-row clearance constraints.
+
+    \item \textbf{Four-climate-zone comparative analysis} (G3): Konya
+    (BSk), Almer\'{i}a (BSh), Ouagadougou (BSh), and Freiburg (Cfb),
+    spanning \SI{12}{\degree}N--\SI{48}{\degree}N.
+
+    \item \textbf{PAR-saturation mechanism} (G3, G4): identification
+    and quantification of the counter-intuitive non-monotone relationship
+    between solar resource and eLER, driven by tomato light saturation
+    at \SI{174}{W\,m^{-2}}.
+
+    \item \textbf{4E performance framework} (G3--G5): Energetic,
+    Economic, Energo-economic (LCOE, biogas cost), and Environmental
+    (CO$_2$ avoidance, carbon credit) metrics computed jointly for
+    all four sites and seven valorization scenarios.
+
+    \item \textbf{Corrected water savings metric} (G5):
+    $LER_{\text{water}}$ referenced to growing-season ET$_0$,
+    correcting the systematic underestimation of up to 8.1$\times$
+    found with annual ET$_0$.
+
+\end{enumerate}
+
+% ---------------------------------------------------------------------------
+\subsection{Paper Organization}
+% ---------------------------------------------------------------------------
+
+\hspace{1cm}Section~\ref{sec:related} reviews the literature on
+agrivoltaic systems, AD integration with solar energy, and LER methodology.
+Section~\ref{sec:method} presents the six sub-models, the DE optimizer,
+and the 4E framework. Section~\ref{sec:results} reports optimized designs,
+eLER decomposition, energy and water performance, and scenario economics
+for all four sites. Section~\ref{sec:discussion} interprets the
+PAR-saturation mechanism, boundary-convergence behavior, and model
+limitations. Section~\ref{sec:conclusion} states the conclusions.
+Appendix~\ref{app:de} provides the complete DE pseudocode and Appendix~\ref{app:params}  the complete list of fixed parameters.

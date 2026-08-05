@@ -1,0 +1,33 @@
+# Minimal pinned requirements for reproducible runs
+# Adjust versions if your environment requires newer/older releases.
+
+numpy==1.26.3
+pandas==2.2.2
+scipy==1.11.3
+matplotlib==3.8.2
+seaborn==0.12.2
+
+# Jupyter & notebook ecosystem
+jupyter==1.0.0
+notebook==7.0.0
+ipykernel==6.27.0
+nbformat==5.9.3
+nbconvert==7.4.0
+
+# Utilities
+tqdm==4.66.1
+python-dateutil==2.8.2
+pytz==2024.1
+
+# Optional/analysis tools
+pytest==7.4.2
+papermill==2.5.0
+
+# Optional, enable if you need higher-fidelity PV calculations
+# pvlib provides accurate solar geometry and PV models (install only if required)
+# pvlib==0.10.2
+
+# Notes:
+# - If you prefer conda, create an environment with Python 3.10+ and install these
+#   packages (some packages may have conda-forge builds that simplify binary deps).
+# - These pins are conservative; update as needed for your platform and Python version.

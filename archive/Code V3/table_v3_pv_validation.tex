@@ -1,0 +1,26 @@
+\begin{table}[H]
+\small
+\caption{V3 — PV model validation against PVGIS-SARAH3 PVcalc reference.
+  Simulation uses bifacial Faiman model (Eq.~\ref{eq:tcell}--\ref{eq:ppv});
+  PVGIS uses monofacial c-Si with Huld thermal model and 12\% system loss.
+  Adjusted simulation removes estimated bifacial rear-gain of 8.4\%
+  ($\varphi=0.70$, rear irradiance fraction $\approx 0.12$) for
+  like-for-like comparison.}
+\label{tab:v3_pv_validation}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+Site & Tilt $\beta^*$ & PVGIS $E_y$ & Sim $E_y$ (raw) & Sim $E_y$ (adj.) & $\epsilon$ raw & $\epsilon$ adj. \\
+ & (°) & (kWh/kWp) & (kWh/kWp) & (kWh/kWp) & (\%) & (\%) \\
+\midrule
+Konya & 33.3 & 1521.0 & 999.9 & 922.4 & -34.3 & -39.4 \\
+Almer\'{i}a & 19.3 & 1843.0 & 1283.4 & 1183.9 & -30.4 & -35.8 \\
+Ouagadougou & 26.0 & 1803.0 & 1372.7 & 1266.3 & -23.9 & -29.8 \\
+Freiburg & 15.9 & 1121.0 & 899.0 & 829.3 & -19.8 & -26.0 \\
+\midrule
+\multicolumn{5}{l}{\textbf{MAPE}} & \textbf{27.1} & \textbf{32.7} \\
+\midrule
+\multicolumn{7}{p{14cm}}{\footnotesize\textit{PVGIS query parameters}: peakpower = 1\,kWp, loss = 12\%, technology = crystSi, raddatabase = PVGIS-SARAH3, aspect = 0° (south), mountingplace = free-standing. Bifacial adjustment: $E_{y,\text{adj}} = E_{y,\text{sim}} / 1.084$. PVGIS-SARAH3 reported GHI accuracy: MBE $<\pm5\%$ monthly \citep{huld2012, urraca2017}.} \\
+\bottomrule
+\end{tabular}
+\end{table}

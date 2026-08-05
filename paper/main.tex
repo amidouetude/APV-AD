@@ -1,0 +1,141 @@
+% ===========================================================================
+% MAIN FILE — APV-AD Paper
+% Amidou Maiga — Erciyes University
+% Compile on Overleaf: pdflatex → bibtex → pdflatex → pdflatex
+% ===========================================================================
+
+\documentclass[12pt, a4paper]{article}
+
+% ── Encoding & language ─────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% ── Mathematics ─────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb}
+
+% ── Graphics & tables ───────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{makecell}
+
+% ── Layout ──────────────────────────────────────────────────────────────────
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\setlength{\parindent}{1cm}
+
+% ── Lists ───────────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+
+% ── Units ───────────────────────────────────────────────────────────────────
+\usepackage{siunitx}
+\sisetup{separate-uncertainty=true}
+\DeclareSIUnit{\MWh}{MWh}
+\DeclareSIUnit{\kWh}{kWh}
+\DeclareSIUnit{\Wp}{W_{p}}
+
+% ── Algorithm ───────────────────────────────────────────────────────────────
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+
+% ── Hyperlinks ──────────────────────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    linkcolor  = blue,
+    citecolor  = blue,
+    urlcolor   = blue,
+    pdftitle   = {Integrated APV-AD Optimization Across Four Climate Zones},
+    pdfauthor  = {Amidou Maiga},
+}
+
+% ── Bibliography ────────────────────────────────────────────────────────────
+\usepackage{natbib}
+\bibliographystyle{unsrtnat}
+
+% ── Table font size ─────────────────────────────────────────────────────────
+\usepackage{etoolbox}
+\AtBeginEnvironment{table}{\small}
+
+% ── Custom commands (shared across all sections) ─────────────────────────────
+\newcommand{\eLER}{\textit{eLER}}
+\newcommand{\LERcrop}{$LER_{\text{crop}}$}
+\newcommand{\LERPV}{$LER_{\text{PV}}$}
+\newcommand{\LERbio}{$LER_{\text{biogas}}$}
+\newcommand{\LERtwoC}{$LER_{\text{2C}}$}
+\newcommand{\MWhha}{MWh\,ha\textsuperscript{$-1$}}
+\newcommand{\kWhha}{kWh\,ha\textsuperscript{$-1$}}
+\newcommand{\tCOtwo}{tCO$_2$}
+
+% ===========================================================================
+% TITLE PAGE
+% ===========================================================================
+\title{
+    \Large\textbf{Integrated Bifacial Agrivoltaic--Anaerobic Digestion
+    Optimization Across Four Climate Zones}\\[0.8em]
+    \large A Novel Extended Land Equivalent Ratio Framework
+    for the Food--Energy--Water Nexus
+}
+
+\author{
+    \textbf{Amidou Maiga}\\[0.4em]
+    \small Department of Energy Systems Engineering\\
+    \small Erciyes University, Kayseri, Turkey\\
+    \small \texttt{4012550005@erciyes.edu.tr}
+}
+
+\date{}
+
+% ===========================================================================
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+% ── Abstract ────────────────────────────────────────────────────────────────
+\input{sections/00_abstract}
+\newpage
+
+% ── Table of contents ───────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Sections ────────────────────────────────────────────────────────────────
+\input{sections/01_introduction}
+\newpage
+
+\input{sections/02_related_works}
+\newpage
+
+\input{sections/03_methodology}
+\newpage
+
+\input{sections/04_results}
+\newpage
+
+\input{sections/05_discussion}
+\newpage
+
+\input{sections/06_conclusion}
+\newpage
+
+% ── Appendix ────────────────────────────────────────────────────────────────
+\appendix
+\input{sections/07_appendix}
+
+% ── Bibliography ────────────────────────────────────────────────────────────
+\bibliography{references}
+\newpage
+
+
+
+\end{document}

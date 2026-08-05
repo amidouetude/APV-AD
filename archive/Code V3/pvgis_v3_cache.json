@@ -1,0 +1,26 @@
+{
+  "Konya": {
+    "E_y_kWh_kWp": 1521.0,
+    "H_i_y_kWh_m2": 1763.0,
+    "l_total_pct": -14.1,
+    "url": "PVGIS-SARAH3 lat=37.87 lon=32.48 tilt=33.3"
+  },
+  "Almeria": {
+    "E_y_kWh_kWp": 1843.0,
+    "H_i_y_kWh_m2": 2084.0,
+    "l_total_pct": -13.8,
+    "url": "PVGIS-SARAH3 lat=36.83 lon=-2.46 tilt=19.3"
+  },
+  "Ouagadougou": {
+    "E_y_kWh_kWp": 1803.0,
+    "H_i_y_kWh_m2": 2073.0,
+    "l_total_pct": -13.5,
+    "url": "PVGIS-SARAH3 lat=12.37 lon=-1.53 tilt=26.0"
+  },
+  "Freiburg": {
+    "E_y_kWh_kWp": 1121.0,
+    "H_i_y_kWh_m2": 1297.0,
+    "l_total_pct": -14.3,
+    "url": "PVGIS-SARAH3 lat=47.99 lon=7.84 tilt=15.9"
+  }
+}
