@@ -211,6 +211,19 @@ PARAMS = {
     "eta_loss":         0.12,       # total system losses (wiring, soiling, mismatch)
     "rho_ground":       0.25,       # ground albedo for rear irradiance
 
+    # ── PV module / field geometry — SINGLE SOURCE OF TRUTH ──────────────────
+    # Added in response to peer review (maintainability): these constants
+    # previously existed as hardcoded literals in TWO places inside
+    # simulation_functions.py (module header AND a redundant local
+    # re-declaration inside compute_shading()), with no copy here in
+    # config_00.py at all. simulation_functions.py now reads them from
+    # PARAMS instead of hardcoding them, so a change here propagates
+    # everywhere automatically.
+    "module_length_m":  2.278,      # Jinko Tiger Neo 550Wp, m
+    "module_width_m":   1.134,      # Jinko Tiger Neo 550Wp, m
+    "row_length_m":     100.0,      # assumed row length on 1 ha field, m
+    "land_area_m2":     10_000,     # 1 ha, m²
+
     # ── Faiman thermal model (Faiman 2008) ────────────────────────────────────
     "U0":               25.0,       # W/m²·K — free convection coefficient
     "U1":               6.84,       # W·s/m³·K — wind-dependent coefficient

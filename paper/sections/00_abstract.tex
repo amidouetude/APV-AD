@@ -5,61 +5,31 @@
 
 \begin{abstract}
 \noindent
-Land-use competition between food production and renewable energy deployment
-is among the most pressing resource conflicts of the energy transition,
-particularly in semi-arid regions where solar irradiance is high but
-agricultural land is limited. This study develops and applies an integrated
+Land-use competition between food and renewable energy is a pressing
+challenge in semi-arid regions. This study develops a coupled six-model
 optimization framework for bifacial agrivoltaic (APV) and on-farm anaerobic
-digestion (AD) systems across four distinct climate zones: Konya, Turkey
-(K\"{o}ppen BSk, cold semi-arid), Almer\'{i}a, Spain (BSh, hot semi-arid),
-Ouagadougou, Burkina Faso (BSh, tropical semi-arid), and Freiburg,
-Germany (Cfb, oceanic temperate).
-
-Hourly PVGIS-SARAH3 Typical Meteorological Year data drive a coupled
-six-model simulation pipeline covering bifacial PV power, tomato crop
-yield via PAR integral, evapotranspiration reduction, anaerobic digestion
-with Arrhenius temperature correction, and digester thermal management.
-Six design variables --- panel tilt ($\beta$), row spacing
-($d_{\text{row}}$), module height ($H_m$), digester volume
-($V_{\text{dig}}$), hydraulic retention time (HRT), and PV heating
-fraction ($f_{\text{PV,heat}}$) --- are jointly optimized using
-Differential Evolution to maximize a novel three-component extended Land
-Equivalent Ratio:
-\[
-    eLER = LER_{\text{crop}} + LER_{\text{PV}} + LER_{\text{biogas}}
-\]
-
-Optimized eLER values reach 1.653 (Konya), 1.659 (Almer\'{i}a), 1.725
-(Ouagadougou), and 1.758 (Freiburg). All sites exceed the two-component
-agrivoltaic benchmark when the biogas term is included, and
-$LER_{\text{2C}}$ alone ranges from 1.031 to 1.089, confirming that the
-APV system outperforms two separate monocultures at every site. A
-counter-intuitive climate-gradient result emerges: Freiburg, with the
-lowest annual solar resource (\SI{1150}{kWh.m^{-2}}), achieves the
-highest eLER (1.758), exceeding Konya (\SI{1650}{kWh.m^{-2}}, eLER =
-1.653). This inversion is driven by PAR saturation: at high irradiance,
-the open-field PAR integral exceeds the tomato light saturation point
-(\SI{174}{W.m^{-2}}), inflating the $LER_{\text{crop}}$ denominator and
-penalizing high-irradiance sites.
-
-The optimizer converges to the physical constraint boundary
-($d_{\text{row}} = \SI{3.03}{m}$, $H_m = \SI{1.50}{m}$) at all four
-sites, a structural boundary-convergence result that quantifies the eLER
-penalty of any additional mechanical access requirement. A 4E analysis
-(Energetic, Economic, Energo-economic, Environmental) reveals annual PV
-yields of 1{,}354--1{,}583~MWh\,ha$^{-1}$, NPV values of
-\SIrange{169}{981}{k\$}, and IRR of \SIrange{11.8}{31.1}{\percent} under
-the baseline scenario (S0). The carbon-credit scenario (S6) is the
-economically dominant strategy at all sites, raising IRR to
-\SIrange{13.5}{33.1}{\percent}. Annual CO$_2$ avoidance ranges from 251
-(Almer\'{i}a) to 951 (Ouagadougou)\,tCO$_2$\,ha$^{-1}$. Growing-season
-water savings of \SIrange{152}{383}{mm} represent
-\SIrange{15.5}{25.8}{\percent} of seasonal ET$_0$. Crop yield model
-validation (MAPE\,=\,2.4\% in the operational shading range) confirms
-that all reported results are conservative lower bounds.
+digestion (AD) across four climate zones --- Konya (BSk), Almer\'{i}a
+(BSh), Ouagadougou (BSh), and Freiburg (Cfb) --- using hourly PVGIS-SARAH3
+data. Six design variables are jointly optimized via Differential Evolution
+to maximize a novel three-component extended Land Equivalent Ratio,
+$eLER = LER_{\text{crop}} + LER_{\text{PV}} + LER_{\text{biogas}}$.
+Optimized eLER reaches 1.641--1.764, with $LER_{\text{2C}}$ alone
+(1.030--1.088) confirming APV outperforms separate monocultures even
+without biogas. A counter-intuitive result emerges: Freiburg, with the
+lowest solar resource, achieves the highest eLER, driven by PAR
+saturation penalizing high-irradiance sites. The optimizer converges to
+the physical row-spacing boundary at all sites. A 4E analysis shows PV
+yields of 1{,}002--1{,}433~MWh\,ha$^{-1}$, NPV of
+\SIrange{134}{802}{k\$}, and IRR of \SIrange{11.0}{28.1}{\percent}
+(S0), rising to \SIrange{12.7}{29.9}{\percent} under a carbon-credit
+scenario. Growing-season water savings of \SIrange{81}{159}{mm}
+represent \SIrange{15.6}{22.4}{\percent} of seasonal ET$_0$. All
+results are model-based, cross-validated against independent
+literature datasets and an external solar-modelling library; the
+integrated APV--AD system has not been field-demonstrated.
 
 \bigskip
 \noindent\textbf{Keywords:} agrivoltaics; anaerobic digestion; extended
 land equivalent ratio; food--energy--water nexus; differential evolution;
-semi-arid climate; PAR saturation; 4E analysis; biomethane; carbon credit
+semi-arid climate; PAR saturation; 4E analysis
 \end{abstract}

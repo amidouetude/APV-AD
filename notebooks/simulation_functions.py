@@ -10,20 +10,40 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config_00 import SITES, PARAMS, DE_SETTINGS, SCENARIOS
 
-MODULE_LENGTH_M = 2.278
-MODULE_WIDTH_M  = 1.134
-ROW_LENGTH_M    = 100.0
-LAND_AREA_M2    = 10_000
+# Single source of truth: config_00.PARAMS (not hardcoded here — this was
+# flagged in peer review as a duplicate-constants maintainability risk).
+MODULE_LENGTH_M = PARAMS["module_length_m"]
+MODULE_WIDTH_M  = PARAMS["module_width_m"]
+ROW_LENGTH_M    = PARAMS["row_length_m"]
+LAND_AREA_M2    = PARAMS["land_area_m2"]
 
-def compute_solar_angles(df: pd.DataFrame, lat_deg: float) -> pd.DataFrame:
+def compute_solar_angles(df: pd.DataFrame, lat_deg: float, lon_deg: float) -> pd.DataFrame:
     """
     Compute hourly solar elevation angle (alpha_s) and hour angle.
     Uses the Spencer (1971) declination formula.
+
+    CORRECTED (fixed 2026-08): hour angle is now computed from true local
+    solar time — clock time (UTC) corrected for longitude and the equation
+    of time — not from the raw UTC clock hour.
+
+    PRIOR VERSION: used hour_angle = (UTC_hour - 12) * 15, which implicitly
+    assumes solar noon occurs at 12:00 UTC everywhere. That is only true at
+    longitude 0°E. This was discovered via direct comparison against pvlib's
+    NREL-SPA-based solar position (see docs/pvlib_validation.md): daytime
+    solar elevation disagreed with pvlib by up to ~25° at Konya (lon
+    32.49°E) while agreeing to within ~1-2° at Almería and Ouagadougou
+    (lon near 0°). The error scales almost exactly with site longitude —
+    each 15° of longitude shifts true solar noon by 1 hour relative to UTC.
+    Annual front-surface POA was consequently biased by roughly -9.6% at
+    Konya, -1.2% at Freiburg, and negligibly at Almería/Ouagadougou.
 
     Parameters
     ----------
     df      : hourly DataFrame with DatetimeIndex (UTC)
     lat_deg : site latitude in degrees
+    lon_deg : site longitude in degrees (positive East) — required for the
+              longitude correction. NOT optional: omitting it silently
+              reproduces the longitude=0 bug above.
 
     Returns
     -------
@@ -31,7 +51,7 @@ def compute_solar_angles(df: pd.DataFrame, lat_deg: float) -> pd.DataFrame:
     """
     idx  = pd.DatetimeIndex(df.index)
     doy  = idx.day_of_year.values.astype(float)
-    hour = idx.hour.values.astype(float) + idx.minute.values / 60.0
+    hour_utc = idx.hour.values.astype(float) + idx.minute.values / 60.0
 
     # Spencer (1971) declination (degrees)
     B   = 2 * np.pi * (doy - 1) / 365
@@ -45,8 +65,19 @@ def compute_solar_angles(df: pd.DataFrame, lat_deg: float) -> pd.DataFrame:
         + 0.00148  * np.sin(3*B)
     )
 
-    # Hour angle (degrees): 0 at solar noon, negative morning
-    hour_angle = (hour - 12) * 15  # 15°/hour
+    # Equation of time (minutes) — standard approximation (Spencer 1971 form)
+    eot_min = 229.18 * (
+        0.000075
+        + 0.001868 * np.cos(B)   - 0.032077 * np.sin(B)
+        - 0.014615 * np.cos(2*B) - 0.040849 * np.sin(2*B)
+    )
+
+    # True local solar time (hours) = UTC clock time + longitude correction
+    # (4 min per degree East) + equation of time
+    solar_time = hour_utc + lon_deg / 15.0 + eot_min / 60.0
+
+    # Hour angle (degrees): 0 at true solar noon, negative morning
+    hour_angle = (solar_time - 12) * 15  # 15°/hour
 
     # Solar elevation angle (degrees)
     lat_r = np.radians(lat_deg)
@@ -97,8 +128,10 @@ def compute_shading(df: pd.DataFrame,
     -------
     df with new columns: F_shad, GCR
     """
-    MODULE_LENGTH_M = 2.278    # Jinko Tiger Neo 550Wp
     delta_gamma     = 0.0      # azimuth difference — south-facing rows
+    # (MODULE_LENGTH_M no longer redeclared here — uses the module-level
+    # constant sourced from config_00.PARAMS; this local copy was a
+    # duplicate literal flagged in peer review and has been removed.)
 
     alpha_s = df["solar_elevation_deg"].values
     tan_alpha = np.tan(np.radians(np.clip(alpha_s, 0.1, 90)))
@@ -118,7 +151,7 @@ def compute_shading(df: pd.DataFrame,
     return df
 
 
-def compute_POA(df: pd.DataFrame, beta_deg: float) -> pd.DataFrame:
+def compute_POA(df: pd.DataFrame, beta_deg: float, lat_deg: float) -> pd.DataFrame:
     """
     Compute plane-of-array (POA) irradiance for a south-facing fixed-tilt
     surface using the isotropic sky model (Eq. 7–8).
@@ -127,10 +160,30 @@ def compute_POA(df: pd.DataFrame, beta_deg: float) -> pd.DataFrame:
     G_rear  = GHI * rho_g * (1 - F_shad) * phi_rear_fraction
     G_eff   = G_front + phi * G_rear
 
+    Angle of incidence (Eq. 8, CORRECTED):
+        cos(theta_i) = sin(delta)*sin(phi - beta) + cos(delta)*cos(H)*cos(phi - beta)
+
+    This is the exact closed-form angle-of-incidence for a fixed, due-south
+    facing surface (Duffie & Beckman, "Solar Engineering of Thermal Processes"),
+    a function of declination (delta), hour angle (H), latitude (phi), and tilt
+    (beta). It correctly varies through the day as the sun moves east to west.
+
+    PRIOR VERSION (fixed 2026-08): used cos_theta_i = sin(alpha_s)*cos(beta)
+    + cos(alpha_s)*sin(beta), which is algebraically sin(alpha_s + beta). This
+    is only exact at solar noon (H=0); at every other hour it silently assumes
+    the sun is still due south, overestimating cos(theta_i) — and therefore
+    front-surface beam irradiance and PV yield — throughout the morning and
+    afternoon. The bias grows with |H| and with tilt beta. See
+    docs/poa_azimuth_fix_notes.md for the derivation and quantified impact.
+
     Parameters
     ----------
-    df       : DataFrame with GHI, DNI, DHI, solar_elevation_deg, F_shad
+    df       : DataFrame with GHI, DNI, DHI, F_shad, declination_deg,
+               hour_angle_deg (all produced by compute_solar_angles)
     beta_deg : tilt angle (degrees)
+    lat_deg  : site latitude (degrees) — required for the angle-of-incidence
+               formula; NOT optional, since south-facing AoI depends on
+               (phi - beta), not on beta alone.
 
     Returns
     -------
@@ -138,13 +191,15 @@ def compute_POA(df: pd.DataFrame, beta_deg: float) -> pd.DataFrame:
     """
     P     = PARAMS
     beta_r = np.radians(beta_deg)
-    lat_r  = 0  # angle of incidence for south-facing at optimal tilt ≈ small
+    lat_r  = np.radians(lat_deg)
 
-    # Angle of incidence on tilted surface (simplified for south-facing)
-    alpha_r = np.radians(df["solar_elevation_deg"].values)
+    dec_r = np.radians(df["declination_deg"].values)
+    ha_r  = np.radians(df["hour_angle_deg"].values)
+
+    # Angle of incidence on tilted, due-south surface (Duffie & Beckman)
     cos_theta_i = np.clip(
-        np.sin(alpha_r) * np.cos(beta_r)
-        + np.cos(alpha_r) * np.sin(beta_r),
+        np.sin(dec_r) * np.sin(lat_r - beta_r)
+        + np.cos(dec_r) * np.cos(ha_r) * np.cos(lat_r - beta_r),
         0, 1
     )
 
@@ -316,17 +371,32 @@ def compute_ET_reduction(df: pd.DataFrame,
     GHI   = df["GHI"].values
     T2m   = df["T2m"].values
 
-    # Simple hourly ET0 proxy: proportional to GHI during daytime
-    # Normalized so daily sum matches Hargreaves daily total
-    # (full Penman-Monteith would need RH and WS — added in future upgrade)
     GHI_daily = pd.Series(GHI).groupby(
         pd.DatetimeIndex(df.index).date).transform("sum").values
     GHI_daily  = np.where(GHI_daily < 1, 1, GHI_daily)
 
-    # Hargreaves daily ET0 (mm/day) — vectorized
-    doy    = pd.DatetimeIndex(df.index).day_of_year.values.astype(float)
-    B      = 2 * np.pi * (doy - 1) / 365
-    Ra_est = GHI_daily * 3600 / 1e6 / 0.75   # MJ/m²/day
+    # Extraterrestrial radiation Ra (MJ/m²/day) — CORRECTED: standard FAO-56
+    # (Allen et al. 1998) astronomical formula, computed from latitude and
+    # day-of-year only. This is how Hargreaves-Samani is meant to be used:
+    # Ra requires no ground radiation measurement at all, which is the whole
+    # point of the method's minimal-input design.
+    #
+    # PRIOR VERSION (fixed 2026-08): estimated Ra by dividing measured GHI by
+    # an assumed constant clearness index of 0.75 (Ra_est = GHI/0.75). Real
+    # clearness indices at the four study sites range 0.52-0.63 (checked
+    # against the actual TMY data), so that assumption systematically
+    # UNDERESTIMATED Ra — by 15-34% depending on site, worst at the cloudiest
+    # site (Freiburg) — and therefore underestimated ET0 and water savings.
+    doy     = pd.DatetimeIndex(df.index).day_of_year.values.astype(float)
+    lat_r   = np.radians(cfg["lat"])
+    d_r     = 1 + 0.033 * np.cos(2 * np.pi * doy / 365)              # inverse relative Earth-Sun distance
+    delta_r = 0.409 * np.sin(2 * np.pi * doy / 365 - 1.39)           # solar declination (rad)
+    omega_s = np.arccos(np.clip(-np.tan(lat_r) * np.tan(delta_r), -1, 1))  # sunset hour angle (rad)
+    G_sc    = 0.0820   # MJ/m²/min — solar constant
+    Ra_est  = (24 * 60 / np.pi) * G_sc * d_r * (
+        omega_s * np.sin(lat_r) * np.sin(delta_r)
+        + np.cos(lat_r) * np.cos(delta_r) * np.sin(omega_s)
+    )   # MJ/m²/day (same value repeated for every hour within a given day)
 
     T_mean_daily = pd.Series(T2m).groupby(
         pd.DatetimeIndex(df.index).date).transform("mean").values
@@ -337,7 +407,19 @@ def compute_ET_reduction(df: pd.DataFrame,
     T_range      = np.clip(T_max_daily - T_min_daily, 0, None)
 
     ET0_daily_mm = np.clip(
-        0.0023 * Ra_est * (T_mean_daily + 17.8) * T_range**0.5, 0, None)
+        0.0023 * 0.408 * Ra_est * (T_mean_daily + 17.8) * T_range**0.5,
+        0, None)
+    # NOTE: the 0.408 factor converts Ra from MJ/m²/day to mm/day-equivalent
+    # (1 / latent heat of vaporization of water, 2.45 MJ/kg), as required by
+    # the standard Hargreaves-Samani / FAO-56 Eq. 52 formulation. This factor
+    # was MISSING in both the original code and in the first pass of the Ra
+    # fix above — the original code's too-small Ra_est (GHI/0.75 proxy)
+    # partially masked the missing factor by coincidence, producing
+    # plausible-looking but doubly-wrong ET0 values. Discovered via a
+    # physical-plausibility check against the paper's own stated typical
+    # semi-arid ET0 rate of 5-7 mm/day: the first-pass fix produced
+    # ET0_season values equivalent to ~11 mm/day at Konya, which is not
+    # physically plausible for this climate.
 
     # Distribute daily ET0 to hourly proportional to GHI (daytime hours only)
     ET0_hourly = np.where(
@@ -375,7 +457,8 @@ def compute_AD(df: pd.DataFrame,
                V_dig_m3: float,
                HRT_days: float,
                LER_crop: float,
-               scenario: str = "S0") -> dict:
+               scenario: str = "S0",
+               AD_overrides: dict = None) -> dict:
     """
     Compute annual biogas production and digester heat balance.
 
@@ -400,6 +483,16 @@ def compute_AD(df: pd.DataFrame,
     HRT_days : hydraulic retention time (days)
     LER_crop : crop yield ratio (used to scale residue input)
     scenario : S0–S6 (affects BMP multiplier and capture efficiency)
+    AD_overrides : optional dict to override AD parameters for sensitivity /
+                   Monte Carlo analysis without mutating global config.
+                   Recognized keys (all optional): "BMP_ref", "theta_arrhenius",
+                   "eta_cap", "VS_fraction", "manure_VS_fraction". Any key not
+                   supplied falls back to the value in PARAMS/SITES/SCENARIOS,
+                   so AD_overrides=None (default) reproduces prior behavior
+                   exactly. Added in response to peer review: BMP_ref, capture
+                   efficiency, and VS fractions were previously fixed
+                   constants with no sensitivity analysis. See
+                   docs/ad_bmp_sensitivity.md for the Monte Carlo results.
 
     Returns
     -------
@@ -409,6 +502,13 @@ def compute_AD(df: pd.DataFrame,
     P   = PARAMS
     cfg = SITES[site]
     sc  = SCENARIOS[scenario]
+    ov  = AD_overrides or {}
+
+    BMP_ref            = ov.get("BMP_ref",            P["BMP_ref"])
+    theta_arrhenius     = ov.get("theta_arrhenius",     P["theta_arrhenius"])
+    eta_cap             = ov.get("eta_cap",             sc["eta_cap"])
+    VS_fraction         = ov.get("VS_fraction",         cfg["VS_fraction"])
+    manure_VS_fraction  = ov.get("manure_VS_fraction",  cfg["manure_VS_fraction"])
 
     # ── 1. Monthly mean ambient temperature ──────────────────────────────────
     idx       = pd.DatetimeIndex(df.index)
@@ -422,8 +522,8 @@ def compute_AD(df: pd.DataFrame,
     )
 
     # ── 3. Arrhenius BMP correction (Eq. 17) ─────────────────────────────────
-    BMP_T_monthly = P["BMP_ref"] * np.exp(
-        P["theta_arrhenius"] * (T_dig_eff_monthly - P["T_ref_degC"])
+    BMP_T_monthly = BMP_ref * np.exp(
+        theta_arrhenius * (T_dig_eff_monthly - P["T_ref_degC"])
     )
     BMP_T_monthly *= sc["BMP_mult"]    # scenario multiplier (S1 co-digestion)
     BMP_T_avg      = float(BMP_T_monthly.mean())
@@ -434,11 +534,11 @@ def compute_AD(df: pd.DataFrame,
                    * LER_crop
                    * cfg["R_res"]
                    * cfg["DM"]
-                   * cfg["VS_fraction"])
+                   * VS_fraction)
     # VS from cattle manure co-substrate
     VS_manure = (cfg["manure_input_t_ha"] * 1000
                  * cfg["manure_DM"]
-                 * cfg["manure_VS_fraction"])
+                 * manure_VS_fraction)
     VS_input = VS_residues + VS_manure   # total kg VS/ha/yr
 
     # ── 5. OLR check ─────────────────────────────────────────────────────────
@@ -449,7 +549,7 @@ def compute_AD(df: pd.DataFrame,
     CH4_vol_m3 = (VS_input
                   * BMP_T_avg / 1e6         # NmL/gVS → Nm³/kg
                   * 1000                    # gVS → kgVS
-                  * sc["eta_cap"])          # capture efficiency
+                  * eta_cap)                # capture efficiency
 
     # Energy content (kWh/ha/yr)
     E_biogas_kWh = CH4_vol_m3 * P["LHV_CH4_MJ_m3"] / 3.6   # MJ → kWh
@@ -505,7 +605,7 @@ def modules_per_ha(beta_deg: float, d_row_m: float) -> int:
     return max(1, n_rows * n_cols)
 
 
-def reference_pv_kWh(df: pd.DataFrame, beta_deg: float) -> float:
+def reference_pv_kWh(df: pd.DataFrame, beta_deg: float, lat_deg: float) -> float:
     """
     Compute annual PV yield for a dense-pack open-field reference array.
     Used as denominator for LER_PV (Definition A).
@@ -519,9 +619,50 @@ def reference_pv_kWh(df: pd.DataFrame, beta_deg: float) -> float:
     # No shading in reference
     df_ref = df.copy()
     df_ref["F_shad"] = 0.0
-    df_ref = compute_POA(df_ref, beta_deg)
+    df_ref = compute_POA(df_ref, beta_deg, lat_deg)
     df_ref = compute_PV(df_ref, n_ref, f_PV_heat=0.0)
     return float(df_ref["E_PV_kWh"].sum())
+
+
+def eLER_weighted(LER_crop: float,
+                  LER_PV_A: float,
+                  LER_biogas: float,
+                  w_crop: float = 1.0,
+                  w_PV: float = 1.0,
+                  w_bio: float = 1.0) -> float:
+    """
+    Weighted extended Land Equivalent Ratio.
+
+    eLER_w = s*w_crop*LER_crop + s*w_PV*LER_PV_A + s*w_bio*LER_biogas
+    where s = 3 / (w_crop + w_PV + w_bio)
+
+    The scale factor s normalizes weights to sum to 3, so that the equal-weight
+    case (w_crop=w_PV=w_bio=1) reproduces the original unweighted eLER
+    (Definition A) exactly: eLER_w = LER_crop + LER_PV_A + LER_biogas.
+
+    Added in response to peer review: the original eLER sums three
+    heterogeneous ratios (a PAR integral ratio, a PV energy ratio, a biogas
+    energy ratio) with implicit equal weighting and no stated justification.
+    This function makes the weighting explicit and adjustable, so alternative
+    weighting schemes (e.g. economic/revenue-share weighting) can be tested
+    for sensitivity.
+
+    Parameters
+    ----------
+    LER_crop, LER_PV_A, LER_biogas : the three eLER components (Definition A)
+    w_crop, w_PV, w_bio : relative weights (any positive scale; only ratios
+                          between them matter — they are renormalized to sum
+                          to 3 internally)
+
+    Returns
+    -------
+    float : weighted eLER, on the same 0-3ish scale as the original metric
+    """
+    w_sum = w_crop + w_PV + w_bio
+    if w_sum <= 0:
+        raise ValueError("Weights must sum to a positive number.")
+    s = 3.0 / w_sum
+    return s * w_crop * LER_crop + s * w_PV * LER_PV_A + s * w_bio * LER_biogas
 
 
 def eLER_objective(x: np.ndarray,
@@ -529,7 +670,11 @@ def eLER_objective(x: np.ndarray,
                    site: str,
                    scenario: str = "S0",
                    PAR_sat: float = 174.0,
-                   return_full: bool = False):
+                   return_full: bool = False,
+                   w_crop: float = 1.0,
+                   w_PV: float = 1.0,
+                   w_bio: float = 1.0,
+                   AD_overrides: dict = None):
     """
     Main objective function for Differential Evolution.
 
@@ -541,10 +686,20 @@ def eLER_objective(x: np.ndarray,
     scenario : AD scenario (S0–S6)
     PAR_sat  : crop light saturation (W/m²)
     return_full : if True, return full results dict instead of scalar
+    w_crop, w_PV, w_bio : component weights for eLER_weighted (default 1,1,1
+                          reproduces the original unweighted eLER exactly —
+                          fully backward compatible). Pass non-default weights
+                          to optimize a weighted objective (e.g. economic
+                          revenue-share weighting) for sensitivity analysis.
+    AD_overrides : optional dict passed through to both compute_AD() calls
+                  (design AD unit and reference AD unit) for AD parameter
+                  sensitivity / Monte Carlo analysis. See compute_AD's
+                  docstring for recognized keys. Default None reproduces
+                  prior behavior exactly.
 
     Returns
     -------
-    float : eLER (Definition A) — maximized by DE
+    float : eLER (Definition A, or weighted variant) — maximized by DE
             returns DE_SETTINGS["infeasibility_penalty"] if constraints violated
     """
     beta_deg, d_row_m, H_m_m, V_dig_m3, HRT_days, f_PV_heat = x
@@ -569,9 +724,11 @@ def eLER_objective(x: np.ndarray,
     PENALTY = DE_SETTINGS["infeasibility_penalty"]
 
     # ── Step 1: Solar geometry + shading ────────────────────────────────────
-    df_s = compute_solar_angles(df, SITES[site]["lat"])
+    site_lat = SITES[site]["lat"]
+    site_lon = SITES[site]["lon"]
+    df_s = compute_solar_angles(df, site_lat, site_lon)
     df_s = compute_shading(df_s, beta_deg, d_row_m, H_m_m)
-    df_s = compute_POA(df_s, beta_deg)
+    df_s = compute_POA(df_s, beta_deg, site_lat)
 
     # ── Step 2: PV model ─────────────────────────────────────────────────────
     n_mod = modules_per_ha(beta_deg, d_row_m)
@@ -588,7 +745,7 @@ def eLER_objective(x: np.ndarray,
     water_res = compute_ET_reduction(df_s, site)
 
     # ── Step 5: AD model ─────────────────────────────────────────────────────
-    ad_res = compute_AD(df_s, site, V_dig_m3, HRT_days, LER_crop, scenario)
+    ad_res = compute_AD(df_s, site, V_dig_m3, HRT_days, LER_crop, scenario, AD_overrides)
 
     # OLR feasibility constraint
     OLR = ad_res["OLR_kgVS_m3d"]
@@ -605,7 +762,7 @@ def eLER_objective(x: np.ndarray,
 
     # ── Step 6: eLER (Definition A) ──────────────────────────────────────────
     # LER_PV (Def A): APV PV yield / reference open-field dense-pack yield
-    E_PV_ref_kWh = reference_pv_kWh(df_s, beta_deg)
+    E_PV_ref_kWh = reference_pv_kWh(df_s, beta_deg, site_lat)
     LER_PV_A     = E_PV_sold_kWh / max(E_PV_ref_kWh, 1)
 
     # LER_PV (Def B): GCR — for reporting only
@@ -619,17 +776,25 @@ def eLER_objective(x: np.ndarray,
     # scale with LER_crop=1.0 (open-field reference)
     # This isolates the APV shading effect on crop-residue biogas
     ad_ref     = compute_AD(df_s, site, V_dig_m3, HRT_days,
-                            LER_crop=1.0, scenario=scenario)
+                            LER_crop=1.0, scenario=scenario, AD_overrides=AD_overrides)
     E_bio_ref  = ad_ref["E_biogas_kWh_ha"]
     # LER_biogas: ratio of APV biogas to open-field biogas
     # < 1 when APV shading reduces crop residues
     # Manure is identical in both — only residues differ
     LER_biogas = E_biogas_kWh / max(E_bio_ref, 1)
 
+    # Canonical unweighted eLER (Definition A) — always computed, always
+    # reported, for continuity with the primary metric used throughout the
+    # manuscript.
     eLER = LER_crop + LER_PV_A + LER_biogas
 
+    # Weighted eLER — identical to `eLER` when w_crop=w_PV=w_bio=1 (default).
+    # This is the value actually optimized when non-default weights are
+    # supplied; otherwise it equals `eLER`.
+    eLER_w = eLER_weighted(LER_crop, LER_PV_A, LER_biogas, w_crop, w_PV, w_bio)
+
     if not return_full:
-        return float(eLER)
+        return float(eLER_w)
 
     # ── Full results dict (used after optimization) ───────────────────────────
     return {
@@ -656,6 +821,8 @@ def eLER_objective(x: np.ndarray,
         "LER_PV_defB": round(LER_PV_B,  3),
         "LER_biogas":  round(LER_biogas, 3),
         "eLER_defA":   round(eLER,       3),
+        "eLER_weighted": round(eLER_w,   3),
+        "weights_crop_PV_bio": (w_crop, w_PV, w_bio),
         "LER_2C":      round(LER_crop + LER_PV_A, 3),
         # Water (corrected)
         **water_res,

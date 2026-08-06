@@ -1,0 +1,125 @@
+name: tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run unit tests
+        run: pytest tests/ -v
+
+  # Notebook/export drift check — added in response to peer review (item F).
+  #
+  # This job checks that notebooks/simulation_functions.py hasn't drifted
+  # from notebooks/02_simulation.ipynb (see below for how). It does NOT
+  # execute the notebook pipeline against real data — for that, see the
+  # `pytest` job above, which now also runs tests/test_notebook_smoke.py:
+  # a genuine end-to-end run of the full six-model pipeline against a real
+  # 720-hour PVGIS-SARAH3 data slice committed at
+  # data/ci_sample/hourly_Konya_sample.csv (see that file's header comment
+  # and tests/test_notebook_smoke.py's module docstring for why this
+  # approach was chosen over driving a live Jupyter kernel in CI).
+  #
+  # This job's own scope is narrower than full pipeline execution:
+  # 02_simulation.ipynb regenerates simulation_functions.py via
+  # inspect.getsource() on live function objects, but Cell 1 requires the
+  # full PVGIS TMY CSVs (outputs/csv/hourly_{site}.csv) to even load, which
+  # are too large to commit and aren't available in a bare CI checkout. So
+  # this job checks source-level consistency (below) rather than executing
+  # the notebook itself; real-data execution is covered separately by the
+  # pytest job's test_notebook_smoke.py, as described above.
+  #
+  # What this job DOES check, without needing any climate data or a running
+  # kernel: it extracts the function-definition and export-cell source
+  # directly from the notebook JSON, executes JUST those cells (pure
+  # function definitions — no data required), regenerates
+  # simulation_functions.py in a temp directory, and diffs it against the
+  # version checked into notebooks/. This catches the most common failure
+  # mode in practice: someone edits a function in the notebook and forgets
+  # to re-run the export cell, so the checked-in .py silently drifts from
+  # the notebook that is supposed to be its source of truth.
+  notebook-export-drift-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nbformat
+
+      - name: Regenerate simulation_functions.py from notebook and diff
+        run: |
+          python - <<'PYEOF'
+          import json, sys, difflib
+          from pathlib import Path
+
+          nb_path = Path("notebooks/02_simulation.ipynb")
+          checked_in_path = Path("notebooks/simulation_functions.py")
+
+          nb = json.loads(nb_path.read_text())
+
+          # Cells containing only function/constant definitions (no data
+          # loading, no unit tests) — safe to execute without real climate
+          # data. Update these indices if the notebook structure changes.
+          DEF_CELL_INDICES = [2, 3, 4, 5, 6]
+          EXPORT_CELL_INDEX = 8
+
+          namespace = {}
+          exec("import numpy as np", namespace)
+          exec("import pandas as pd", namespace)
+          sys.path.insert(0, "notebooks")
+          exec("from config_00 import SITES, PARAMS, DE_SETTINGS, SCENARIOS", namespace)
+
+          for idx in DEF_CELL_INDICES:
+              src = "".join(nb["cells"][idx]["source"])
+              exec(src, namespace)
+
+          export_src = "".join(nb["cells"][EXPORT_CELL_INDEX]["source"])
+          export_src_ci = export_src.replace(
+              'out_path = Path.cwd() / "simulation_functions.py"',
+              'out_path = Path("/tmp/simulation_functions_regenerated.py")'
+          )
+          exec(export_src_ci, namespace)
+
+          regenerated = Path("/tmp/simulation_functions_regenerated.py").read_text()
+          checked_in = checked_in_path.read_text()
+
+          if regenerated != checked_in:
+              diff = "\n".join(difflib.unified_diff(
+                  checked_in.splitlines(), regenerated.splitlines(),
+                  fromfile="checked-in simulation_functions.py",
+                  tofile="regenerated from notebook",
+                  lineterm=""
+              ))
+              print(diff)
+              print("\nERROR: notebooks/simulation_functions.py is out of sync "
+                    "with notebooks/02_simulation.ipynb. Re-run the notebook's "
+                    "export cell and commit the result.")
+              sys.exit(1)
+          print("OK: simulation_functions.py matches the notebook export exactly.")
+          PYEOF

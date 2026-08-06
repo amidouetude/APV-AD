@@ -15,18 +15,18 @@ supported by the validated simulation results.
 
 \textbf{C1 --- The eLER framework confirms multi-output land
 	productivity at all four climate zones.}
-Optimised eLER values of 1.653 (Konya), 1.659 (Almer\'{i}a), 1.725
-(Ouagadougou), and 1.758 (Freiburg) confirm that integrated APV--AD
+Optimised eLER values of 1.641 (Konya), 1.657 (Almer\'{i}a), 1.723
+(Ouagadougou), and 1.764 (Freiburg) confirm that integrated APV--AD
 systems use land more productively than three separate monocultures
-at every site. The two-component $LER_{\text{2C}}$ ranges from 1.031
-to 1.089 --- all sites exceed 1.0, confirming that the agrivoltaic
+at every site. The two-component $LER_{\text{2C}}$ ranges from 1.030
+to 1.088 --- all sites exceed 1.0, confirming that the agrivoltaic
 system alone outperforms two separate monocultures even without the
 biogas contribution.
 
 \textbf{C2 --- eLER is non-monotone with solar resource, driven by
 	PAR saturation.}
 Freiburg, with the lowest annual GHI (1\,150\,kWh\,m$^{-2}$),
-achieves the highest eLER (1.758), exceeding Konya despite 43\% more
+achieves the highest eLER (1.764), exceeding Konya despite 43\% more
 solar irradiance. The mechanism is PAR saturation: at high-irradiance
 sites, open-field PAR frequently exceeds the tomato light saturation
 point (\SI{174}{W\,m^{-2}}), inflating the $LER_{\text{crop}}$
@@ -45,14 +45,16 @@ a factor of 1.8 and mean annual temperature varying by
 17\,\si{\celsius}. This confirms that the eLER landscape has its
 global maximum at the physical constraint boundary at all study
 climates. Any mechanical access requirement beyond the minimum
-physical clearance imposes an eLER penalty of approximately
-0.04--0.06 per additional metre of row spacing --- a design
+physical clearance imposes an eLER penalty (approximately
+0.04--0.06 per additional metre of row spacing in the earlier
+version of the model; see Section~\ref{sec:discussion_boundary}
+for a caveat on this figure) --- a design
 trade-off that must be explicitly evaluated for each farming
 system context.
 
 \textbf{C4 --- Thermal self-sufficiency is confirmed at all sites
 	with negligible heating allocation.}
-ESR values of 533--1\,413 at the optimised designs confirm that
+ESR values of 453--2\,000 at the optimised designs confirm that
 5\% of annual PV output is more than sufficient to cover all
 digester heating demand at every site and in every season, including
 January at Freiburg (winter T$_{\min} \approx -12$\,\si{\celsius}).
@@ -62,11 +64,11 @@ economic scenarios.
 
 \textbf{C5 --- The carbon credit scenario (S6) is the dominant
 	economic strategy across all climate zones and market contexts.}
-S6 raises IRR by 1.7--5.0 percentage points above the baseline
-at all sites, achieving 13.5\% (Konya), 26.3\% (Almer\'{i}a),
-33.1\% (Ouagadougou), and 19.8\% (Freiburg). Ouagadougou provides
-the strongest investment case, with a payback period of 3.0 years
-and CO$_2$ avoidance of 951\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$,
+S6 raises IRR by 1.7--4.6 percentage points above the baseline
+at all sites, achieving 12.7\% (Konya), 23.0\% (Almer\'{i}a),
+29.9\% (Ouagadougou), and 17.6\% (Freiburg). Ouagadougou provides
+the strongest investment case, with a payback period of 3.3 years
+and CO$_2$ avoidance of 861\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$,
 driven by the combination of high electricity price, optimal
 Arrhenius BMP at 33.2\,\si{\celsius}, and high grid emission
 factor. Extending carbon credit mechanisms to smallholder APV--AD
@@ -79,14 +81,14 @@ deployment.
 Reporting $LER_{\text{water}}$ with the annual ET$_0$ denominator
 --- as in prior literature --- underestimates the agronomic water
 benefit by a factor of 1.3$\times$ (Konya, 189-day season) to
-3.9$\times$ (Ouagadougou, 122-day season). The corrected
-growing-season values of 15.5--22.8\% represent 152--383\,mm of
+3.5$\times$ (Ouagadougou, 122-day season). The corrected
+growing-season values of 15.6--22.4\% represent 81--159\,mm of
 irrigation water saved per growing season --- a quantity equivalent
 to extending the growing season by 2--4 weeks or irrigating an
-additional 15--25\% of land area. This correction is particularly
+additional 16--22\% of land area. This correction is particularly
 consequential for Sub-Saharan Africa, where prior annual-denominator
 values of $\sim$4\% do not justify irrigation infrastructure
-investment, while the corrected seasonal value of 15.5\% does.
+investment, while the corrected seasonal value of 15.6\% does.
 
 \textbf{C7 --- All results are conservative lower bounds.}
 Both model validations exhibit systematic conservative bias: the crop

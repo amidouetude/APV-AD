@@ -120,7 +120,14 @@ required row spacing represents a deviation from the eLER optimum.
 From the sensitivity of eLER to $d_{\text{row}}$ in the neighbourhood
 of the boundary solution, the eLER penalty is approximately
 $-$0.04 to $-$0.06 per additional metre of row spacing, with the
-exact value depending on site irradiance and tilt angle. A mechanised
+exact value depending on site irradiance and tilt angle.
+\textit{[This sensitivity figure was not re-verified against the
+corrected model in the present revision and should be re-computed
+from a $d_{\text{row}}$ sweep before the manuscript is finalised;
+it was not affected by any of the six corrections described in
+this section but was also not directly re-derived from
+Table~\ref{tab:optimal}'s updated design point.]}
+A mechanised
 farming system requiring $d_{\text{row}} = \SI{5.0}{m}$ instead of
 \SI{3.03}{m} would sacrifice approximately 0.08--0.12\,eLER units
 --- a penalty of 5--7\% relative to the boundary optimum.
@@ -179,13 +186,13 @@ by demonstrating that the boundary convergence is climate-independent
 \label{sec:discussion_eler}
 % ---------------------------------------------------------------------------
 
-\hspace{1cm}Three structural properties of the eLER metric require
+\hspace{1cm}Four structural properties of the eLER metric require
 explicit interpretation to avoid misreading the numerical results
 reported in Section~\ref{sec:results_eler}.
 
 \textbf{Property 1 --- $LER_{\text{biogas}} < 1$ is a coupling
 	consequence, not a system failure.}
-The result $LER_{\text{biogas}} = 0.615$--$0.727$ at all sites
+The result $LER_{\text{biogas}} = 0.611$--$0.729$ at all sites
 means that the APV--AD system produces less biogas than a standalone
 reference AD unit processing the same land area under open-field
 conditions. This is not a design failure or an inefficiency of the
@@ -233,21 +240,143 @@ boundary conditions as the integrated system.
 
 \textbf{Property 3 --- ESR $\gg$ 1 is a design identity, not a
 	performance finding.}
-ESR values of 533--1\,413 at the optimised designs reflect the
+ESR values of 453--2\,000 at the optimised designs reflect the
 fundamental size mismatch between the PV array (which generates
 electricity at the scale of MWh\,ha$^{-1}$\,yr$^{-1}$) and the
 small farm-scale digester (which demands heat at the scale of
 MWh\,ha$^{-1}$\,yr$^{-1}$ --- the same unit but three orders of
 magnitude smaller in absolute value). With $V_{\text{dig}}^* =
-3.10$--$4.14$\,m$^3$ and heat demand of only
-1.12--2.08\,MWh\,ha$^{-1}$, even 5\% of PV output provides
-55--79\,MWh of thermal energy --- 27--70 times the annual heat
+2.64$--$4.32$\,m$^3$ and heat demand of only
+0.72--2.26\,MWh\,ha$^{-1}$, even 5\% of PV output provides
+50--72\,MWh of thermal energy --- 23--100 times the annual heat
 demand. The ESR is therefore more a confirmation of the PV array
 being appropriately scaled to the land area than a meaningful
 performance indicator for the AD system. Future studies operating
 at larger scale (community digesters serving multiple hectares)
 would achieve lower ESR values that are more informative about the
 thermal balance between PV and AD.
+
+\textbf{Property 4 --- Equal component weighting is the
+	methodologically consistent choice, not an unexamined default.}
+Equation~\ref{eq:eler} sums $LER_{\text{crop}}$, $LER_{\text{PV}}$,
+and $LER_{\text{biogas}}$ with implicit equal weight. Because each
+component is already a ratio to its own reference system --- the
+same normalisation the classical two-component LER uses to make
+physically incommensurable outputs (kg of crop, kWh of electricity,
+m$^3$ of biogas) comparable as land-equivalent fractions --- equal
+weighting is not an unexamined default but the choice consistent
+with that normalisation logic. Re-weighting the three components by
+their \textit{raw physical magnitude} would reintroduce exactly the
+scale problem the ratio normalisation is designed to solve, since
+PV output exceeds crop and biogas output by 50--100$\times$ in raw
+energy or monetary terms at every site studied here (e.g.\ at
+Freiburg, PV output is \SI{938}{MWh\,ha^{-1}} versus a crop
+energy-content equivalent of only \SI{9.6}{MWh\,ha^{-1}}).
+
+This claim was tested directly rather than asserted. Two
+magnitude-based alternative weighting schemes were constructed ---
+an \textit{economic} scheme (weights proportional to each
+component's share of Scenario~S0 gross revenue) and an
+\textit{energy-content} scheme (weights proportional to each
+component's physical energy content, converting crop yield to its
+caloric equivalent) --- and applied to the optimised design at each
+site. Table~\ref{tab:elerweighting} summarises the effect on the
+cross-site eLER ranking.
+
+\begin{table}[H]
+	\caption{Sensitivity of the eLER site ranking to component
+		weighting scheme, evaluated at each site's optimised design
+		(Table~\ref{tab:optimal}). Equal weighting is the primary
+		metric used throughout this paper (Table~\ref{tab:eLER}).}
+	\label{tab:elerweighting}
+	\centering
+	\begin{tabular}{ll}
+		\toprule
+		\textbf{Weighting scheme} & \textbf{Site ranking (highest eLER first)} \\
+		\midrule
+		Equal (primary metric)   & Freiburg $>$ Ouagadougou $>$ Almer\'{i}a $>$ Konya \\
+		Energy-content           & Ouagadougou $>$ Almer\'{i}a $>$ Konya $>$ Freiburg \\
+		Economic (revenue-share) & Ouagadougou $>$ Almer\'{i}a $>$ Freiburg $>$ Konya \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Both magnitude-based schemes assign PV a normalised weight of
+approximately 2.7--3.0 out of 3 at every site --- effectively
+collapsing eLER to a PV-only metric --- and both displace Freiburg
+from the top rank, with the energy-content scheme placing it last
+despite its highest equal-weighted eLER (Table~\ref{tab:eLER}).
+This confirms the ranking sensitivity is not merely hypothetical.
+However, the \textit{design} recommendations of this study are
+materially more robust than the ranking: re-optimising the full
+six-variable Differential Evolution problem under economic
+weighting reproduces the same boundary convergence on row spacing
+and module height (Section~\ref{sec:results_optimal}) at every
+site, with optimal tilt angles shifting by less than 1$^{\circ}$
+from the equal-weighted solution. Because PV revenue dominates
+under any economically-motivated weighting, ``maximise PV density''
+remains close to optimal regardless of the exact weight assigned to
+the smaller crop and biogas terms.
+
+The appropriate reading of this result is not that eLER's site
+ranking is fragile in a way that undermines the metric, but that
+ranking sites by a magnitude-weighted composite is a poor fit for a
+LER-family metric specifically: doing so discards the very
+information the ratio normalisation was constructed to preserve.
+eLER, like the classical two-component LER before it, is a
+\textit{decision-support} metric reflecting an explicit modelling
+choice about how to compare heterogeneous land-use outputs --- not
+a universal welfare measure with one objectively correct weighting.
+Equal weighting is defended here as the choice consistent with the
+metric's own normalisation logic and is retained as the primary
+metric on that basis, but a different decision context (for example,
+a food-security policy analysis that deliberately up-weights
+$LER_{\text{crop}}$, or an investor analysis that deliberately
+weights by revenue) could justify a different, explicitly-stated
+weighting for its own purposes. The PAR-saturation non-monotonicity
+(Finding~C2) and the boundary-convergence result (Finding~C3) are
+reported under equal weighting as the primary metric, with the
+ranking's sensitivity to alternative schemes disclosed here as a
+scope limitation of that choice rather than treated as a threat to
+the paper's structural conclusions. Full weighting derivations and
+additional detail are provided in the supplementary sensitivity
+analysis (\texttt{docs/eLER\_weighting\_sensitivity.md}).
+
+\textbf{Beyond the scalar optimum: a Pareto perspective.} Property~4
+frames eLER as one explicit, defensible decision rule among several;
+Section~\ref{sec:optimizer} (Multi-Objective Extension) noted that
+the scalar objective can be replaced by a bi-objective problem
+maximising eLER and $LER_{\text{water}}$ jointly via NSGA-II. Running
+this bi-objective search for Konya (50 solutions, 80 generations,
+\texttt{pymoo}) makes the trade-off concrete rather than abstract.
+Figure~\ref{fig:pareto} shows the resulting Pareto front: eLER and
+$LER_{\text{water}}$ trade off nearly linearly across the feasible
+design space, from (eLER $= 1.20$, $LER_{\text{water}} = 36.1\%$) at
+the water-maximising end to (eLER $= 1.64$, $LER_{\text{water}} =
+18.9\%$) at the eLER-maximising end. The single-objective optimum
+reported in Table~\ref{tab:eLER} sits exactly at this second extreme
+--- confirming the scalar optimizer is not leaving an easy joint
+improvement on the table, but also making explicit that it is one
+specific point on a continuum, not the only defensible design. A
+water-stressed smallholder context (Section~\ref{sec:results_water})
+might reasonably trade roughly 0.1 eLER units for several percentage
+points of additional $LER_{\text{water}}$; a context prioritising
+maximum land-use productivity would not. This is precisely the kind
+of design choice a decision-support metric should expose rather than
+resolve internally, reinforcing Property~4's framing.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figures/fig10_pareto_eler_water.png}
+	\caption{Pareto front between eLER (Definition~A) and
+		$LER_{\text{water}}$ (growing-season, Equation~\ref{eq:lerwater})
+		for Konya, from a bi-objective NSGA-II search (50 solutions,
+		80 generations) over the same six-dimensional design space used
+		for the primary scalar optimization. The dotted line marks the
+		scalar eLER optimum reported in Table~\ref{tab:eLER}, which
+		coincides with the eLER-maximising end of the front.}
+	\label{fig:pareto}
+\end{figure}
 
 \textbf{Definition A versus Definition B: when to use each.}
 Definition~A ($LER_{\text{PV}}$ referenced to a dense-pack
@@ -258,11 +387,11 @@ monocultures. Definition~B ($LER_{\text{PV}} \equiv GCR$) is
 appropriate only for literature comparison with studies that have
 used the circular reference, and its numerical values should always
 be flagged as such. The difference between the two definitions is
-0.031--0.032 in $LER_{\text{PV}}$ and 0.031--0.032 in eLER at the
+0.029--0.033 in $LER_{\text{PV}}$ and 0.029--0.033 in eLER at the
 optimised designs of this study (Table~\ref{tab:eLER}), which is
-small relative to the between-site eLER variation (0.105) but
+small relative to the between-site eLER variation (0.123) but
 non-negligible relative to the between-site $LER_{\text{crop}}$
-variation (0.034). Standardisation of the PV reference definition
+variation (0.041). Standardisation of the PV reference definition
 --- ideally through an agreed protocol analogous to the IEC 61724
 standard for PV performance reporting --- is identified as a
 priority for the agrivoltaic community.
@@ -274,38 +403,38 @@ priority for the agrivoltaic community.
 
 \hspace{1cm}The 4E analysis reveals a wide range of economic
 performance across the four sites, from strongly viable
-(Ouagadougou, IRR = 31.1\%) to marginal but positive (Konya,
-IRR = 11.8\% against an 8\% discount rate). Three policy-relevant
+(Ouagadougou, IRR = 28.1\%) to marginal but positive (Konya,
+IRR = 11.0\% against an 8\% discount rate). Three policy-relevant
 implications emerge from the economic results.
 
 \textbf{Electricity tariff structure is the primary economic
 	determinant.} The dominant revenue stream at all four sites is PV
-electricity sales, which accounts for 73--84\% of gross revenue
+electricity sales, which accounts for 92--96\% of gross revenue
 under Scenario S0. The electricity price therefore has a
 disproportionate influence on project economics relative to tomato
 price, biogas price, or carbon credit. At Konya, the low Turkish
 electricity tariff (\$0.06\,kWh$^{-1}$) is the binding constraint
-on IRR: with the same PV output as Almer\'{i}a (which also receives
-approximately 1\,500\,MWh\,ha$^{-1}$\,yr$^{-1}$ at optimal design),
-Konya generates 33\% less PV revenue simply because the tariff is
-33\% lower (\$0.06 vs.\ \$0.09\,kWh$^{-1}$). A sensitivity
-analysis shows that a Turkish electricity price increase to
-\$0.09\,kWh$^{-1}$ --- consistent with the regional trend as
+on IRR: with a broadly comparable PV output to Almer\'{i}a
+(1\,295 vs.\ 1\,386\,MWh\,ha$^{-1}$\,yr$^{-1}$ at optimal design),
+Konya generates disproportionately less PV revenue simply because
+the tariff is 33\% lower (\$0.06 vs.\ \$0.09\,kWh$^{-1}$). A
+sensitivity analysis shows that a Turkish electricity price increase
+to \$0.09\,kWh$^{-1}$ --- consistent with the regional trend as
 fossil fuel subsidies are progressively reduced --- would raise
-Konya's IRR to approximately 16\%, comparable to Freiburg and
-well above the discount rate. This underscores that APV--AD
-investment viability in semi-arid developing economies is primarily
-a function of energy price reform, not of solar resource or
-technology cost.
+Konya's IRR to approximately 18\%, exceeding Freiburg's current
+IRR (13.0\%) and well above the discount rate. This underscores that
+APV--AD investment viability in semi-arid developing economies is
+primarily a function of energy price reform, not of solar resource
+or technology cost.
 
 \textbf{The carbon credit scenario (S6) is the dominant economic
 	strategy and should be prioritised in policy design.} S6 raises
-IRR by 1.7--5.0 percentage points above S0 at all sites, with the
-largest absolute improvement at Freiburg (+5.0\,pp) driven by the
+IRR by 1.7--4.6 percentage points above S0 at all sites, with the
+largest absolute improvement at Freiburg (+4.6\,pp) driven by the
 EU ETS price (\$65\,tCO$_2^{-1}$). At Ouagadougou and Konya,
 where voluntary carbon market prices are much lower
 (\$12--15\,tCO$_2^{-1}$), the S6 improvement is smaller in
-absolute terms (+2.0 and +1.7\,pp respectively) but still
+absolute terms (+1.9 and +1.7\,pp respectively) but still
 meaningful relative to the discount rate. The policy implication
 is that extending carbon credit mechanisms --- whether through
 the Article 6 Paris Agreement framework, Gold Standard
@@ -313,24 +442,24 @@ certification, or national carbon pricing --- to smallholder
 agrivoltaic installations in Sub-Saharan Africa and Central
 Asia would provide a material improvement in project economics
 without requiring technology subsidies or feed-in tariff reform.
-Given that the 951\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$ avoided at
+Given that the 861\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$ avoided at
 Ouagadougou represents a significant fraction of the annual per
 capita CO$_2$ budget compatible with 1.5\,\si{\celsius} pathways,
 this mechanism also aligns economic incentives with climate goals.
 
 \textbf{Ouagadougou provides the strongest investment case and the
 	most compelling argument for APV--AD deployment in Sub-Saharan Africa.}
-An IRR of 31.1\% under S0 and 33.1\% under S6, combined with a
-payback of 3.0--3.2\,yr, makes the Ouagadougou configuration
+An IRR of 28.1\% under S0 and 29.9\% under S6, combined with a
+payback of 3.3--3.5\,yr, makes the Ouagadougou configuration
 attractive even at the 10\% discount rate that reflects the higher
 cost of capital in developing economies. Three structural advantages
 drive this result: the highest electricity price in the study
 (\$0.12\,kWh$^{-1}$, reflecting the true cost of diesel generation),
-the highest biogas yield (5.99\,MWh\,ha$^{-1}$, from the optimal
+the highest biogas yield (5.98\,MWh\,ha$^{-1}$, from the optimal
 Arrhenius BMP at 33.2\,\si{\celsius} average digester temperature),
-and the largest CO$_2$ avoidance (951\,tCO$_2$\,ha$^{-1}$, from the
+and the largest CO$_2$ avoidance (861\,tCO$_2$\,ha$^{-1}$, from the
 high grid emission factor of 0.632\,tCO$_2$\,MWh$^{-1}$). The small
-digester volume (3.52\,m$^3$) and low AD CAPEX (\$2\,816) mean that
+digester volume (2.64\,m$^3$) and low AD CAPEX (\$2\,112) mean that
 the biogas revenue stream is essentially free cash flow on top of
 the PV investment. For development finance institutions seeking
 bankable climate-positive agricultural projects in the Sahel,
@@ -338,23 +467,26 @@ the APV--AD model at Ouagadougou-type sites offers a rare
 combination of high IRR, short payback, large CO$_2$ impact,
 and food security co-benefit.
 
-\textbf{LCOE is competitive with utility-scale solar at the best
-	sites.} LCOE$_{\text{PV}}$ of \$0.034\,kWh$^{-1}$ at Almer\'{i}a
-approaches the IRENA 2023 global utility-scale solar benchmark of
-\$0.049\,kWh$^{-1}$, and the \$0.043--0.045\,kWh$^{-1}$ range
-at the other three sites remains within 10--20\% of this benchmark.
-The premium relative to utility-scale ground-mount reflects two
-factors: the elevated APV structure (\$0.63\,W$_p^{-1}$ vs.\
-\$0.45\,W$_p^{-1}$ for ground-mount~\citep{irena2022}) and the
-inter-row shading loss at GCR = 69--72\%, which reduces annual
+\textbf{LCOE is at or below utility-scale solar at every site, not
+	just the best ones.} LCOE$_{\text{PV}}$ ranges from
+\$0.038\,kWh$^{-1}$ at Almer\'{i}a to \$0.049\,kWh$^{-1}$ at
+Freiburg, against the IRENA 2023 global utility-scale solar
+benchmark of \$0.049\,kWh$^{-1}$. Almer\'{i}a is 22\% below the
+benchmark; Konya (\$0.047\,kWh$^{-1}$) and Ouagadougou
+(\$0.048\,kWh$^{-1}$) are 2--4\% below it; Freiburg is essentially
+at parity. No site exceeds it, despite the elevated APV structure
+(\$0.63\,W$_p^{-1}$ vs.\ \$0.45\,W$_p^{-1}$ for
+ground-mount~\citep{irena2022}) carrying a 40\% CAPEX premium and
+the inter-row shading loss at GCR = 69--72\% reducing annual
 specific yield below what a dense-pack unshaded array would
-achieve. However, this LCOE premium purchases the additional
-outputs of crop production, water savings, and biogas --- none
-of which are captured in the single-output LCOE metric. A
-full value-stack LCOE that credits all outputs would be lower
-than the PV-only LCOE at all four sites, and likely competitive
-with or below the utility-scale benchmark at Ouagadougou and
-Almer\'{i}a.
+achieve. This is a stronger result than the PV-only LCOE metric
+itself suggests: it is a single-output comparison that ignores
+crop production, water savings, and biogas, none of which are
+credited here. A full value-stack LCOE that credits all outputs
+would be lower than the PV-only LCOE at every site, and since the
+PV-only LCOE already clears the utility-scale benchmark everywhere,
+the full value-stack LCOE would clear it with room to spare at all
+four sites, not only at Ouagadougou and Almer\'{i}a.
 
 % ---------------------------------------------------------------------------
 \subsection{Limitations and Future Work}
@@ -363,6 +495,51 @@ Almer\'{i}a.
 
 \hspace{1cm}Six limitations of the present modelling approach are
 identified, each motivating specific future research directions.
+Table~\ref{tab:limitations} summarises them for quick reference;
+full discussion of each follows.
+
+\begin{table}[H]
+	\caption{Summary of model limitations. ``Affects eLER?'' indicates
+		whether the limitation propagates to the headline eLER metric
+		(Table~\ref{tab:eLER}) or is confined to a secondary output.}
+	\label{tab:limitations}
+	\centering
+	\small
+	\begin{tabular}{p{1.6cm}p{4.6cm}p{2.7cm}p{2.1cm}p{2.6cm}}
+		\toprule
+		\textbf{ID} & \textbf{Limitation} & \textbf{Quantified impact}
+		& \textbf{Affects eLER?} & \textbf{Mitigation status} \\
+		\midrule
+		L1 & Single-exponential Arrhenius BMP model underestimates
+		methane yield at 20--30\,\si{\celsius} & $-$30 to $-$52\%
+		BMP bias; $\pm$43--45\% 90\% CI from parameter uncertainty
+		& No ($\pm$2--2.4\%) & Documented; Monte Carlo
+		sensitivity run (\texttt{docs/ad\_bmp\_}\texttt{sensitivity.md}) \\
+		L2 & Single-crop scope (tomato only); PAR-saturation
+		mechanism is crop-specific & Direction/magnitude of
+		Finding~C2 may differ for other crops & Yes (structural) &
+		Not yet run; requires only a $PAR_{\text{sat}}$ sweep \\
+		L3 & Hargreaves--Samani ET$_0$ omits humidity/wind; fixed
+		$\alpha_{\text{shade}}$ & $\pm$10\% vs.\ FAO-56
+		Penman-Monteith; $\pm$25\% via $\alpha_{\text{shade}}$ range
+		& No & Documented (\texttt{docs/et0\_ra\_}\texttt{fix\_notes.md});
+		Penman-Monteith upgrade not yet implemented \\
+		L4 & No digestate-to-crop nutrient feedback modelled & Digestate
+		N credit (S4) only; yield feedback (10--25\%) not modelled &
+		Yes (would raise it) & Deferred (Gap G6); requires
+		multi-season field data \\
+		L5 & Static economic parameters (no price trajectories) &
+		Konya's S0 IRR margin is narrow (3.0\,pp) and price-sensitive
+		& No (economics only) & Not yet run; Monte Carlo price
+		model proposed \\
+		L6 & Single-hectare normalisation; ESR (453--2\,000) reflects
+		smallholder scale & Larger-scale CAPEX/ESR would differ
+		non-linearly & No (scale only) & Not yet run; 1--50\,ha
+		scale-up proposed \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
 
 \textbf{L1 --- BMP temperature model accuracy (V2 MAPE = 26.9\%).}
 The single-exponential Arrhenius model systematically underestimates
@@ -379,7 +556,15 @@ multi-temperature BMP datasets now available for
 tomato residues and cattle manure~\citep{feng2013, pilarski2025}.
 Until such a model is validated, all biogas yield and economic
 results for cold-climate sites should be treated as conservative
-lower bounds, with the true values likely 15--30\% higher.
+lower bounds, with the true values likely 15--30\% higher. A Monte
+Carlo sensitivity analysis over literature-reported ranges for
+$BMP_{\text{ref}}$, capture efficiency, and volatile-solids
+fractions (500 draws per site) shows this parameter uncertainty
+propagates to a $\pm$43--45\% 90\% confidence interval on absolute
+biogas energy, while eLER itself remains within $\pm$2--2.4\% ---
+robust because $LER_{\text{biogas}}$ is a ratio referenced against a
+standalone AD unit using the same sampled parameters, which largely
+cancels the shared uncertainty (\texttt{docs/ad\_bmp\_sensitivity.md}).
 
 \textbf{L2 --- Single-crop scope.}
 All results are conditioned on tomato (\textit{Solanum lycopersicum})
@@ -398,10 +583,14 @@ transform the PAR-saturation finding from a tomato-specific result
 into a general mechanistic framework applicable to any crop species.
 
 \textbf{L3 --- Evapotranspiration model simplification.}
-Reference ET$_0$ is estimated using the Hargreaves--Samani equation,
+Reference ET$_0$ is estimated using the Hargreaves--Samani equation
+with extraterrestrial radiation computed astronomically (FAO-56),
 which agrees with FAO-56 Penman-Monteith to within $\pm$10\% in
 semi-arid and temperate climates~\citep{droogers2002} but cannot
-capture humidity and wind effects on ET under the APV canopy.
+capture humidity and wind effects on ET under the APV canopy. Full
+derivation of the ET$_0$ formulation, including two corrections made
+during model development, is provided in \texttt{docs/et0\_ra\_}
+\texttt{fix\_notes.md}.
 The ET reduction coefficient $\alpha_{\text{shade}} = 0.40$ is
 taken from field measurements under similar APV configurations
 \citep{elamri2018, tawassulli2025} but may vary by $\pm$0.10--0.15
@@ -445,7 +634,7 @@ Net Zero pathways~\citep{iea2025} --- would provide more realistic
 NPV confidence intervals and identify the price combinations
 under which each site crosses the investment threshold.
 Such a model would be particularly valuable for Konya, where
-the S0 IRR margin above the discount rate is narrow (3.8\,pp)
+the S0 IRR margin above the discount rate is narrow (3.0\,pp)
 and highly sensitive to electricity price assumptions.
 
 \textbf{L6 --- Single-hectare normalisation and scalability.}
@@ -456,7 +645,7 @@ At larger scale (10--100\,ha), several cost components change
 non-linearly: AD digester CAPEX per m$^3$ decreases with scale
 (economies of scale in tank construction and gas handling),
 BOP costs per kWp decrease with larger inverter units, and the
-ESR --- currently 533--1\,413 --- would decrease toward more
+ESR --- currently 453--2\,000 --- would decrease toward more
 physically meaningful values as the digester is sized to process
 residues from multiple hectares. A scale-up analysis from
 smallholder (1\,ha) to commercial (50\,ha) would provide the

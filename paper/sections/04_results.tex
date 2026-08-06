@@ -47,14 +47,14 @@ primary performance metrics for all four sites after L-BFGS-B polishing.
 		\textbf{Parameter} & \textbf{Konya} & \textbf{Almer\'{i}a}
 		& \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
-		Tilt angle $\beta^*$ (°)       & 20.1  & 20.9  & 16.0  & 22.9  \\
+		Tilt angle $\beta^*$ (°)       & 20.7  & 20.5  & 16.4  & 23.1  \\
 		Row spacing $d_{\text{row}}^*$ (m) & 3.03 & 3.03 & 3.03 & 3.03 \\
-		Module height $H_m^*$ (m)      & 1.50  & 1.50  & 1.50  & 1.50  \\
-		Digester volume $V_{\text{dig}}^*$ (m³) & 3.64 & 4.14 & 3.52 & 3.10 \\
-		HRT$^*$ (days)                 & 23.3  & 30.8  & 28.3  & 27.5  \\
-		$f_{\text{PV,heat}}^*$         & 0.051 & 0.051 & 0.050 & 0.051 \\
-		GCR (\%)                       & 70.6  & 70.2  & 72.3  & 69.3  \\
-		OLR (kg\,VS\,m$^{-3}$\,d$^{-1}$) & 1.88 & 1.65 & 2.00 & 1.82 \\
+		Module height $H_m^*$ (m)      & 1.50  & 1.51  & 1.50  & 1.50  \\
+		Digester volume $V_{\text{dig}}^*$ (m³) & 4.32 & 3.55 & 2.64 & 3.57 \\
+		HRT$^*$ (days)                 & 22.5  & 22.5  & 31.8  & 33.5  \\
+		$f_{\text{PV,heat}}^*$         & 0.051 & 0.050 & 0.050 & 0.051 \\
+		GCR (\%)                       & 70.3  & 70.4  & 72.2  & 69.2  \\
+		OLR (kg\,VS\,m$^{-3}$\,d$^{-1}$) & 1.57 & 1.93 & 2.67 & 1.58 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -65,7 +65,7 @@ Three structural findings emerge from Table~\ref{tab:optimal}.
 	height.} The optimizer converges to $d_{\text{row}}^* = \SI{3.03}{m}$
 at all four sites --- the minimum value permitted by the inter-row
 clearance constraint (Equation~\ref{eq:overlap}) at the optimal tilt
-angles of 16--23°. Similarly, $H_m^* = \SI{1.50}{m}$ at all sites,
+angles of 16--23°. Similarly, $H_m^* \approx \SI{1.50}{m}$ at all sites,
 the specified lower bound. This boundary convergence indicates that
 the eLER landscape has its global maximum at the physical constraint
 boundary: increasing panel density simultaneously raises
@@ -80,8 +80,8 @@ Section~\ref{sec:discussion}.
 
 \textbf{Finding 2 --- Climate-specific tilt angles.} Unlike row
 spacing and module height, the optimal tilt angle varies meaningfully
-across sites: from $\beta^* = 16.0$° at Ouagadougou (12.37°N, low
-latitude) to $\beta^* = 22.9$° at Freiburg (47.99°N, high latitude).
+across sites: from $\beta^* = 16.4$° at Ouagadougou (12.37°N, low
+latitude) to $\beta^* = 23.1$° at Freiburg (47.99°N, high latitude).
 This variation reflects the trade-off between maximising annual PV
 yield (which favours a tilt closer to the site latitude) and
 minimising the inter-row shading shadow length (which favours a
@@ -90,13 +90,19 @@ approximately 0.4--0.5 times the site latitude, consistent with
 the latitude rule-of-thumb for fixed-tilt systems but modified
 downward by the shading penalty.
 
-\textbf{Finding 3 --- Small digester volumes.} Optimal digester
-volumes of 3.10--4.14\,m³ reflect the modest VS input from
-1\,ha of tomato cultivation combined with cattle manure co-substrate
-(VS$_{\text{total}}$ = 1\,892--2\,573\,kg\,ha$^{-1}$\,yr$^{-1}$).
-OLR values of 1.65--2.00\,kg\,VS\,m$^{-3}$\,d$^{-1}$ are within
+\textbf{Finding 3 --- Small digester volumes, weakly determined by
+	the objective.} Optimal digester volumes of 2.64--4.32\,m³
+reflect the modest VS input from 1\,ha of tomato cultivation combined
+with cattle manure co-substrate
+(VS$_{\text{total}}$ = 2\,061--2\,575\,kg\,ha$^{-1}$\,yr$^{-1}$).
+OLR values of 1.57--2.67\,kg\,VS\,m$^{-3}$\,d$^{-1}$ are within
 the stable mesophilic operating range $[1.5,\,5.0]$ at all sites,
-confirming feasibility. The minimum heating fraction
+confirming feasibility. Because eLER is only weakly sensitive to
+$V_{\text{dig}}$ and $HRT$ once the OLR constraint is satisfied
+(Section~\ref{sec:discussion}), these two variables are less tightly
+determined by the optimizer than the geometric variables, and their
+optimal values are more sensitive to small changes elsewhere in the
+model. The minimum heating fraction
 $f_{\text{PV,heat}}^* \approx 0.05$ at all sites confirms that
 the PV array provides far more energy than the digester requires:
 5\% of annual PV output is more than sufficient to cover all
@@ -125,15 +131,15 @@ comparison of the three components across sites and reference definitions.
 		\textbf{Metric} & \textbf{Konya} & \textbf{Almer\'{i}a}
 		& \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
-		$LER_{\text{crop}}$                  & 0.363 & 0.367 & 0.397 & 0.371 \\
-		$LER_{\text{PV}}$ (Def.~A)           & 0.675 & 0.676 & 0.691 & 0.660 \\
-		$LER_{\text{PV}}$ (Def.~B = GCR)     & 0.706 & 0.703 & 0.723 & 0.693 \\
-		$LER_{\text{biogas}}$                & 0.615 & 0.617 & 0.636 & 0.727 \\
+		$LER_{\text{crop}}$                  & 0.356 & 0.366 & 0.397 & 0.376 \\
+		$LER_{\text{PV}}$ (Def.~A)           & 0.674 & 0.675 & 0.691 & 0.659 \\
+		$LER_{\text{PV}}$ (Def.~B = GCR)     & 0.703 & 0.704 & 0.722 & 0.692 \\
+		$LER_{\text{biogas}}$                & 0.611 & 0.616 & 0.635 & 0.729 \\
 		\midrule
-		\textbf{eLER (Def.~A)}               & \textbf{1.653} & \textbf{1.659}
-		& \textbf{1.725} & \textbf{1.758} \\
-		eLER (Def.~B)                        & 1.684 & 1.686 & 1.756 & 1.791 \\
-		$LER_{\text{2C}}$ (Def.~A)           & 1.038 & 1.042 & 1.089 & 1.031 \\
+		\textbf{eLER (Def.~A)}               & \textbf{1.641} & \textbf{1.657}
+		& \textbf{1.723} & \textbf{1.764} \\
+		eLER (Def.~B)                        & 1.670 & 1.686 & 1.754 & 1.797 \\
+		$LER_{\text{2C}}$ (Def.~A)           & 1.030 & 1.040 & 1.088 & 1.034 \\
 		Lit. benchmark $LER_{\text{2C}}$     & \multicolumn{4}{c}{1.94~\citep{riaz2022}} \\
 		\bottomrule
 	\end{tabular}
@@ -155,7 +161,7 @@ Three findings emerge from the eLER decomposition.
 
 \textbf{Finding 1 --- $LER_{\text{2C}} > 1.0$ at all sites.}
 The two-component agrivoltaic LER (crop + PV, without biogas) ranges
-from 1.031 (Freiburg) to 1.089 (Ouagadougou), confirming that the
+from 1.030 (Konya) to 1.088 (Ouagadougou), confirming that the
 APV system outperforms two separate monocultures at every site even
 without the AD contribution. This result improves on the $LER_{\text{2C}}$
 reported in earlier versions of the model and reflects the boundary
@@ -166,7 +172,7 @@ at all sites, confirming that the biogas term is the primary driver of
 the eLER advantage over the two-component benchmark.
 
 \textbf{Finding 2 --- $LER_{\text{biogas}} < 1.0$ at all sites.}
-$LER_{\text{biogas}}$ ranges from 0.615 (Konya) to 0.727 (Freiburg),
+$LER_{\text{biogas}}$ ranges from 0.611 (Konya) to 0.729 (Freiburg),
 meaning the APV--AD system produces less biogas than the standalone
 open-field reference AD unit. This is a structural consequence of
 the shading-residue coupling: with $LER_{\text{crop}} \approx 0.36$--$0.40$,
@@ -176,14 +182,14 @@ proportionally. The manure co-substrate ($VS_{\text{manure}}$),
 identical in both the APV and reference cases, partially compensates
 for this deficit, raising $LER_{\text{biogas}}$ above the value it
 would take under residues-only digestion. Freiburg achieves the
-highest $LER_{\text{biogas}}$ (0.727) because its lower open-field
+highest $LER_{\text{biogas}}$ (0.729) because its lower open-field
 reference yield (30\,t\,ha$^{-1}$ vs.\ 60\,t\,ha$^{-1}$ at other
 sites) reduces the reference VS input, making the APV/reference
 biogas ratio more favourable.
 
 \textbf{Finding 3 --- $LER_{\text{PV}}$ is near-uniform across sites
 	despite 1.8$\times$ GHI variation.}
-$LER_{\text{PV}}$ (Definition~A) ranges narrowly from 0.660 (Freiburg)
+$LER_{\text{PV}}$ (Definition~A) ranges narrowly from 0.659 (Freiburg)
 to 0.691 (Ouagadougou), despite annual GHI varying from
 1\,150 to 2\,050\,kWh\,m$^{-2}$. This uniformity arises because
 Definition~A references a dense-pack array at the same tilt angle
@@ -216,13 +222,13 @@ production, and digester heat demand.
 		\textbf{Parameter} & \textbf{Konya} & \textbf{Almer\'{i}a}
 		& \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
-		PV total (MWh\,ha$^{-1}$\,yr$^{-1}$)    & 1\,354 & 1\,577 & 1\,583 & 1\,108 \\
-		PV sold to grid (MWh\,ha$^{-1}$\,yr$^{-1}$) & 1\,286 & 1\,498 & 1\,503 & 1\,052 \\
-		PV self-consumed (MWh\,ha$^{-1}$\,yr$^{-1}$) & 68 & 79 & 80 & 56 \\
-		Biogas total (MWh\,ha$^{-1}$\,yr$^{-1}$) & 3.68 & 3.83 & 5.99 & 2.87 \\
-		Heat demand (MWh\,ha$^{-1}$\,yr$^{-1}$)  & 1.92 & 1.54 & 1.12 & 2.08 \\
+		PV total (MWh\,ha$^{-1}$\,yr$^{-1}$)    & 1\,295 & 1\,386 & 1\,433 & 1\,002 \\
+		PV sold to grid (MWh\,ha$^{-1}$\,yr$^{-1}$) & 1\,229 & 1\,317 & 1\,361 & 951 \\
+		PV self-consumed (MWh\,ha$^{-1}$\,yr$^{-1}$) & 67 & 69 & 72 & 51 \\
+		Biogas total (MWh\,ha$^{-1}$\,yr$^{-1}$) & 3.66 & 3.83 & 5.98 & 2.88 \\
+		Heat demand (MWh\,ha$^{-1}$\,yr$^{-1}$)  & 2.26 & 1.56 & 0.72 & 2.22 \\
 		Biogas for heating (MWh\,ha$^{-1}$\,yr$^{-1}$) & 0.00 & 0.00 & 0.00 & 0.00 \\
-		ESR                                        & 707  & 1\,028 & 1\,413 & 533 \\
+		ESR                                        & 574  & 890 & 2\,000 & 453 \\
 		BMP annual avg (NmL\,CH$_4$\,gVS$^{-1}$) & 148.8 & 154.3 & 234.0 & 140.4 \\
 		Annual avg $T_{\text{dig,eff}}$ (\si{\celsius}) & 26.7 & 27.2 & 33.2 & 26.0 \\
 		\bottomrule
@@ -244,16 +250,16 @@ production, and digester heat demand.
 Four observations characterize the energy performance across sites.
 
 \textbf{PV generation follows the GHI gradient.} Annual PV output
-ranges from 1\,108\,MWh\,ha$^{-1}$ (Freiburg) to
-1\,583\,MWh\,ha$^{-1}$ (Ouagadougou), tracking the GHI gradient
+ranges from 1\,002\,MWh\,ha$^{-1}$ (Freiburg) to
+1\,433\,MWh\,ha$^{-1}$ (Ouagadougou), tracking the GHI gradient
 as expected. The ratio of PV sold to PV total is 94--95\% at all
 sites, reflecting the near-minimum $f_{\text{PV,heat}}^* \approx 0.05$
 at the optimized design: only 5\% of PV output is allocated to
 digester heating.
 
 \textbf{Biogas production is dominated by temperature regime.}
-Biogas output varies from 2.87\,MWh\,ha$^{-1}$ (Freiburg) to
-5.99\,MWh\,ha$^{-1}$ (Ouagadougou), a factor of 2.1$\times$.
+Biogas output varies from 2.88\,MWh\,ha$^{-1}$ (Freiburg) to
+5.98\,MWh\,ha$^{-1}$ (Ouagadougou), a factor of 2.1$\times$.
 This variation is driven primarily by the annual average BMP, which
 ranges from 140.4\,NmL\,CH$_4$\,gVS$^{-1}$ (Freiburg) to
 234.0\,NmL\,CH$_4$\,gVS$^{-1}$ (Ouagadougou). At Ouagadougou,
@@ -272,29 +278,38 @@ suppression relative to the mesophilic reference, quantifying
 the thermal penalty of cold climates on biogas yield.
 
 \textbf{Thermal self-sufficiency is confirmed at all sites.}
-ESR ranges from 533 (Freiburg) to 1\,413 (Ouagadougou), orders of
+ESR ranges from 453 (Freiburg) to 2\,000 (Ouagadougou), orders of
 magnitude above the threshold of 1.0. Zero biogas is consumed for
 digester heating at any site, even at Freiburg in January. This
 confirms that the PV array provides far more energy than the
 digester requires under the optimal $f_{\text{PV,heat}}^* = 0.05$
-design: 5\% of 1\,108\,MWh\,ha$^{-1}$ = 55\,MWh is available
+design: 5\% of 1\,002\,MWh\,ha$^{-1}$ = 50\,MWh is available
 for heating against a total heat demand of only
-2.08\,MWh\,ha$^{-1}$ at Freiburg. The implication is that
+2.22\,MWh\,ha$^{-1}$ at Freiburg. The implication is that
 $LER_{\text{biogas}} < 1$ is driven entirely by the reduction in
 crop residues under APV shading, not by any thermal penalty on
 the digestion process.
 
-\textbf{Heat demand is lowest at Ouagadougou.} Despite the largest
-digester volume (3.52\,m$^3$), Ouagadougou has the lowest heat
-demand (1.12\,MWh\,ha$^{-1}$\,yr$^{-1}$) because the small
-temperature difference between ambient (\SI{28.5}{\celsius} mean)
-and digester (\SI{33.2}{\celsius} effective) minimises both
-conductive wall losses ($Q_{\text{loss}}$) and substrate heating
-demand ($Q_{\text{inflow}}$). Freiburg has the highest heat demand
-(2.08\,MWh\,ha$^{-1}$\,yr$^{-1}$) despite having the smallest
-digester (3.10\,m$^3$), driven by the large
-$\overline{T}_{\text{dig}} - \overline{T}_{\text{amb}}$ differential
-of approximately 14.6\,K in winter months.
+\textbf{Heat demand is highest at Konya, lowest at Ouagadougou.}
+Despite the largest digester volume (2.64\,m$^3$), Ouagadougou has
+by far the lowest heat demand (0.72\,MWh\,ha$^{-1}$\,yr$^{-1}$)
+because the small temperature difference between ambient
+(\SI{28.5}{\celsius} mean) and digester (\SI{33.2}{\celsius}
+effective) minimises both conductive wall losses ($Q_{\text{loss}}$)
+and substrate heating demand ($Q_{\text{inflow}}$). Konya now has
+the highest heat demand (2.26\,MWh\,ha$^{-1}$\,yr$^{-1}$), narrowly
+exceeding Freiburg (2.22\,MWh\,ha$^{-1}$\,yr$^{-1}$) despite
+Freiburg's colder winter minimum ($-12\,^{\circ}$C vs.\
+$-10\,^{\circ}$C). This is because Konya's optimised digester volume
+(4.32\,m$^3$) is the largest of the four sites --- larger than
+Freiburg's (3.57\,m$^3$) --- increasing the conductive wall area
+$A_{\text{wall}}$ and hence $Q_{\text{loss}}$ enough to outweigh
+Freiburg's colder ambient temperature. As noted in Finding~3
+(Section~\ref{sec:results_optimal}), $V_{\text{dig}}$ and $HRT$ are
+only weakly constrained by the eLER objective once the OLR
+feasibility bound is satisfied, so this ranking should be read as a
+close, second-order result rather than a robust climate-driven
+effect; the two sites' heat demands are within 2\% of each other.
 
 % ---------------------------------------------------------------------------
 \subsection{Climate Gradient and Non-Monotone eLER Ordering}
@@ -325,15 +340,15 @@ The solar resource and eLER rankings are:
 	&\text{Ouagadougou} (2050) > \text{Almer\'{i}a} (1850)
 	> \text{Konya} (1650) > \text{Freiburg} (1150) \\
 	\text{eLER:} \quad
-	&\text{Freiburg} (1.758) > \text{Ouagadougou} (1.725)
-	> \text{Almer\'{i}a} (1.659) > \text{Konya} (1.653)
+	&\text{Freiburg} (1.764) > \text{Ouagadougou} (1.723)
+	> \text{Almer\'{i}a} (1.657) > \text{Konya} (1.641)
 \end{align*}
 
 The eLER ordering is the inverse of the GHI ordering at the two
 extremes: Freiburg, with the lowest annual irradiance
-(1\,150\,kWh\,m$^{-2}$), achieves the highest eLER (1.758), while
+(1\,150\,kWh\,m$^{-2}$), achieves the highest eLER (1.764), while
 Konya, with 43\% more irradiance (1\,650\,kWh\,m$^{-2}$), achieves
-the lowest eLER (1.653).
+the lowest eLER (1.641).
 
 \textbf{Mechanism: PAR saturation inflates the LER$_{\text{crop}}$
 	denominator at high-irradiance sites.}
@@ -350,19 +365,19 @@ $PAR_{\text{sat}} / f_{\text{PAR}} = 174 / 0.48 =
 meaning the open-field denominator accumulates uncapped PAR for more
 than half the season while the APV numerator is clipped at
 $PAR_{\text{sat}}$ for the same hours. The result is
-$LER_{\text{crop}} = 0.363$ despite the high solar resource.
+$LER_{\text{crop}} = 0.356$ despite the high solar resource.
 
 At Freiburg, mean growing-season daytime GHI exceeds
 \SI{362}{W\,m^{-2}} for only approximately 20\% of daylight hours.
 The denominator accumulates proportionally less uncapped PAR,
 making the ratio $\int\min(PAR_{\text{AV}}, PAR_{\text{sat}})\,dt /
 \int PAR_{\text{open}}\,dt$ more favourable. The result is
-$LER_{\text{crop}} = 0.371$, marginally higher than Konya despite
+$LER_{\text{crop}} = 0.376$, marginally higher than Konya despite
 Freiburg receiving 500\,kWh\,m$^{-2}$ less annual irradiance.
 
 Since $LER_{\text{PV}}$ (Definition~A) is near-uniform across sites
-(0.660--0.691, as established in Section~\ref{sec:results_eler}),
-and $LER_{\text{biogas}}$ is highest at Freiburg (0.727) due to the
+(0.659--0.691, as established in Section~\ref{sec:results_eler}),
+and $LER_{\text{biogas}}$ is highest at Freiburg (0.729) due to the
 lower open-field reference yield, the combination of a slightly
 higher $LER_{\text{crop}}$ and the highest $LER_{\text{biogas}}$
 gives Freiburg the overall eLER advantage.
@@ -415,22 +430,22 @@ metrics for Scenarios S0 and S6 across all sites.
 		\textbf{Component} & \textbf{Konya} & \textbf{Almer\'{i}a}
 		& \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
-		PV array (k\$)              & 493 & 493 & 493 & 493 \\
-		AD digester (k\$)           & 3   & 3   & 3   & 2   \\
+		PV array (k\$)              & 492 & 492 & 492 & 492 \\
+		AD digester (k\$)           & 3   & 3   & 2   & 3   \\
 		Agricultural infra. (k\$)   & 3   & 3   & 3   & 3   \\
 		Balance of plant (k\$)      & 74  & 74  & 74  & 74  \\
-		\textbf{Total CAPEX (k\$)}  & \textbf{573} & \textbf{573}
-		& \textbf{573} & \textbf{572} \\
+		\textbf{Total CAPEX (k\$)}  & \textbf{572} & \textbf{571}
+		& \textbf{570} & \textbf{571} \\
 		Annual O\&M (k\$\,yr$^{-1}$) & 8.6 & 8.6 & 8.6 & 8.6 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-Total CAPEX is near-identical across sites (\$572--573\,k\,ha$^{-1}$)
+Total CAPEX is near-identical across sites (\$570--572\,k\,ha$^{-1}$)
 because the number of modules (1\,419) and the module unit cost
 dominate the budget: PV accounts for 86\% of total CAPEX. The AD
-digester contributes only 0.3--0.5\% of CAPEX, reflecting the
-small optimal digester volumes (3.10--4.14\,m$^3$). The marginal
+digester contributes only 0.4--0.6\% of CAPEX, reflecting the
+small optimal digester volumes (2.64--4.32\,m$^3$). The marginal
 cost of adding an AD unit to an existing APV system is therefore
 negligible relative to the PV investment, making the biogas revenue
 stream a low-risk addition.
@@ -450,17 +465,17 @@ stream a low-risk addition.
 		& \textbf{Almer\'{i}a} & \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
 		\multirow{5}{*}{S0}
-		& Gross revenue (k\$\,yr$^{-1}$) & 110 & 211 & 278 & 166 \\
-		& Net CF (k\$\,yr$^{-1}$)        & 101 & 202 & 269 & 157 \\
-		& NPV (k\$)                       & 169 & 981 & 947 & 554 \\
-		& IRR (\%)                        & 11.8 & 23.3 & 31.1 & 14.8 \\
-		& Payback (yr)                    & 7.6  & 4.2  & 3.2  & 6.3  \\
+		& Gross revenue (k\$\,yr$^{-1}$) & 80  & 128 & 170 & 90  \\
+		& Net CF (k\$\,yr$^{-1}$)        & 72  & 119 & 161 & 81  \\
+		& NPV (k\$)                       & 134 & 794 & 802 & 441 \\
+		& IRR (\%)                        & 11.0 & 20.3 & 28.1 & 13.0 \\
+		& Payback (yr)                    & 8.0  & 4.8  & 3.5  & 7.0  \\
 		\midrule
 		\multirow{4}{*}{S6}
-		& Net CF (k\$\,yr$^{-1}$)        & 113 & 234 & 283 & 218 \\
-		& NPV (k\$)                       & 252 & 1\,168 & 1\,044 & 878 \\
-		& IRR (\%)                        & 13.5 & 26.3 & 33.1 & 19.8 \\
-		& Payback (yr)                    & 6.8  & 3.8  & 3.0  & 4.9  \\
+		& Net CF (k\$\,yr$^{-1}$)        & 80  & 133 & 172 & 105 \\
+		& NPV (k\$)                       & 213 & 959 & 890 & 735 \\
+		& IRR (\%)                        & 12.7 & 23.0 & 29.9 & 17.6 \\
+		& Payback (yr)                    & 7.2  & 4.3  & 3.3  & 5.5  \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -468,37 +483,47 @@ stream a low-risk addition.
 Four economic findings are noteworthy.
 
 \textbf{Ouagadougou offers the strongest investment case.}
-Under S0, Ouagadougou achieves IRR = 31.1\% and payback = 3.2\,yr,
+Under S0, Ouagadougou achieves IRR = 28.1\% and payback = 3.5\,yr,
 driven by the combination of the highest electricity price
-(\$0.12\,kWh$^{-1}$), the highest PV output (1\,583\,MWh\,ha$^{-1}$),
-and the highest biogas yield (5.99\,MWh\,ha$^{-1}$). The IRR exceeds
-the site discount rate (10\%) by 21.1 percentage points, providing
+(\$0.12\,kWh$^{-1}$), the highest PV output (1\,433\,MWh\,ha$^{-1}$),
+and the highest biogas yield (5.98\,MWh\,ha$^{-1}$). The IRR exceeds
+the site discount rate (10\%) by 18.1 percentage points, providing
 a large investment margin.
 
 \textbf{Konya is marginal but viable under S0.}
-IRR = 11.8\% exceeds the 8\% discount rate by only 3.8 percentage
-points, and NPV = 169\,k\$ is the lowest of the four sites. The
+IRR = 11.0\% exceeds the 8\% discount rate by only 3.0 percentage
+points, and NPV = 134\,k\$ is the lowest of the four sites. The
 primary constraint is the low electricity tariff
 (\$0.06\,kWh$^{-1}$), which limits PV revenue despite the
-competitive PV output (1\,354\,MWh\,ha$^{-1}$).
+competitive PV output (1\,295\,MWh\,ha$^{-1}$).
 
 \textbf{S6 (carbon credit) is the dominant economic scenario
-	at all sites.} S6 raises IRR by 1.7--5.0 percentage points above
+	at all sites.} S6 raises IRR by 1.7--4.6 percentage points above
 S0, with the largest absolute improvement at Freiburg
-(+5.0\,pp, from 14.8\% to 19.8\%) driven by the high EU ETS
+(+4.6\,pp, from 13.0\% to 17.6\%) driven by the high EU ETS
 carbon price (\$65\,tCO$_2^{-1}$) and the large CO$_2$ avoidance
 from displacing Germany's carbon-intensive grid
 (EF = 0.380\,tCO$_2$\,MWh$^{-1}$). Figure~\ref{fig:scenarios}
 shows the full scenario comparison.
 
-\textbf{LCOE$_{\text{PV}}$ is competitive at all sites.}
-As shown in the E3 panel of Figure~\ref{fig:4e}, LCOE$_{\text{PV}}$
-ranges from \$0.034\,kWh$^{-1}$ (Almer\'{i}a) to
-\$0.045\,kWh$^{-1}$ (Konya). Almer\'{i}a approaches the IRENA 2023
-global utility-scale solar benchmark of \$0.049\,kWh$^{-1}$, while
-the other three sites remain within 9--19\% above it --- a premium
-attributable to the elevated APV mounting structure, which carries a
-40\% CAPEX premium over standard ground-mount.
+\textbf{LCOE$_{\text{PV}}$ is at or below the utility-scale
+	benchmark at every site.} As shown in the E3 panel of
+Figure~\ref{fig:4e}, LCOE$_{\text{PV}}$ ranges from
+\$0.038\,kWh$^{-1}$ (Almer\'{i}a) to \$0.049\,kWh$^{-1}$
+(Freiburg), against the IRENA 2023 global utility-scale solar
+benchmark of \$0.049\,kWh$^{-1}$. Almer\'{i}a is 22\% below the
+benchmark; Konya (\$0.047\,kWh$^{-1}$) and Ouagadougou
+(\$0.048\,kWh$^{-1}$) are 2--4\% below it; and Freiburg sits
+essentially at parity with it. No site exceeds the benchmark. This
+holds both before and after the model corrections described in
+Section~\ref{sec:discussion}: all four sites were already at or
+below \$0.049\,kWh$^{-1}$ under the earlier version of the model as
+well, so the qualitative conclusion --- APV LCOE is competitive with
+utility-scale ground-mount despite the 40\% elevated-structure CAPEX
+premium --- is unaffected by the corrections. The absolute values
+shifted modestly higher (Almer\'{i}a: \$0.034 $\to$
+\$0.038\,kWh$^{-1}$; Freiburg: \$0.045 $\to$ \$0.049\,kWh$^{-1}$)
+following the corrected solar-position and transposition models.
 
 \begin{figure}[H]
 	\centering
@@ -513,21 +538,21 @@ attributable to the elevated APV mounting structure, which carries a
 \subsubsection{Environmental Performance (E4)}
 
 \hspace{1cm}Annual CO$_2$ avoidance ranges from
-251\,tCO$_2$\,ha$^{-1}$ (Almer\'{i}a) to
-951\,tCO$_2$\,ha$^{-1}$ (Ouagadougou), driven primarily by the
+221\,tCO$_2$\,ha$^{-1}$ (Almer\'{i}a) to
+861\,tCO$_2$\,ha$^{-1}$ (Ouagadougou), driven primarily by the
 grid emission factor of the displacement context. Ouagadougou's
 diesel-dominated grid (EF = 0.632\,tCO$_2$\,MWh$^{-1}$) combined
-with the highest PV output (1\,503\,MWh\,ha$^{-1}$ sold) produces
+with the highest PV output (1\,361\,MWh\,ha$^{-1}$ sold) produces
 the largest absolute avoidance. Almer\'{i}a's already low-carbon
 Spanish grid (EF = 0.167\,tCO$_2$\,MWh$^{-1}$) limits avoidance
 despite competitive PV output. The carbon credit value --- the
 monetary expression of CO$_2$ avoidance under site-specific carbon
-prices --- is highest at Freiburg (\$26\,015\,ha$^{-1}$\,yr$^{-1}$),
+prices --- is highest at Freiburg (\$23\,532\,ha$^{-1}$\,yr$^{-1}$),
 where the EU ETS price (\$65\,tCO$_2^{-1}$) amplifies the moderate
-CO$_2$ avoidance (400\,tCO$_2$\,ha$^{-1}$) into the largest
+CO$_2$ avoidance (362\,tCO$_2$\,ha$^{-1}$) into the largest
 financial environmental benefit of the four sites. This explains
 why S6 provides the largest absolute NPV improvement at Freiburg
-(+\$324\,k vs.\ S0).
+(+\$293\,k vs.\ S0).
 
 % ---------------------------------------------------------------------------
 \subsection{Water Savings and LER\textsubscript{water}}
@@ -551,14 +576,14 @@ against the erroneous annual-denominator value used in prior studies.
 		\textbf{Parameter} & \textbf{Konya} & \textbf{Almer\'{i}a}
 		& \textbf{Ouagadougou} & \textbf{Freiburg} \\
 		\midrule
-		$W_{\text{saved}}$ (mm\,season$^{-1}$)   & 383  & 186  & 152  & 186  \\
-		ET$_0$ season (mm)                         & 650  & 480  & 620  & 350  \\
-		ET$_0$ annual (mm)                         & 2\,371 & 2\,463 & 3\,800 & 1\,160 \\
-		\textbf{$LER_{\text{water}}$ season (\%)} & \textbf{20.6} & \textbf{18.6}
-		& \textbf{15.5} & \textbf{22.8} \\
-		$LER_{\text{water}}$ annual (\%) [ref.]   & 16.1 & 7.5  & 4.0  & 16.1 \\
+		$W_{\text{saved}}$ (mm\,season$^{-1}$)   & 159  & 88   & 81   & 114  \\
+		ET$_0$ season (mm)                         & 846  & 466  & 520  & 509  \\
+		ET$_0$ annual (mm)                         & 1\,134 & 1\,151 & 1\,839 & 685 \\
+		\textbf{$LER_{\text{water}}$ season (\%)} & \textbf{18.8} & \textbf{18.8}
+		& \textbf{15.6} & \textbf{22.4} \\
+		$LER_{\text{water}}$ annual (\%) [ref.]   & 14.0 & 7.6  & 4.4  & 16.6 \\
 		Correction factor                          & 1.3$\times$ & 2.5$\times$
-		& 3.9$\times$ & 1.4$\times$ \\
+		& 3.5$\times$ & 1.3$\times$ \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -572,13 +597,13 @@ against the erroneous annual-denominator value used in prior studies.
 		bars). Right panel: $LER_{\text{water}}$ computed with the corrected
 		growing-season denominator (solid bars) versus the erroneous
 		annual-denominator value (hatched bars). The correction factor
-		ranges from 1.3$\times$ (Konya) to 3.9$\times$ (Ouagadougou).}
+		ranges from 1.3$\times$ (Konya) to 3.5$\times$ (Ouagadougou).}
 	\label{fig:water}
 \end{figure}
 
 \textbf{Absolute water savings are largest at Konya.}
-$W_{\text{saved}} = \SI{383}{mm\,season^{-1}}$ at Konya, compared
-to 152--186\,mm at the other three sites. This reflects Konya's
+$W_{\text{saved}} = \SI{159}{mm\,season^{-1}}$ at Konya, compared
+to 81--114\,mm at the other three sites. This reflects Konya's
 longer growing season (189\,days vs.\ 122--167\,days at the other
 sites), which provides more hours of shading-induced ET reduction.
 Analytically, $W_{\text{saved}} = \alpha_{\text{shade}}
@@ -587,37 +612,44 @@ integrates more shading hours even at the same hourly shading fraction.
 
 \textbf{Relative water savings ($LER_{\text{water}}$) are largest
 	at Freiburg.}
-Despite the lowest absolute savings (186\,mm\,season$^{-1}$),
-Freiburg achieves the highest $LER_{\text{water}}$ (22.8\%) because
-its seasonal ET$_0$ denominator is the smallest (350\,mm). The
-high GCR (69.3\%) at the optimised design drives the shading
-fraction to near-maximum values, while the modest Freiburg ET$_0$
-means that even moderate absolute savings represent a large fraction
-of seasonal water demand.
+Freiburg achieves the highest $LER_{\text{water}}$ (22.4\%) despite
+having neither the largest absolute savings (114\,mm\,season$^{-1}$,
+second to Konya) nor the smallest seasonal ET$_0$ denominator
+(\SI{509}{mm}, second-smallest to Almer\'{i}a at \SI{466}{mm}).
+The result instead reflects the timing overlap between shading and
+water demand: at Freiburg's higher latitude, the optimal tilt
+($\beta^* = 23.1$°, the steepest of the four sites) produces an
+inter-row shading pattern that coincides more closely with the
+site's highest-ET$_0$ hours than at the other three sites, despite
+Freiburg's GCR (69.2\%) being the lowest, not the highest, of the
+four designs. A full decomposition of this timing effect is left
+for future work; the present result should be read as an emergent
+property of the coupled solar-geometry and climate data rather than
+a simple function of GCR alone.
 
 \textbf{The denominator correction is largest at Ouagadougou.}
-The annual-denominator value for Ouagadougou is only 4.0\%,
-compared to the corrected seasonal value of 15.5\% --- a correction
-factor of 3.9$\times$. This extreme underestimation arises because
+The annual-denominator value for Ouagadougou is only 4.4\%,
+compared to the corrected seasonal value of 15.6\% --- a correction
+factor of 3.5$\times$. This extreme underestimation arises because
 Ouagadougou has a very short growing season (122\,days) relative
-to a high annual ET$_0$ (\SI{3800}{mm\,yr^{-1}}): the annual
+to a high annual ET$_0$ (\SI{1839}{mm\,yr^{-1}}): the annual
 denominator dilutes the growing-season savings by a factor of
 $365/122 \times (ET_{0,\text{annual}}/ET_{0,\text{season}}) = 3.0
-\times 1.3 = 3.9$. This correction is agronomically significant:
-a $LER_{\text{water}}$ of 4.0\% does not justify irrigation
-infrastructure investment, while 15.5\% represents a meaningful
+\times 1.2 = 3.5$. This correction is agronomically significant:
+a $LER_{\text{water}}$ of 4.4\% does not justify irrigation
+infrastructure investment, while 15.6\% represents a meaningful
 contribution to food security in a water-stressed smallholder
 context. Reporting the uncorrected value systematically
 misrepresents the water benefit of APV deployment in
 Sub-Saharan Africa.
 
 \textbf{Practical interpretation.} At the optimised GCR of 69--72\%,
-the APV system saves 152--383\,mm of irrigation water per growing
+the APV system saves 81--159\,mm of irrigation water per growing
 season across the four sites. For a smallholder operating under
-water scarcity, this is equivalent to 1\,520--3\,830\,m$^3$\,ha$^{-1}$
+water scarcity, this is equivalent to 810--1\,590\,m$^3$\,ha$^{-1}$
 of irrigation water --- a quantity sufficient to extend the growing
-season by 2--4 weeks at typical semi-arid ET$_0$ rates of
-5--7\,mm\,day$^{-1}$, or to cultivate an additional 15--25\% of
+season by roughly 2--4 weeks at typical semi-arid ET$_0$ rates of
+3--5\,mm\,day$^{-1}$, or to cultivate an additional 16--22\% of
 land area with the saved water.
 
 % ---------------------------------------------------------------------------
@@ -625,7 +657,10 @@ land area with the saved water.
 \label{sec:validation}
 % ---------------------------------------------------------------------------
 
-\hspace{1cm}Two component-level validations (V1 and V2) were performed
+\hspace{1cm}Two component-level validations against independent
+literature datasets (V1 and V2), plus an external validation of the
+POA irradiance model against an independently maintained solar
+modelling library (V3), were performed
 to assess model accuracy and characterise the direction of bias.
 Figure~\ref{fig:validation} presents both validations side by side.
 
@@ -757,6 +792,32 @@ values, and biogas-related economic results for cold-climate sites
 are conservative lower bounds. The true values are likely
 15--30\% higher, which would further improve the economics of
 cold-climate APV--AD deployment.
+
+\subsubsection{V3 --- External POA Validation Against pvlib}
+
+\hspace{1cm}In addition to the V1 and V2 component validations
+against independent literature datasets above, the plane-of-array
+irradiance model itself (Equations~\ref{eq:poa}--\ref{eq:aoi}) was
+validated against \texttt{pvlib} (v0.15.2), an independently
+maintained, widely-used solar modelling library, using each site's
+own PVGIS-SARAH3 data and an independent NREL-SPA solar-position
+calculation (i.e.\ not this study's own declination/hour-angle
+implementation). Annual front-surface POA agreed with
+\texttt{pvlib}'s isotropic transposition model --- the same sky
+model used in Equation~\ref{eq:poa} --- to within 0.06\% at every
+site, and with \texttt{pvlib}'s anisotropic Perez model to within
+1.5--3.9\%, a gap attributable to the isotropic-vs-anisotropic
+sky-diffuse modelling choice rather than to any remaining defect in
+the angle-of-incidence formula. This cross-validation was also the
+means by which a longitude/equation-of-time correction to
+$\omega$ (Section~\ref{sec:shading}) was identified: prior to that
+correction, agreement with \texttt{pvlib} was site-longitude-dependent
+(within 1.5\% at Almer\'{i}a and Ouagadougou, lon.\ near
+0\textdegree, but $-$9.65\% at Konya, lon.\ 32.49\textdegree E),
+which does not occur once the correction is applied. Full
+methodology, before/after tables, and reproducible code are provided
+in the supplementary validation notes (\texttt{docs/pvlib\_}
+\texttt{validation.md} and \texttt{docs/poa\_azimuth\_fix\_notes.md}).
 
 \textbf{Combined validation conclusion.} Both V1 (MAPE = 2.4\%,
 slight optimistic bias) and V2 (MAPE = 26.9\%, systematic

@@ -1,64 +1,65 @@
 \babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{5}{section.1}%
-\contentsline {subsection}{\numberline {1.1}The Global Challenge: Food, Energy, and Water Under Climate Pressure}{5}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Agrivoltaics: Dissolving the Land-Use Conflict}{5}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Anaerobic Digestion: Closing the Residue Loop}{6}{subsection.1.3}%
-\contentsline {subsection}{\numberline {1.4}The Missing Integration: APV Meets AD}{6}{subsection.1.4}%
-\contentsline {subsection}{\numberline {1.5}Research Gaps}{7}{subsection.1.5}%
-\contentsline {subsection}{\numberline {1.6}Contributions of This Work}{7}{subsection.1.6}%
-\contentsline {subsection}{\numberline {1.7}Paper Organization}{8}{subsection.1.7}%
-\contentsline {section}{\numberline {2}Related Works}{9}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Agrivoltaic Systems: Architecture, Crop Response, and Land-Use Efficiency}{9}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Anaerobic Digestion: Fundamentals, Feedstocks, and Thermal Management}{10}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}PV--Biogas Hybrid Systems: Architecture and Economics}{11}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}The Land Equivalent Ratio: History, Extensions, and Limitations}{12}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}The APV--AD Frontier: First Integration Studies}{13}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Multi-Climate Comparative Studies and Research Positioning}{14}{subsection.2.6}%
-\contentsline {section}{\numberline {3}Methodology}{16}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Study Sites and Climate Data}{16}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Crop Parameters and Growing Seasons}{18}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Solar Geometry and Shading Model}{20}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Photovoltaic Energy Model}{21}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Plane-of-Array Irradiance}{21}{subsubsection.3.4.1}%
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Global Challenge: Food, Energy, and Water Under Climate Pressure}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Agrivoltaics: Dissolving the Land-Use Conflict}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Anaerobic Digestion: Closing the Residue Loop}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}The Missing Integration: APV Meets AD}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Research Gaps}{6}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Contributions of This Work}{6}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}Paper Organization}{7}{subsection.1.7}%
+\contentsline {section}{\numberline {2}Related Works}{8}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Agrivoltaic Systems: Architecture, Crop Response, and Land-Use Efficiency}{8}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Anaerobic Digestion: Fundamentals, Feedstocks, and Thermal Management}{9}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}PV--Biogas Hybrid Systems: Architecture and Economics}{10}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}The Land Equivalent Ratio: History, Extensions, and Limitations}{11}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}The APV--AD Frontier: First Integration Studies}{12}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Multi-Climate Comparative Studies and Research Positioning}{13}{subsection.2.6}%
+\contentsline {section}{\numberline {3}Methodology}{15}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Study Sites and Climate Data}{15}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Crop Parameters and Growing Seasons}{17}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Solar Geometry and Shading Model}{19}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Photovoltaic Energy Model}{20}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Plane-of-Array Irradiance}{20}{subsubsection.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Cell Temperature}{21}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}PV Power Output}{22}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.3}PV Power Output}{21}{subsubsection.3.4.3}%
 \contentsline {subsection}{\numberline {3.5}Crop Yield Model}{22}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Evapotranspiration Reduction and Water Savings}{23}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.6}Evapotranspiration Reduction and Water Savings}{22}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}Anaerobic Digestion Model}{24}{subsection.3.7}%
 \contentsline {subsubsection}{\numberline {3.7.1}Effective Digester Temperature}{24}{subsubsection.3.7.1}%
-\contentsline {subsubsection}{\numberline {3.7.2}Arrhenius BMP Temperature Correction}{25}{subsubsection.3.7.2}%
+\contentsline {subsubsection}{\numberline {3.7.2}Arrhenius BMP Temperature Correction}{24}{subsubsection.3.7.2}%
 \contentsline {subsubsection}{\numberline {3.7.3}Digester Heat Balance}{25}{subsubsection.3.7.3}%
-\contentsline {subsubsection}{\numberline {3.7.4}Energy Self-Sufficiency Ratio}{26}{subsubsection.3.7.4}%
-\contentsline {subsection}{\numberline {3.8}Extended Land Equivalent Ratio}{26}{subsection.3.8}%
-\contentsline {subsection}{\numberline {3.9}Design Optimization}{28}{subsection.3.9}%
-\contentsline {subsubsection}{\numberline {3.9.1}Differential Evolution Algorithm}{28}{subsubsection.3.9.1}%
-\contentsline {subsubsection}{\numberline {3.9.2}Boundary Convergence}{29}{subsubsection.3.9.2}%
-\contentsline {subsubsection}{\numberline {3.9.3}Multi-Objective Extension (NSGA-II)}{29}{subsubsection.3.9.3}%
-\contentsline {subsection}{\numberline {3.10}AD Valorization Scenarios}{29}{subsection.3.10}%
-\contentsline {subsection}{\numberline {3.11}4E Analysis Framework}{31}{subsection.3.11}%
-\contentsline {subsubsection}{\numberline {3.11.1}E1 --- Energetic Analysis}{31}{subsubsection.3.11.1}%
-\contentsline {subsubsection}{\numberline {3.11.2}E2 --- Economic Analysis}{31}{subsubsection.3.11.2}%
-\contentsline {subsubsection}{\numberline {3.11.3}E3 --- Energo-Economic Analysis}{32}{subsubsection.3.11.3}%
-\contentsline {subsubsection}{\numberline {3.11.4}E4 --- Environmental Analysis}{32}{subsubsection.3.11.4}%
-\contentsline {section}{\numberline {4}Results}{34}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Optimization Convergence and Optimal Design Parameters}{34}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Extended Land Equivalent Ratio Decomposition}{36}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Energy Performance and Thermal Balance}{37}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {3.7.4}Energy Self-Sufficiency Ratio}{25}{subsubsection.3.7.4}%
+\contentsline {subsection}{\numberline {3.8}Extended Land Equivalent Ratio}{25}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}Design Optimization}{27}{subsection.3.9}%
+\contentsline {subsubsection}{\numberline {3.9.1}Differential Evolution Algorithm}{27}{subsubsection.3.9.1}%
+\contentsline {subsubsection}{\numberline {3.9.2}Boundary Convergence}{28}{subsubsection.3.9.2}%
+\contentsline {subsubsection}{\numberline {3.9.3}Multi-Objective Extension (NSGA-II)}{28}{subsubsection.3.9.3}%
+\contentsline {subsection}{\numberline {3.10}AD Valorization Scenarios}{28}{subsection.3.10}%
+\contentsline {subsection}{\numberline {3.11}4E Analysis Framework}{30}{subsection.3.11}%
+\contentsline {subsubsection}{\numberline {3.11.1}E1 --- Energetic Analysis}{30}{subsubsection.3.11.1}%
+\contentsline {subsubsection}{\numberline {3.11.2}E2 --- Economic Analysis}{30}{subsubsection.3.11.2}%
+\contentsline {subsubsection}{\numberline {3.11.3}E3 --- Energo-Economic Analysis}{31}{subsubsection.3.11.3}%
+\contentsline {subsubsection}{\numberline {3.11.4}E4 --- Environmental Analysis}{31}{subsubsection.3.11.4}%
+\contentsline {section}{\numberline {4}Results}{33}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Optimization Convergence and Optimal Design Parameters}{33}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Extended Land Equivalent Ratio Decomposition}{35}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Energy Performance and Thermal Balance}{36}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Climate Gradient and Non-Monotone eLER Ordering}{39}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}4E Analysis: Energetic, Economic, Energo-Economic, and Environmental Performance}{41}{subsection.4.5}%
-\contentsline {subsubsection}{\numberline {4.5.1}CAPEX Breakdown}{42}{subsubsection.4.5.1}%
-\contentsline {subsubsection}{\numberline {4.5.2}Investment Metrics (E2)}{43}{subsubsection.4.5.2}%
-\contentsline {subsubsection}{\numberline {4.5.3}Environmental Performance (E4)}{44}{subsubsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5}4E Analysis: Energetic, Economic, Energo-Economic, and Environmental Performance}{40}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}CAPEX Breakdown}{41}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}Investment Metrics (E2)}{42}{subsubsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.3}Environmental Performance (E4)}{43}{subsubsection.4.5.3}%
 \contentsline {subsection}{\numberline {4.6}Water Savings and LER\textsubscript {water}}{44}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Model Validation}{46}{subsection.4.7}%
-\contentsline {subsubsection}{\numberline {4.7.1}V1 --- Crop Yield Model}{47}{subsubsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7}Model Validation}{45}{subsection.4.7}%
+\contentsline {subsubsection}{\numberline {4.7.1}V1 --- Crop Yield Model}{46}{subsubsection.4.7.1}%
 \contentsline {subsubsection}{\numberline {4.7.2}V2 --- BMP Temperature Response Model}{47}{subsubsection.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.7.3}V3 --- External POA Validation Against pvlib}{48}{subsubsection.4.7.3}%
 \contentsline {section}{\numberline {5}Discussion}{49}{section.5}%
 \contentsline {subsection}{\numberline {5.1}The PAR-Saturation Mechanism: Implications for Site Selection and Crop Choice}{49}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Boundary Convergence: Physical Meaning and the Access Trade-off}{50}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}The eLER Metric: Interpretation, Definitions, and Structural Properties}{51}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Economic Viability and Policy Implications}{53}{subsection.5.4}%
-\contentsline {subsection}{\numberline {5.5}Limitations and Future Work}{55}{subsection.5.5}%
-\contentsline {section}{\numberline {6}Conclusion}{57}{section.6}%
-\contentsline {section}{\numberline {A}: Differential Evolution Algorithm — Complete Pseudocode}{59}{appendix.A}%
-\contentsline {section}{\numberline {B}: Model Parameters — Complete Reference Table}{61}{appendix.B}%
+\contentsline {subsection}{\numberline {5.3}The eLER Metric: Interpretation, Definitions, and Structural Properties}{52}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Economic Viability and Policy Implications}{56}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Limitations and Future Work}{57}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Conclusion}{61}{section.6}%
+\contentsline {section}{\numberline {A}: Differential Evolution Algorithm — Complete Pseudocode}{63}{appendix.A}%
+\contentsline {section}{\numberline {B}: Model Parameters — Complete Reference Table}{65}{appendix.B}%

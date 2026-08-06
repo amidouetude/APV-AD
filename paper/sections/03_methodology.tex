@@ -262,13 +262,24 @@ components:
 \end{equation}
 where $\theta_i$ is the angle of incidence on the tilted surface,
 $\beta$ is the panel tilt angle, and $\rho_g = 0.25$ is the ground
-albedo~\citep{monteith2008}. The angle of incidence for a south-facing
-fixed-tilt surface is:
+albedo~\citep{monteith2008}. The angle of incidence for a fixed,
+due-south-facing tilted surface is given by the closed-form
+expression of \citet{duffie2013}, expressed directly in terms of
+declination $\delta$, latitude $\phi$, hour angle $\omega$, and
+tilt $\beta$:
 \begin{equation}
-    \cos\theta_i = \sin\alpha_s\cos\beta
-        + \cos\alpha_s\sin\beta
+    \cos\theta_i = \sin\delta\sin(\phi-\beta)
+        + \cos\delta\cos\omega\cos(\phi-\beta)
     \label{eq:aoi}
 \end{equation}
+This expression is exact for a fixed due-south collector at every
+hour of the day. An earlier version of this model used the
+solar-noon-only approximation
+$\cos\theta_i \approx \sin\alpha_s\cos\beta + \cos\alpha_s\sin\beta$,
+which implicitly assumes the sun remains due south throughout the
+day; this systematically overestimated front-surface beam
+irradiance away from solar noon and has been corrected throughout
+the present study.
 
 For bifacial modules, rear-side irradiance $G_{\text{rear}}$ is
 estimated from ground-reflected radiation modulated by the inter-row
@@ -417,8 +428,10 @@ $F_{\text{shad}} \leq 0.25$).
 
 \hspace{1cm}Reference evapotranspiration ET$_0$ is estimated hourly
 using the Hargreaves--Samani equation~\citep{hargreaves1985}, driven
-by the daily temperature range and extraterrestrial radiation estimated
-from the PVGIS-SARAH3 GHI profile. The Hargreaves--Samani method was
+by the daily temperature range and extraterrestrial radiation $R_a$
+computed astronomically from latitude and day of year following the
+standard FAO-56 formulation~\citep{allen1998}, requiring no ground
+radiation measurement. The Hargreaves--Samani method was
 selected over FAO-56 Penman-Monteith~\citep{allen1998} because the
 PVGIS TMY files do not provide dew point temperature or net radiation
 as independent columns, making two of the four Penman-Monteith inputs
@@ -541,6 +554,10 @@ Validation of the BMP temperature model against the five-point
 experimental dataset of \citet{feng2013} is reported in
 Section~\ref{sec:validation} (V2 validation,
 MAPE = 26.9\% in the operating range $T \leq \SI{37}{\celsius}$).
+Sensitivity of biogas output and eLER to $BMP_{\text{ref}}$,
+capture efficiency $\eta_{\text{cap}}$, and volatile-solids
+fractions is assessed via Monte Carlo sampling over
+literature-reported ranges in Section~\ref{sec:discussion}.
 
 \subsubsection{Digester Heat Balance}
 
@@ -619,7 +636,13 @@ a third dimensionless land-use output:
 An eLER greater than 1.0 confirms that the integrated APV--AD system
 uses land more productively than three separate monocultures --- an
 open-field crop, a dense-pack ground-mount PV array, and a standalone
-AD unit --- occupying the same total area. Each component is defined
+AD unit --- occupying the same total area. Equal weighting of the
+three components is adopted here, consistent with the original
+two-component LER framework, in which each term is already normalised
+to its own reference system and is therefore commensurable without
+further weighting; the sensitivity of eLER and cross-site rankings
+to alternative (energy-content- and revenue-weighted) schemes is
+examined in Section~\ref{sec:discussion}. Each component is defined
 as follows.
 
 \textbf{$LER_{\text{crop}}$} is the yield ratio from
