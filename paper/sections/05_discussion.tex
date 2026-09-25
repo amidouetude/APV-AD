@@ -17,9 +17,9 @@
 
 \hspace{1cm}The non-monotone relationship between annual solar resource
 and eLER --- Freiburg (GHI = 1\,150\,kWh\,m$^{-2}$) outperforming
-Konya (GHI = 1\,650\,kWh\,m$^{-2}$) --- is the most physically
-significant finding of this study and requires careful mechanistic
-interpretation before deployment implications can be drawn.
+Konya (GHI = 1\,650\,kWh\,m$^{-2}$) --- is one of the key mechanistic
+findings of this study and requires careful interpretation before
+deployment implications can be drawn.
 
 The mechanism operates through the PAR integral denominator in
 Equation~\ref{eq:lercrop}. In an open field, the denominator
@@ -61,7 +61,7 @@ would be reversed: open-field PAR rarely reaches saturation, the
 denominator grows proportionally with irradiance, and high-irradiance
 sites would achieve higher $LER_{\text{crop}}$, restoring a monotone
 eLER--GHI relationship. Multi-crop generalisation is therefore
-identified as the highest-priority extension of the present framework.
+identified as an important extension of the present framework.
 
 \textbf{Site selection implication.} The conventional wisdom in
 agrivoltaic deployment --- that high-irradiance semi-arid sites
@@ -326,7 +326,7 @@ information the ratio normalisation was constructed to preserve.
 eLER, like the classical two-component LER before it, is a
 \textit{decision-support} metric reflecting an explicit modelling
 choice about how to compare heterogeneous land-use outputs --- not
-a universal welfare measure with one objectively correct weighting.
+a universal welfare measure with a single objectively correct weighting.
 Equal weighting is defended here as the choice consistent with the
 metric's own normalisation logic and is retained as the primary
 metric on that basis, but a different decision context (for example,
@@ -408,7 +408,7 @@ IRR = 11.0\% against an 8\% discount rate). Three policy-relevant
 implications emerge from the economic results.
 
 \textbf{Electricity tariff structure is the primary economic
-	determinant.} The dominant revenue stream at all four sites is PV
+	determinant.} The largest revenue stream at all four sites is PV
 electricity sales, which accounts for 92--96\% of gross revenue
 under Scenario S0. The electricity price therefore has a
 disproportionate influence on project economics relative to tomato
@@ -427,8 +427,9 @@ APV--AD investment viability in semi-arid developing economies is
 primarily a function of energy price reform, not of solar resource
 or technology cost.
 
-\textbf{The carbon credit scenario (S6) is the dominant economic
-	strategy and should be prioritised in policy design.} S6 raises
+\textbf{The carbon credit scenario (S6) provides the strongest
+	economic uplift in this study and is worth prioritising in policy
+	design.} S6 raises
 IRR by 1.7--4.6 percentage points above S0 at all sites, with the
 largest absolute improvement at Freiburg (+4.6\,pp) driven by the
 EU ETS price (\$65\,tCO$_2^{-1}$). At Ouagadougou and Konya,
@@ -447,8 +448,8 @@ Ouagadougou represents a significant fraction of the annual per
 capita CO$_2$ budget compatible with 1.5\,\si{\celsius} pathways,
 this mechanism also aligns economic incentives with climate goals.
 
-\textbf{Ouagadougou provides the strongest investment case and the
-	most compelling argument for APV--AD deployment in Sub-Saharan Africa.}
+\textbf{Ouagadougou provides the strongest investment case among the
+	four sites in this study.}
 An IRR of 28.1\% under S0 and 29.9\% under S6, combined with a
 payback of 3.3--3.5\,yr, makes the Ouagadougou configuration
 attractive even at the 10\% discount rate that reflects the higher
@@ -463,7 +464,7 @@ digester volume (2.64\,m$^3$) and low AD CAPEX (\$2\,112) mean that
 the biogas revenue stream is essentially free cash flow on top of
 the PV investment. For development finance institutions seeking
 bankable climate-positive agricultural projects in the Sahel,
-the APV--AD model at Ouagadougou-type sites offers a rare
+the APV--AD model at Ouagadougou-type sites offers a notable
 combination of high IRR, short payback, large CO$_2$ impact,
 and food security co-benefit.
 
@@ -479,14 +480,14 @@ at parity. No site exceeds it, despite the elevated APV structure
 ground-mount~\citep{irena2022}) carrying a 40\% CAPEX premium and
 the inter-row shading loss at GCR = 69--72\% reducing annual
 specific yield below what a dense-pack unshaded array would
-achieve. This is a stronger result than the PV-only LCOE metric
-itself suggests: it is a single-output comparison that ignores
-crop production, water savings, and biogas, none of which are
-credited here. A full value-stack LCOE that credits all outputs
-would be lower than the PV-only LCOE at every site, and since the
+achieve. This is a stronger result than the PV-only LCOE metric itself
+suggests: it is a single-output comparison that ignores crop
+production, water savings, and biogas, none of which are credited
+here. A full value-stack LCOE that credits all outputs would likely
+be lower than the PV-only LCOE at every site, and because the
 PV-only LCOE already clears the utility-scale benchmark everywhere,
-the full value-stack LCOE would clear it with room to spare at all
-four sites, not only at Ouagadougou and Almer\'{i}a.
+the full value-stack LCOE would likely remain below that benchmark
+at all four sites.
 
 % ---------------------------------------------------------------------------
 \subsection{Limitations and Future Work}
@@ -576,11 +577,10 @@ lower $PAR_{\text{sat}}$ (lettuce at \SI{76}{W\,m^{-2}}; spinach
 at \SI{80}{W\,m^{-2}}) would likely eliminate or reverse the
 Freiburg--Konya eLER inversion, while high-saturation crops such
 as maize (\SI{400}{W\,m^{-2}}) would restore a monotone eLER--GHI
-relationship. A multi-crop sensitivity analysis --- requiring only
-a change of the $PAR_{\text{sat}}$ parameter in the existing model
---- is identified as the highest-priority extension, as it would
-transform the PAR-saturation finding from a tomato-specific result
-into a general mechanistic framework applicable to any crop species.
+relationship. A multi-crop sensitivity analysis --- requiring only a change of
+the $PAR_{\text{sat}}$ parameter in the existing model --- is an
+important next extension, as it would help determine how broadly
+the PAR-saturation finding generalises beyond tomato.
 
 \textbf{L3 --- Evapotranspiration model simplification.}
 Reference ET$_0$ is estimated using the Hargreaves--Samani equation
@@ -616,7 +616,7 @@ crop revenue and the VS input to the digester in subsequent
 seasons. Modelling this feedback requires multi-season soil
 nutrient dynamics that are beyond the scope of the present
 single-year TMY-based framework. It is identified as Gap G6
-and the highest-priority direction for experimental field
+and an important direction for experimental field
 validation, requiring co-located APV--AD installations with
 controlled digestate application trials over at least three
 growing seasons.

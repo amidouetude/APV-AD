@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .stage { min-height: 100vh; font-family: 'Public Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background .2s, color .2s; }
+    h1, h2, h3 { font-family: 'Source Serif 4', Georgia, serif; margin: 0; font-weight: 600; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+    .muted { color: var(--muted); }
+
+    .header { display:flex; align-items:center; justify-content:space-between; padding: 0 28px; height: 64px; border-bottom: 1px solid var(--border); }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand-mark { width:28px; height:28px; border-radius:6px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:var(--accentText); font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; }
+    .brand-name { font-size:17px; letter-spacing:.01em; }
+    .nav { display:flex; gap:4px; }
+    .nav-tab { padding:8px 14px; border-radius:8px; font-size:14px; font-weight:500; color:var(--muted); }
+    .nav-tab.active { background:var(--surfaceAlt); color:var(--text); }
+    .icon-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; }
+    .icon-btn:hover { border-color: var(--accent); }
+
+    .toolbar { padding:18px 28px 0 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+    .seg { display:inline-flex; padding:3px; background:var(--surfaceAlt); border:1px solid var(--border); border-radius:9px; }
+    .seg button { border:none; background:transparent; padding:6px 13px; font-size:12.5px; font-weight:600; color:var(--muted); border-radius:7px; cursor:pointer; }
+    .seg button.active { background:var(--surface); color:var(--text); box-shadow:0 1px 2px var(--shadow); }
+    .add-btn { border:1px dashed var(--border); background:transparent; color:var(--muted); padding:8px 14px; border-radius:9px; font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
+    .add-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+    .diff-line { margin:14px 28px 0 28px; background:var(--surfaceAlt); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:12.5px; }
+    .diff-line strong { font-weight:600; }
+
+    .table-wrap { padding: 16px 28px 32px 28px; overflow-x:auto; }
+    .grid-row { display:grid; align-items:center; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); min-width:760px; }
+    .grid-row.header-row { border-bottom:2px solid var(--border); padding-bottom:14px; align-items:flex-start; }
+    .grid-row.section-row { border-bottom:none; padding:16px 0 6px 0; }
+    .section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+
+    .rowlabel { font-size:12.5px; color:var(--muted); }
+    .colcard { display:flex; flex-direction:column; gap:4px; }
+    .colcard .name { font-size:13.5px; font-weight:600; }
+    .colcard .loc { font-size:11px; color:var(--muted); }
+    .colcard .tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
+    .tag { font-size:10px; padding:2px 7px; border-radius:6px; background:var(--surface); border:1px solid var(--border); color:var(--text); }
+    .badge { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:600; padding:2px 8px 2px 6px; border-radius:999px; border:1px solid var(--border); background:var(--surface); width:fit-content; }
+    .badge .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    .cell { display:flex; flex-direction:column; gap:4px; }
+    .cell-val { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; }
+    .cell-bar-wrap { height:5px; background:var(--surfaceAlt); border-radius:3px; overflow:hidden; }
+    .cell-bar { height:100%; background:var(--accent); border-radius:3px; }
+
+    .remove-x { cursor:pointer; color:var(--muted); align-self:flex-end; display:flex; }
+    .remove-x:hover { color:var(--accent); }
+  </style>
+</helmet>
+<div class="stage" style="--bg:{{theme.bg}};--surface:{{theme.surface}};--surfaceAlt:{{theme.surfaceAlt}};--text:{{theme.text}};--muted:{{theme.muted}};--accent:{{theme.accent}};--accentText:{{theme.accentText}};--border:{{theme.border}};--shadow:{{theme.shadow}};">
+
+  <div class="header">
+    <div class="brand"><div class="brand-mark">A</div><div class="brand-name">APV+AD Atlas</div></div>
+    <div class="nav">
+      <div class="nav-tab">Map</div>
+      <div class="nav-tab">Analyze</div>
+      <div class="nav-tab active">Compare</div>
+    </div>
+    <button class="icon-btn" onClick="{{ toggleDark }}" title="Toggle theme">
+      <sc-if value="{{dark}}" hint-placeholder-val="{{false}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </sc-if>
+      <sc-if value="{{light}}" hint-placeholder-val="{{true}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
+      </sc-if>
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg">
+      <button class="{{s0Class}}" onClick="{{ setS0 }}">Scenario S0 · baseline</button>
+      <button class="{{s6Class}}" onClick="{{ setS6 }}">Scenario S6 · carbon credit</button>
+    </div>
+    <sc-if value="{{canAdd}}" hint-placeholder-val="{{true}}">
+      <button class="add-btn" onClick="{{ addRef }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Add published reference — Freiburg (Cfb)
+      </button>
+    </sc-if>
+  </div>
+
+  <div class="diff-line">
+    <strong>Custom point</strong> differs from <strong>Ouagadougou</strong> (reference): crop Tomato → Cassava, substrate Cattle manure → Poultry litter, confidence Validated → Literature-estimated.
+  </div>
+  <div class="muted" style="margin:8px 28px 0 28px;font-size:11px;">Ouagadougou, Konya, and Freiburg columns reproduce the manuscript's published Table 8/9/12 values. Custom point is illustrative sample data for this prototype, not a live computation.</div>
+
+  <div class="table-wrap">
+
+    <div class="grid-row header-row" style="grid-template-columns:{{gridCols}};">
+      <div></div>
+      <div class="colcard">
+        <div class="name">Ouagadougou</div>
+        <div class="loc">Burkina Faso · 12.37°N</div>
+        <div class="tags"><span class="tag">Tomato</span><span class="tag">Cattle manure</span></div>
+        <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Validated</span>
+      </div>
+      <div class="colcard">
+        <div class="name">Konya</div>
+        <div class="loc">Türkiye · 37.87°N</div>
+        <div class="tags"><span class="tag">Tomato</span><span class="tag">Cattle manure</span></div>
+        <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Validated</span>
+      </div>
+      <div class="colcard">
+        <div class="name">Custom point</div>
+        <div class="loc">12.37°N (same coords)</div>
+        <div class="tags"><span class="tag">Cassava</span><span class="tag">Poultry litter</span></div>
+        <span class="badge"><span class="dot" style="background:#c68c40;"></span>Literature-est.</span>
+      </div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}">
+        <div class="colcard">
+          <div class="remove-x" onClick="{{ removeRef }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          </div>
+          <div class="name">Freiburg</div>
+          <div class="loc">Germany · 47.99°N</div>
+          <div class="tags"><span class="tag">Tomato</span><span class="tag">Cattle manure</span></div>
+          <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Validated</span>
+        </div>
+      </sc-if>
+    </div>
+
+    <div class="grid-row section-row" style="grid-template-columns:{{gridCols}};"><div class="section-title">Design variables</div></div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">Tilt angle β*</div>
+      <div class="cell-val">16.4°</div><div class="cell-val">20.7°</div><div class="cell-val">18.2°</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">23.1°</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">Row spacing d*</div>
+      <div class="cell-val">3.03 m</div><div class="cell-val">3.03 m</div><div class="cell-val">3.03 m</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">3.03 m</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">Digester volume V*</div>
+      <div class="cell-val">2.64 m³</div><div class="cell-val">4.32 m³</div><div class="cell-val">3.10 m³</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">3.57 m³</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">HRT*</div>
+      <div class="cell-val">31.8 d</div><div class="cell-val">22.5 d</div><div class="cell-val">28.0 d</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">33.5 d</div></sc-if>
+    </div>
+
+    <div class="grid-row section-row" style="grid-template-columns:{{gridCols}};"><div class="section-title">eLER decomposition (Definition A)</div></div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">LER<sub>crop</sub></div>
+      <div class="cell-val">0.397</div><div class="cell-val">0.356</div><div class="cell-val">0.440</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">0.376</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">LER<sub>PV</sub></div>
+      <div class="cell-val">0.691</div><div class="cell-val">0.674</div><div class="cell-val">0.691</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">0.659</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">LER<sub>biogas</sub></div>
+      <div class="cell-val">0.635</div><div class="cell-val">0.611</div><div class="cell-val">0.700</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">0.729</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel"><strong>eLER (total)</strong></div>
+      <div class="cell"><div class="cell-val">1.723</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:94%;"></div></div></div>
+      <div class="cell"><div class="cell-val">1.641</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:90%;"></div></div></div>
+      <div class="cell"><div class="cell-val">1.831</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:100%;"></div></div></div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}">
+        <div class="cell"><div class="cell-val">1.764</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:96%;"></div></div></div>
+      </sc-if>
+    </div>
+
+    <div class="grid-row section-row" style="grid-template-columns:{{gridCols}};"><div class="section-title">Energy performance</div></div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">PV sold (MWh/ha/yr)</div>
+      <div class="cell-val">1,361</div><div class="cell-val">1,229</div><div class="cell-val">1,390</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">951</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">Biogas (MWh/ha/yr)</div>
+      <div class="cell-val">5.98</div><div class="cell-val">3.66</div><div class="cell-val">6.30</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">2.88</div></sc-if>
+    </div>
+
+    <div class="grid-row section-row" style="grid-template-columns:{{gridCols}};"><div class="section-title">Economics — {{scenarioLabel}}</div></div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">NPV, 20yr (k$)</div>
+      <div class="cell"><div class="cell-val">{{npv1}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{npv1pct}}%;"></div></div></div>
+      <div class="cell"><div class="cell-val">{{npv2}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{npv2pct}}%;"></div></div></div>
+      <div class="cell"><div class="cell-val">{{npv3}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{npv3pct}}%;"></div></div></div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}">
+        <div class="cell"><div class="cell-val">{{npv4}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{npv4pct}}%;"></div></div></div>
+      </sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">IRR (%)</div>
+      <div class="cell"><div class="cell-val">{{irr1}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{irr1pct}}%;"></div></div></div>
+      <div class="cell"><div class="cell-val">{{irr2}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{irr2pct}}%;"></div></div></div>
+      <div class="cell"><div class="cell-val">{{irr3}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{irr3pct}}%;"></div></div></div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}">
+        <div class="cell"><div class="cell-val">{{irr4}}</div><div class="cell-bar-wrap"><div class="cell-bar" style="width:{{irr4pct}}%;"></div></div></div>
+      </sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">LCOE, PV ($/kWh)</div>
+      <div class="cell-val">0.048</div><div class="cell-val">0.047</div><div class="cell-val">0.048</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">0.049</div></sc-if>
+    </div>
+
+    <div class="grid-row section-row" style="grid-template-columns:{{gridCols}};"><div class="section-title">Water savings</div></div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">W<sub>saved</sub> (mm/season)</div>
+      <div class="cell-val">81</div><div class="cell-val">159</div><div class="cell-val">88</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">114</div></sc-if>
+    </div>
+    <div class="grid-row" style="grid-template-columns:{{gridCols}};">
+      <div class="rowlabel">LER<sub>water</sub>, season (%)</div>
+      <div class="cell-val">15.6</div><div class="cell-val">18.8</div><div class="cell-val">16.9</div>
+      <sc-if value="{{showFreiburg}}" hint-placeholder-val="{{false}}"><div class="cell-val">22.4</div></sc-if>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark:false, scenario:'S0', showFreiburg:false };
+    this.toggleDark = this.toggleDark.bind(this);
+    this.setS0 = () => this.setState({ scenario:'S0' });
+    this.setS6 = () => this.setState({ scenario:'S6' });
+    this.addRef = () => this.setState({ showFreiburg:true });
+    this.removeRef = (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ showFreiburg:false }); };
+  }
+  toggleDark() { this.setState({ dark: !this.state.dark }); }
+  getTheme(dark) {
+    return dark ? {
+      bg:'#1c1a17', surface:'#242119', surfaceAlt:'#2b2720', text:'#ece7de',
+      muted:'#a79f8f', accent:'#8aa9c9', accentText:'#12212f', border:'#3a352d', shadow:'rgba(0,0,0,0.45)'
+    } : {
+      bg:'#faf8f4', surface:'#ffffff', surfaceAlt:'#f2ede3', text:'#221f1a',
+      muted:'#6b6558', accent:'#3f5f80', accentText:'#ffffff', border:'#e6ded0', shadow:'rgba(60,50,30,0.10)'
+    };
+  }
+  renderVals() {
+    const dark = !!this.state.dark;
+    const theme = this.getTheme(dark);
+    const s6 = this.state.scenario === 'S6';
+    const show4 = this.state.showFreiburg;
+    const npv = s6 ? [890,213,892,735] : [802,134,852,441];
+    const irr = s6 ? [29.9,12.7,31.7,17.6] : [28.1,11.0,29.9,13.0];
+    const npvMax = Math.max.apply(null, show4 ? npv : npv.slice(0,3));
+    const irrMax = Math.max.apply(null, show4 ? irr : irr.slice(0,3));
+    return {
+      theme: theme, dark: dark, light: !dark,
+      gridCols: '190px repeat(' + (show4 ? 4 : 3) + ', 1fr)',
+      showFreiburg: show4, canAdd: !show4,
+      s0Class: !s6 ? 'active' : '', s6Class: s6 ? 'active' : '',
+      scenarioLabel: s6 ? 'Scenario S6 (carbon credit)' : 'Scenario S0 (baseline)',
+      npv1: npv[0], npv2: npv[1], npv3: npv[2], npv4: npv[3],
+      npv1pct: (npv[0]/npvMax*100).toFixed(0), npv2pct: (npv[1]/npvMax*100).toFixed(0),
+      npv3pct: (npv[2]/npvMax*100).toFixed(0), npv4pct: (npv[3]/npvMax*100).toFixed(0),
+      irr1: irr[0].toFixed(1), irr2: irr[1].toFixed(1), irr3: irr[2].toFixed(1), irr4: irr[3].toFixed(1),
+      irr1pct: (irr[0]/irrMax*100).toFixed(0), irr2pct: (irr[1]/irrMax*100).toFixed(0),
+      irr3pct: (irr[2]/irrMax*100).toFixed(0), irr4pct: (irr[3]/irrMax*100).toFixed(0),
+      toggleDark: this.toggleDark,
+      setS0: this.setS0, setS6: this.setS6,
+      addRef: this.addRef, removeRef: this.removeRef,
+    };
+  }
+}
+</script>
+</body>
+</html>

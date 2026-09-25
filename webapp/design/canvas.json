@@ -1,0 +1,11 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Home / Map", "is_interactive": true },
+    { "file": "Analyze.dc.html", "x": 1580, "y": 0, "w": 1440, "h": 940, "title": "Analyze", "is_interactive": true },
+    { "file": "Compare.dc.html", "x": 3160, "y": 0, "w": 1600, "h": 900, "title": "Compare", "is_interactive": true }
+  ],
+  "annotations": [
+    { "id": "note-flow", "x": 0, "y": -100, "w": 1440, "text": "APV+AD Atlas — clickable prototype, Academic Paper Light theme (with dark mode toggle)\nMap → Analyze → Compare. Each screen is independent (no shared state across artboards)." }
+  ],
+  "launch": { "view": "canvas" }
+}

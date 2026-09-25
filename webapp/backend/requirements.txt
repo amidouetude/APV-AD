@@ -1,0 +1,6 @@
+# Backend-only dependencies for webapp/backend/. The core scientific stack
+# (numpy/pandas/scipy) is already required by the main project's
+# requirements.txt one level up -- not repeated here, just documented.
+fastapi
+uvicorn[standard]
+httpx2   # required by starlette's TestClient, used in this project's own tests

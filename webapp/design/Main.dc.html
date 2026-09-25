@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .stage { min-height: 100vh; font-family: 'Public Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background .2s, color .2s; }
+    h1, h2, h3 { font-family: 'Source Serif 4', Georgia, serif; margin: 0; font-weight: 600; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+    .muted { color: var(--muted); }
+
+    .header { display:flex; align-items:center; justify-content:space-between; padding: 0 28px; height: 64px; border-bottom: 1px solid var(--border); }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand-mark { width:28px; height:28px; border-radius:6px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:var(--accentText); font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; }
+    .brand-name { font-size:17px; letter-spacing:.01em; }
+    .nav { display:flex; gap:4px; }
+    .nav-tab { padding:8px 14px; border-radius:8px; font-size:14px; font-weight:500; color:var(--muted); }
+    .nav-tab.active { background:var(--surfaceAlt); color:var(--text); }
+    .icon-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; }
+    .icon-btn:hover { border-color: var(--accent); }
+
+    .subbar { padding: 18px 28px 0 28px; display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .subbar h1 { font-size:22px; }
+    .subbar p { margin:4px 0 0 0; font-size:13.5px; }
+
+    .seg { display:inline-flex; padding:3px; background:var(--surfaceAlt); border:1px solid var(--border); border-radius:9px; }
+    .seg button { border:none; background:transparent; padding:7px 14px; font-size:13px; font-weight:600; color:var(--muted); border-radius:7px; cursor:pointer; display:flex; align-items:center; gap:6px; }
+    .seg button.active { background:var(--surface); color:var(--text); box-shadow:0 1px 2px var(--shadow); }
+
+    .content { padding: 18px 28px 28px 28px; display:flex; gap:20px; align-items:flex-start; }
+    .map-panel { flex:1; }
+    .map-stage { position:relative; height: 580px; border-radius:14px; border:1px solid var(--border); background: var(--surfaceAlt); overflow:hidden; cursor: crosshair; }
+    .map-stage svg.silhouette { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .marker { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+    .marker-dot { width:13px; height:13px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); box-shadow:0 0 0 1px var(--border); transition:transform .12s; }
+    .marker:hover .marker-dot { transform:scale(1.3); }
+    .marker-label { font-size:11px; font-weight:600; color:var(--text); background:var(--surface); padding:1px 6px; border-radius:5px; border:1px solid var(--border); white-space:nowrap; }
+
+    .legend { position:absolute; left:18px; bottom:18px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:12px; box-shadow:0 2px 10px var(--shadow); }
+    .legend-bar { width:180px; height:8px; border-radius:4px; margin:6px 0 4px 0; }
+    .legend-scale { display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); }
+    .caption { position:absolute; right:18px; bottom:18px; font-size:11px; color:var(--muted); background:var(--surface); border:1px solid var(--border); padding:5px 10px; border-radius:8px; }
+
+    .panel { width:340px; flex-shrink:0; border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:18px; box-shadow:0 8px 24px var(--shadow); }
+    .panel-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px; }
+    .panel-head h2 { font-size:18px; }
+    .close-x { cursor:pointer; color:var(--muted); display:flex; }
+    .stat-row { display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px dashed var(--border); font-size:13px; gap:10px; }
+    .stat-row:last-child { border-bottom:none; }
+    .stat-label { color:var(--muted); }
+    .stat-val { font-family:'IBM Plex Mono',monospace; font-weight:600; white-space:nowrap; }
+    .ref-card { margin-top:14px; padding:12px; border-radius:10px; background:var(--surfaceAlt); border:1px solid var(--border); }
+    .ref-title { font-size:12.5px; font-weight:600; margin-bottom:6px; }
+
+    .badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; padding:3px 9px 3px 7px; border-radius:999px; border:1px solid var(--border); background:var(--surfaceAlt); color:var(--text); white-space:nowrap; }
+    .badge .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+
+    .pin { position:absolute; transform:translate(-50%,-100%); }
+    .popover { position:absolute; width:250px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:0 8px 24px var(--shadow); }
+    .popover-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .btn-primary { width:100%; margin-top:10px; background:var(--accent); color:var(--accentText); border:none; border-radius:9px; padding:9px 12px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+
+    .empty-hint { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted); font-size:13px; gap:8px; text-align:center; padding:0 60px; pointer-events:none; }
+  </style>
+</helmet>
+<div class="stage" style="--bg:{{theme.bg}};--surface:{{theme.surface}};--surfaceAlt:{{theme.surfaceAlt}};--text:{{theme.text}};--muted:{{theme.muted}};--accent:{{theme.accent}};--accentText:{{theme.accentText}};--border:{{theme.border}};--shadow:{{theme.shadow}};">
+
+  <div class="header">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-name">APV+AD Atlas</div>
+    </div>
+    <div class="nav">
+      <div class="nav-tab active">Map</div>
+      <div class="nav-tab">Analyze</div>
+      <div class="nav-tab">Compare</div>
+    </div>
+    <button class="icon-btn" onClick="{{ toggleDark }}" title="Toggle theme">
+      <sc-if value="{{dark}}" hint-placeholder-val="{{false}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </sc-if>
+      <sc-if value="{{light}}" hint-placeholder-val="{{true}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
+      </sc-if>
+    </button>
+  </div>
+
+  <div class="subbar">
+    <div>
+      <h1>Wind &amp; solar potential across Africa</h1>
+      <p class="muted">Click a country for its defaults, or click anywhere on the map to drop a point and start an analysis.</p>
+    </div>
+    <div class="seg">
+      <button class="{{layerWindClass}}" onClick="{{ setLayerWind }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h9a3 3 0 1 0-2.5-4.6M3 16h13a3 3 0 1 1-2.5 4.6M3 12h16a2.5 2.5 0 1 0-2-4"/></svg>
+        Wind
+      </button>
+      <button class="{{layerSolarClass}}" onClick="{{ setLayerSolar }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.6M12 18.9v2.6M4 4l1.9 1.9M18.1 18.1L20 20M2.5 12h2.6M18.9 12h2.6M4 20l1.9-1.9M18.1 5.9L20 4"/></svg>
+        Solar
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="map-panel">
+      <div class="map-stage" onClick="{{ dropPin }}">
+        <svg class="silhouette" viewBox="0 0 600 650" preserveAspectRatio="xMidYMid meet">
+          <path d="M150,40 C250,10 380,20 430,70 C480,110 520,90 560,140 C590,180 570,230 540,260 C560,300 540,340 500,360 C520,410 500,460 460,480 C470,530 440,580 400,600 C380,630 340,640 320,610 C300,580 310,540 290,510 C250,520 210,500 200,460 C170,470 140,450 140,410 C110,400 90,370 100,330 C70,320 60,280 80,250 C60,220 70,180 100,160 C90,120 110,80 150,40 Z"
+            fill="{{ layerFill }}" stroke="{{ theme.border }}" stroke-width="2" />
+        </svg>
+
+        <sc-if value="{{noSelection}}" hint-placeholder-val="{{true}}">
+          <div class="empty-hint">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <span>Click a marker for country defaults, or click anywhere on the continent to drop a point.</span>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{countries}}" as="c" hint-placeholder-count="7">
+          <div class="marker" style="left:{{c.left}};top:{{c.top}};" onClick="{{ c.pick }}">
+            <div class="marker-dot"></div>
+            <div class="marker-label">{{c.name}}</div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{hasPin}}" hint-placeholder-val="{{false}}">
+          <div class="pin" style="left:{{pinX}}px;top:{{pinY}}px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="{{ theme.accent }}" stroke="{{ theme.surface }}" stroke-width="1.4"><path d="M12 22s7-7.4 7-12.6A7 7 0 1 0 5 9.4C5 14.6 12 22 12 22Z"/><circle cx="12" cy="9.4" r="2.4" fill="{{ theme.surface }}"/></svg>
+          </div>
+          <div class="popover" style="left:{{popX}}px;top:{{popY}}px;" onClick="{{ stop }}">
+            <div class="popover-head">
+              <strong style="font-size:13px;">Dropped point</strong>
+              <span class="close-x" onClick="{{ closePin }}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+              </span>
+            </div>
+            <div class="stat-row"><span class="stat-label">Annual GHI</span><span class="stat-val">1,950 kWh/m²</span></div>
+            <div class="stat-row"><span class="stat-label">Mean wind (100m)</span><span class="stat-val">5.4 m/s</span></div>
+            <div class="stat-row"><span class="stat-label">Mean temp</span><span class="stat-val">26.4 °C</span></div>
+            <div class="muted" style="font-size:10.5px;margin-top:8px;">Sample values — live version queries PVGIS-SARAH3 at this exact point.</div>
+            <button class="btn-primary" onClick="{{ showNavHint }}">
+              Analyze this location
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <sc-if value="{{navHint}}" hint-placeholder-val="{{false}}">
+              <div class="muted" style="font-size:10.5px;margin-top:6px;">In the live app this opens the Analyze screen at this point. This prototype's screens are separate artboards, so this button doesn't navigate here.</div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <div class="legend">
+          <div class="mono" style="font-size:11px;font-weight:600;">{{legendTitle}}</div>
+          <div class="legend-bar" style="background:{{ legendGradient }};"></div>
+          <div class="legend-scale"><span>{{legendMin}}</span><span>{{legendMax}}</span></div>
+        </div>
+        <div class="caption">Schematic map — not to scale</div>
+      </div>
+    </div>
+
+    <sc-if value="{{hasCountry}}" hint-placeholder-val="{{false}}">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>{{selectedCountry.name}}</h2>
+          <span class="close-x" onClick="{{ closeCountry }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          </span>
+        </div>
+        <div class="muted" style="font-size:12px;margin-bottom:10px;">Country-level defaults (sample data)</div>
+        <div class="stat-row"><span class="stat-label">Mean wind speed (100m)</span><span class="stat-val">{{selectedCountry.wind}}</span></div>
+        <div class="stat-row"><span class="stat-label">Mean annual GHI</span><span class="stat-val">{{selectedCountry.ghi}}</span></div>
+        <div class="stat-row"><span class="stat-label">Electricity price</span><span class="stat-val">{{selectedCountry.elec}}</span></div>
+        <div class="stat-row"><span class="stat-label">Grid emission factor</span><span class="stat-val">{{selectedCountry.ef}}</span></div>
+        <div class="stat-row"><span class="stat-label">Carbon price</span><span class="stat-val">{{selectedCountry.carbon}}</span></div>
+
+        <div class="ref-card">
+          <div class="ref-title">Saved reference runs</div>
+          <sc-if value="{{selectedCountry.hasRef}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <div>
+                <div style="font-size:12.5px;font-weight:600;">{{selectedCountry.refName}}</div>
+                <div class="muted" style="font-size:11px;">eLER {{selectedCountry.refELER}} · IRR {{selectedCountry.refIRR}}</div>
+              </div>
+              <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Validated</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{selectedCountry.noRef}}" hint-placeholder-val="{{true}}">
+            <div class="muted" style="font-size:12px;">No saved runs yet for this country.</div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script>
+const COUNTRY_DATA = [
+  { id:'ma', name:'Morocco',      left:'22%', top:'10%', wind:'6.8 m/s', ghi:'2,050 kWh/m²', elec:'$0.11/kWh', ef:'0.610 tCO2/MWh', carbon:'$20/tCO2', hasRef:false, noRef:true },
+  { id:'eg', name:'Egypt',        left:'60%', top:'14%', wind:'7.9 m/s', ghi:'2,250 kWh/m²', elec:'$0.05/kWh', ef:'0.450 tCO2/MWh', carbon:'$10/tCO2', hasRef:false, noRef:true },
+  { id:'bf', name:'Burkina Faso', left:'28%', top:'42%', wind:'4.1 m/s', ghi:'2,050 kWh/m²', elec:'$0.12/kWh', ef:'0.632 tCO2/MWh', carbon:'$12/tCO2',
+    hasRef:true, noRef:false, refName:'Ouagadougou — Tomato / Cattle manure', refELER:'1.723', refIRR:'28.1%' },
+  { id:'ng', name:'Nigeria',      left:'36%', top:'46%', wind:'4.6 m/s', ghi:'1,900 kWh/m²', elec:'$0.06/kWh', ef:'0.520 tCO2/MWh', carbon:'$10/tCO2', hasRef:false, noRef:true },
+  { id:'ke', name:'Kenya',        left:'60%', top:'52%', wind:'6.2 m/s', ghi:'2,000 kWh/m²', elec:'$0.14/kWh', ef:'0.310 tCO2/MWh', carbon:'$14/tCO2', hasRef:false, noRef:true },
+  { id:'cd', name:'DR Congo',     left:'48%', top:'58%', wind:'3.2 m/s', ghi:'1,650 kWh/m²', elec:'$0.09/kWh', ef:'0.180 tCO2/MWh', carbon:'$8/tCO2',  hasRef:false, noRef:true },
+  { id:'za', name:'South Africa', left:'46%', top:'88%', wind:'7.4 m/s', ghi:'2,100 kWh/m²', elec:'$0.10/kWh', ef:'0.900 tCO2/MWh', carbon:'$9/tCO2',  hasRef:false, noRef:true },
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: false, layer: 'wind', country: null, pin: null, navHint: false };
+    this.toggleDark = this.toggleDark.bind(this);
+    this.setLayerWind = this.setLayerWind.bind(this);
+    this.setLayerSolar = this.setLayerSolar.bind(this);
+    this.closeCountry = this.closeCountry.bind(this);
+    this.closePin = this.closePin.bind(this);
+    this.showNavHint = this.showNavHint.bind(this);
+    this.dropPin = this.dropPin.bind(this);
+    this.stop = this.stop.bind(this);
+  }
+  toggleDark() { this.setState({ dark: !this.state.dark }); }
+  setLayerWind() { this.setState({ layer: 'wind' }); }
+  setLayerSolar() { this.setState({ layer: 'solar' }); }
+  closeCountry() { this.setState({ country: null }); }
+  closePin() { this.setState({ pin: null, navHint: false }); }
+  showNavHint() { this.setState({ navHint: true }); }
+  stop(e) { if (e && e.stopPropagation) e.stopPropagation(); }
+  dropPin(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    this.setState({ pin: { x: x, y: y }, country: null, navHint: false });
+  }
+  getTheme(dark) {
+    return dark ? {
+      bg: '#1c1a17', surface: '#242119', surfaceAlt: '#2b2720', text: '#ece7de',
+      muted: '#a79f8f', accent: '#8aa9c9', accentText: '#12212f', border: '#3a352d', shadow: 'rgba(0,0,0,0.45)'
+    } : {
+      bg: '#faf8f4', surface: '#ffffff', surfaceAlt: '#f2ede3', text: '#221f1a',
+      muted: '#6b6558', accent: '#3f5f80', accentText: '#ffffff', border: '#e6ded0', shadow: 'rgba(60,50,30,0.10)'
+    };
+  }
+  renderVals() {
+    const dark = !!this.state.dark;
+    const theme = this.getTheme(dark);
+    const layer = this.state.layer;
+    const pin = this.state.pin;
+    const stopFn = this.stop;
+    const countries = COUNTRY_DATA.map((c) => Object.assign({}, c, {
+      pick: (e) => { stopFn(e); this.setState({ country: c.id, pin: null }); },
+    }));
+    const selectedCountry = countries.filter((c) => c.id === this.state.country)[0] || null;
+    return {
+      theme: theme, dark: dark, light: !dark,
+      layerWindClass: layer === 'wind' ? 'active' : '',
+      layerSolarClass: layer === 'solar' ? 'active' : '',
+      layerFill: layer === 'wind' ? 'rgba(63,127,143,0.32)' : 'rgba(198,140,64,0.32)',
+      legendTitle: layer === 'wind' ? 'Mean wind speed, 100m' : 'Annual GHI',
+      legendGradient: layer === 'wind' ? 'linear-gradient(90deg,#dceef0,#3f7f8f)' : 'linear-gradient(90deg,#fbe7c6,#c68c40)',
+      legendMin: layer === 'wind' ? '3 m/s' : '1,400 kWh/m²',
+      legendMax: layer === 'wind' ? '9 m/s' : '2,200 kWh/m²',
+      countries: countries,
+      hasCountry: !!selectedCountry,
+      selectedCountry: selectedCountry || {},
+      hasPin: !!pin,
+      pinX: pin ? pin.x : 0,
+      pinY: pin ? pin.y : 0,
+      popX: pin ? Math.min(pin.x + 16, 520) : 0,
+      popY: pin ? Math.max(pin.y - 40, 10) : 0,
+      noSelection: !selectedCountry && !pin,
+      navHint: !!this.state.navHint,
+      toggleDark: this.toggleDark,
+      setLayerWind: this.setLayerWind,
+      setLayerSolar: this.setLayerSolar,
+      closeCountry: this.closeCountry,
+      closePin: this.closePin,
+      showNavHint: this.showNavHint,
+      dropPin: this.dropPin,
+      stop: this.stop,
+    };
+  }
+}
+</script>
+</body>
+</html>

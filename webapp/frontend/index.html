@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>APV+AD Atlas — live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  :root {
+    --bg:#faf8f4; --surface:#ffffff; --surfaceAlt:#f2ede3; --text:#221f1a;
+    --muted:#6b6558; --accent:#3f5f80; --accentText:#ffffff; --border:#e6ded0;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',system-ui,sans-serif; }
+  h1,h2 { font-family:'Source Serif 4',Georgia,serif; margin:0; font-weight:600; }
+  .mono { font-family:'IBM Plex Mono',ui-monospace,monospace; }
+  .muted { color:var(--muted); }
+  header { display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:60px; border-bottom:1px solid var(--border); }
+  .brand { display:flex; align-items:center; gap:10px; font-size:16px; }
+  .brand .mark { width:26px; height:26px; border-radius:6px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Source Serif 4',serif; font-weight:700; }
+  .live-dot { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); }
+  .live-dot span { width:7px; height:7px; border-radius:50%; background:#2e9b5a; }
+  main { max-width:1100px; margin:0 auto; padding:24px; }
+  .mapcard { border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:0; margin-bottom:20px; overflow:hidden; }
+  .mapcard-head { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); }
+  .mapcard-head h2 { font-size:14px; }
+  #map { height:400px; width:100%; }
+  .leaflet-popup-content { font-family:'Public Sans',system-ui,sans-serif; font-size:12.5px; min-width:180px; }
+  .popup-title { font-weight:600; margin-bottom:4px; font-size:13px; }
+  .popup-row { display:flex; justify-content:space-between; gap:10px; }
+  .popup-btn { display:block; width:100%; margin-top:8px; background:var(--accent); color:#fff; border:none; border-radius:6px; padding:6px; font-size:12px; font-weight:600; cursor:pointer; }
+  .cols { display:grid; grid-template-columns:320px 1fr; gap:20px; align-items:start; }
+  .card { border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:18px; margin-bottom:16px; }
+  label { display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:10px 0 4px 0; }
+  label:first-child { margin-top:0; }
+  input, select { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--surfaceAlt); color:var(--text); font-family:inherit; font-size:13.5px; }
+  .presets { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .preset { font-size:11.5px; padding:5px 9px; border-radius:7px; border:1px solid var(--border); background:var(--surfaceAlt); cursor:pointer; }
+  .preset:hover { border-color:var(--accent); }
+  .btn { width:100%; margin-top:12px; background:var(--accent); color:var(--accentText); border:none; border-radius:9px; padding:10px; font-size:13.5px; font-weight:600; cursor:pointer; }
+  .btn.secondary { background:var(--surfaceAlt); color:var(--text); border:1px solid var(--border); }
+  .btn:disabled { opacity:.55; cursor:default; }
+  .stat-row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed var(--border); font-size:13px; }
+  .stat-row:last-child { border-bottom:none; }
+  .badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:600; padding:3px 9px 3px 7px; border-radius:999px; border:1px solid var(--border); background:var(--surfaceAlt); }
+  .badge .dot { width:6px; height:6px; border-radius:50%; }
+  .stack { display:flex; height:32px; border-radius:8px; overflow:hidden; border:1px solid var(--border); margin:12px 0 8px 0; }
+  .stack div { display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+  .eler-total { font-family:'Source Serif 4',serif; font-size:30px; font-weight:700; }
+  .tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
+  .tile { border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--surfaceAlt); }
+  .tile-label { font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .tile-val { font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; margin-top:4px; }
+  #convChart { width:100%; height:120px; }
+  .note { font-size:11.5px; color:var(--muted); background:var(--surfaceAlt); border:1px dashed var(--border); padding:8px 10px; border-radius:8px; margin-top:10px; }
+  .empty { color:var(--muted); font-size:13px; padding:40px 0; text-align:center; }
+  .err { color:#b3261e; font-size:12.5px; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><div class="mark">A</div>APV+AD Atlas <span class="muted" style="font-size:12px;">— live</span></div>
+  <div class="live-dot"><span></span> connected to http://127.0.0.1:8000</div>
+</header>
+
+<main>
+  <div class="mapcard">
+    <div class="mapcard-head">
+      <h2>Click anywhere in Africa to fetch its live PVGIS climate</h2>
+      <span class="muted" style="font-size:11.5px;">Diamond markers = published reference sites</span>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <div class="cols">
+  <div>
+    <div class="card">
+      <label>Location</label>
+      <input id="lat" type="number" step="0.01" value="12.65" placeholder="lat">
+      <input id="lon" type="number" step="0.01" value="-8.00" placeholder="lon" style="margin-top:6px;">
+      <div class="presets">
+        <div class="preset" data-lat="12.37" data-lon="-1.53">Ouagadougou</div>
+        <div class="preset" data-lat="37.87" data-lon="32.49">Konya</div>
+        <div class="preset" data-lat="36.83" data-lon="-2.46">Almería</div>
+        <div class="preset" data-lat="47.99" data-lon="7.85">Freiburg</div>
+        <div class="preset" data-lat="12.65" data-lon="-8.00">Bamako (new)</div>
+        <div class="preset" data-lat="5.60" data-lon="-0.19">Accra (new)</div>
+      </div>
+
+      <label>Crop</label>
+      <select id="crop">
+        <option value="tomato">Tomato (validated)</option>
+        <option value="lettuce">Lettuce (literature-est.)</option>
+        <option value="cassava">Cassava (literature-est.)</option>
+        <option value="maize">Maize (literature-est.)</option>
+      </select>
+
+      <label>Borrow economics/substrate from</label>
+      <select id="borrow">
+        <option>Ouagadougou</option>
+        <option>Konya</option>
+        <option>Almeria</option>
+        <option>Freiburg</option>
+      </select>
+
+      <label>Scenario</label>
+      <select id="scenario">
+        <option value="S0">S0 — baseline</option>
+        <option value="S6">S6 — carbon credit</option>
+      </select>
+
+      <button class="btn secondary" id="climateBtn">Get live climate</button>
+      <button class="btn" id="evalBtn">Evaluate (fast)</button>
+      <button class="btn secondary" id="optBtn">Run full optimization (~2–4 min)</button>
+      <div id="err" class="err"></div>
+    </div>
+    <div class="card" id="climateCard" style="display:none;">
+      <h2 style="font-size:14px;">Live climate (PVGIS-SARAH3)</h2>
+      <div id="climateStats"></div>
+    </div>
+  </div>
+
+  <div>
+    <div id="resultArea" class="card">
+      <div class="empty">Pick a location and click "Evaluate" or "Run full optimization" — this calls the real, unmodified research model live.</div>
+    </div>
+  </div>
+  </div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const API = "http://127.0.0.1:8000";
+const $ = (id) => document.getElementById(id);
+
+document.querySelectorAll(".preset").forEach(p => {
+  p.addEventListener("click", () => {
+    $("lat").value = p.dataset.lat;
+    $("lon").value = p.dataset.lon;
+    if (window._flyTo) window._flyTo(parseFloat(p.dataset.lat), parseFloat(p.dataset.lon));
+  });
+});
+
+// ---- Map: real Africa geography (OpenStreetMap tiles), not the schematic
+// silhouette used in the design/ prototype -- this is genuine geography
+// since this page runs unsandboxed, unlike the Claude Design artifact.
+const map = L.map("map", { minZoom: 3, maxZoom: 10 }).setView([7, 15], 3.3);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; OpenStreetMap contributors",
+  maxZoom: 10,
+}).addTo(map);
+window._flyTo = (lat, lon) => map.flyTo([lat, lon], 6);
+
+const diamondIcon = L.divIcon({
+  className: "", html: `<div style="width:14px;height:14px;background:#3f5f80;border:2px solid #fff;box-shadow:0 0 0 1px #e6ded0;transform:rotate(45deg);"></div>`,
+  iconSize: [14, 14], iconAnchor: [7, 7],
+});
+let clickMarker = null;
+
+function popupHTML(title, rows, showButton) {
+  const rowsHTML = rows.map(r => `<div class="popup-row"><span class="muted">${r[0]}</span><span class="mono">${r[1]}</span></div>`).join("");
+  return `<div class="popup-title">${title}</div>${rowsHTML}` +
+    (showButton ? `<button class="popup-btn" onclick="window._useLoc()">Use this location</button>` : "");
+}
+
+window._pendingLoc = null;
+window._useLoc = () => {
+  if (!window._pendingLoc) return;
+  $("lat").value = window._pendingLoc.lat.toFixed(3);
+  $("lon").value = window._pendingLoc.lon.toFixed(3);
+  map.closePopup();
+};
+
+// Reference site markers, loaded from the real published results (the
+// same /api/sites/reference the backend already serves).
+(async () => {
+  try {
+    const r = await fetch(`${API}/api/sites/reference?scenario=S0`);
+    const rows = await r.json();
+    const coords = { Ouagadougou: [12.37, -1.53], Konya: [37.87, 32.49], Almeria: [36.83, -2.46], Freiburg: [47.99, 7.85] };
+    const bounds = [];
+    rows.forEach(row => {
+      const c = coords[row.site];
+      if (!c) return;
+      bounds.push(c);
+      const m = L.marker(c, { icon: diamondIcon }).addTo(map);
+      m.on("click", () => { window._pendingLoc = { lat: c[0], lon: c[1] }; });
+      m.bindPopup(popupHTML(`${row.site} <span class="mono" style="font-weight:400;">(published)</span>`, [
+        ["eLER (Def A)", row.eLER_defA],
+        ["IRR", row.IRR_pct + "%"],
+        ["NPV", "$" + row.NPV_kUSD + "k"],
+      ], true));
+    });
+    // Fit all 4 reference markers on load -- a hardcoded center/zoom
+    // clipped Freiburg (47.99N) off the top of a 400px-tall map at low
+    // zoom; found by actually rendering the page, not assumed.
+    if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
+  } catch (e) { /* backend not reachable yet -- markers just won't appear */ }
+})();
+
+map.on("click", async (e) => {
+  const { lat, lng } = e.latlng;
+  window._pendingLoc = { lat, lon: lng };
+  if (clickMarker) map.removeLayer(clickMarker);
+  clickMarker = L.marker([lat, lng]).addTo(map);
+  clickMarker.bindPopup(popupHTML("Dropped point", [["lat, lon", `${lat.toFixed(3)}, ${lng.toFixed(3)}`], ["climate", "loading…"]]), true).openPopup();
+
+  try {
+    const r = await fetch(`${API}/api/climate?lat=${lat}&lon=${lng}`);
+    const d = await r.json();
+    clickMarker.setPopupContent(popupHTML("Dropped point", [
+      ["lat, lon", `${lat.toFixed(3)}, ${lng.toFixed(3)}`],
+      ["Annual GHI", d.annual_ghi_kwh_m2 + " kWh/m²"],
+      ["Mean temp", d.mean_temp_c + " °C"],
+      ["Mean wind", d.mean_wind_ms + " m/s"],
+    ], true));
+  } catch (err) {
+    clickMarker.setPopupContent(popupHTML("Dropped point", [["lat, lon", `${lat.toFixed(3)}, ${lng.toFixed(3)}`], ["climate", "backend unreachable"]], true));
+  }
+});
+
+function tierColor(tier) {
+  return tier === "validated" ? "#2e9b5a" : tier === "literature_estimated" ? "#c68c40" : "#8b8578";
+}
+function tierLabel(tier) {
+  return tier === "validated" ? "Validated" : tier === "literature_estimated" ? "Literature-estimated" : "User-custom";
+}
+
+async function getClimate() {
+  $("err").textContent = "";
+  const lat = parseFloat($("lat").value), lon = parseFloat($("lon").value);
+  try {
+    const r = await fetch(`${API}/api/climate?lat=${lat}&lon=${lon}`);
+    if (!r.ok) throw new Error(await r.text());
+    const d = await r.json();
+    $("climateCard").style.display = "block";
+    $("climateStats").innerHTML = `
+      <div class="stat-row"><span class="muted">Annual GHI</span><span class="mono">${d.annual_ghi_kwh_m2} kWh/m²</span></div>
+      <div class="stat-row"><span class="muted">Mean temp</span><span class="mono">${d.mean_temp_c} °C</span></div>
+      <div class="stat-row"><span class="muted">Mean wind</span><span class="mono">${d.mean_wind_ms} m/s</span></div>
+      <div class="stat-row"><span class="muted">Elevation</span><span class="mono">${d.elevation_m} m</span></div>
+      <div class="stat-row"><span class="muted">Source</span><span class="mono">${d.radiation_db}</span></div>`;
+  } catch (e) {
+    $("err").textContent = "Climate fetch failed: " + e.message;
+  }
+}
+
+function renderResult(payload, optimized) {
+  const r = payload.result, e = payload.economics;
+  const total = r.LER_crop + r.LER_PV_defA + r.LER_biogas;
+  const pct = (x) => (x / total * 100).toFixed(1);
+  const tier = payload.crop_confidence_tier;
+
+  $("resultArea").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <h2>eLER decomposition ${optimized ? "— optimized" : "— fast tier"}</h2>
+      <span class="badge"><span class="dot" style="background:${tierColor(tier)}"></span>${tierLabel(tier)}</span>
+    </div>
+    <div class="eler-total">${r.eLER_defA.toFixed(3)}</div>
+    <div class="stack">
+      <div style="width:${pct(r.LER_crop)}%;background:#4c87c2;">${r.LER_crop.toFixed(2)}</div>
+      <div style="width:${pct(r.LER_PV_defA)}%;background:#f5a623;">${r.LER_PV_defA.toFixed(2)}</div>
+      <div style="width:${pct(r.LER_biogas)}%;background:#2e9b5a;">${r.LER_biogas.toFixed(2)}</div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><div class="tile-label">NPV, 20yr</div><div class="tile-val">$${e.NPV_kUSD}k</div></div>
+      <div class="tile"><div class="tile-label">IRR</div><div class="tile-val">${e.IRR_pct}%</div></div>
+      <div class="tile"><div class="tile-label">LCOE, PV</div><div class="tile-val">$${e.LCOE_PV_USD_kWh}</div></div>
+      <div class="tile"><div class="tile-label">CO2 avoided</div><div class="tile-val">${e.CO2_avoided_total_tCO2_ha}</div></div>
+    </div>
+    <div class="stat-row" style="margin-top:10px;"><span class="muted">PV sold</span><span class="mono">${r.PV_sold_MWh_ha} MWh/ha/yr</span></div>
+    <div class="stat-row"><span class="muted">Biogas</span><span class="mono">${r.biogas_total_MWh_ha} MWh/ha/yr</span></div>
+    <div class="stat-row"><span class="muted">Water saved</span><span class="mono">${r.W_saved_mm_season} mm/season (${r.LER_water_season_pct}%)</span></div>
+    ${optimized ? `<div class="stat-row"><span class="muted">Optimized geometry</span><span class="mono">β=${r.beta_deg.toFixed(1)}° d_row=${r.d_row_m.toFixed(2)}m H=${r.H_m_m.toFixed(2)}m</span></div>` : ""}
+    <div class="note">Borrowed from ${payload.borrowed_from}: ${payload.borrowed_fields ? payload.borrowed_fields.length : "—"} non-site-specific fields (crop/substrate/economics). ${payload.economics_note || ""}</div>
+  `;
+}
+
+async function evaluate() {
+  $("err").textContent = "";
+  $("resultArea").innerHTML = `<div class="empty">Fetching live PVGIS data and running the model…</div>`;
+  const body = {
+    lat: parseFloat($("lat").value), lon: parseFloat($("lon").value),
+    crop: $("crop").value, scenario: $("scenario").value, borrow_from: $("borrow").value,
+  };
+  try {
+    const r = await fetch(`${API}/api/evaluate`, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body) });
+    if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    renderResult(await r.json(), false);
+  } catch (e) {
+    $("resultArea").innerHTML = `<div class="empty">Request failed.</div>`;
+    $("err").textContent = "Evaluate failed: " + e.message;
+  }
+}
+
+async function optimize() {
+  $("err").textContent = "";
+  const body = {
+    lat: parseFloat($("lat").value), lon: parseFloat($("lon").value),
+    crop: $("crop").value, scenario: $("scenario").value, borrow_from: $("borrow").value,
+  };
+  try {
+    const r = await fetch(`${API}/api/optimize`, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body) });
+    if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    const { job_id } = await r.json();
+
+    const poll = async () => {
+      const jr = await fetch(`${API}/api/optimize/${job_id}`);
+      const jd = await jr.json();
+      if (jd.status === "running") {
+        const p = jd.progress;
+        const last = p.length ? p[p.length-1] : null;
+        $("resultArea").innerHTML = `<div class="empty">Optimizing… generation ${last ? last.generation : 0}/50${last ? `, best eLER so far = ${last.best_eLER}` : ""}<br><span class="muted" style="font-size:11.5px;">This is the real scipy.optimize.differential_evolution run — takes 2-4 minutes.</span></div>`;
+        setTimeout(poll, 2000);
+      } else if (jd.status === "done") {
+        renderResult(jd.result, true);
+      } else {
+        $("resultArea").innerHTML = `<div class="empty">Optimization failed.</div>`;
+        $("err").textContent = jd.error || "unknown error";
+      }
+    };
+    poll();
+  } catch (e) {
+    $("err").textContent = "Optimize failed: " + e.message;
+  }
+}
+
+$("climateBtn").addEventListener("click", getClimate);
+$("evalBtn").addEventListener("click", evaluate);
+$("optBtn").addEventListener("click", optimize);
+</script>
+</body>
+</html>

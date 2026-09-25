@@ -272,7 +272,7 @@ tilt $\beta$:
         + \cos\delta\cos\omega\cos(\phi-\beta)
     \label{eq:aoi}
 \end{equation}
-This expression is exact for a fixed due-south collector at every
+This expression is the closed-form relation used here for a fixed due-south collector at every
 hour of the day. An earlier version of this model used the
 solar-noon-only approximation
 $\cos\theta_i \approx \sin\alpha_s\cos\beta + \cos\alpha_s\sin\beta$,
@@ -633,7 +633,7 @@ a third dimensionless land-use output:
 	\label{eq:eler}
 \end{equation}
 
-An eLER greater than 1.0 confirms that the integrated APV--AD system
+An eLER greater than 1.0 indicates that the integrated APV--AD system
 uses land more productively than three separate monocultures --- an
 open-field crop, a dense-pack ground-mount PV array, and a standalone
 AD unit --- occupying the same total area. Equal weighting of the
@@ -660,7 +660,7 @@ are used:
 	ground-mount array at the same tilt angle $\beta^*$ with no
 	inter-row shading (GCR = 1.0 in the limiting sense, i.e.\ rows
 	spaced at exactly the module projected width $L_m\cos\beta$).
-	This provides a rigorous, non-circular reference that is
+	This provides a non-circular reference that is
 	independent of the APV design variables.
 	
 	\item \textbf{Definition B (circular reference, for comparison)}:
@@ -737,8 +737,7 @@ interactions~\citep{oprea2024}.
 	\end{tabular}
 \end{table}
 
-The DE configuration follows established best-practice
-recommendations~\citep{storn1997, das2011}:
+The DE configuration follows common recommendations~\citep{storn1997, das2011}:
 
 \begin{itemize}[leftmargin=*, noitemsep]
 	\item Population size: $NP = 15 \times n_{\text{var}} = 90$
@@ -785,8 +784,8 @@ lower bounds of row spacing ($d_{\text{row}}^* = \SI{3.03}{m}$,
 constrained by the inter-row clearance condition) and module
 height ($H_m^* = \SI{1.50}{m}$, the specified lower bound).
 This boundary convergence is a structural result: the eLER
-landscape has its global maximum at the physical constraint
-boundary, where maximum panel density simultaneously maximises
+landscape reaches its optimum at the physical constraint boundary,
+where maximum panel density simultaneously maximises
 PV output and reduces the open-field PAR integral denominator
 (Equation~\ref{eq:lercrop}). The L-BFGS-B polishing step
 confirms that no interior local maximum exists in the neighbourhood

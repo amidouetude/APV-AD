@@ -1,0 +1,397 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .stage { min-height: 100vh; font-family: 'Public Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    h1, h2, h3 { font-family: 'Source Serif 4', Georgia, serif; margin: 0; font-weight: 600; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+    .muted { color: var(--muted); }
+
+    .header { display:flex; align-items:center; justify-content:space-between; padding: 0 28px; height: 64px; border-bottom: 1px solid var(--border); }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand-mark { width:28px; height:28px; border-radius:6px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:var(--accentText); font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; }
+    .brand-name { font-size:17px; }
+    .nav { display:flex; gap:4px; }
+    .nav-tab { padding:8px 14px; border-radius:8px; font-size:14px; font-weight:500; color:var(--muted); }
+    .nav-tab.active { background:var(--surfaceAlt); color:var(--text); }
+    .icon-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; }
+    .icon-btn:hover { border-color: var(--accent); }
+
+    .layout { display:flex; align-items:flex-start; }
+    .sidebar { width:300px; flex-shrink:0; border-right:1px solid var(--border); padding:20px; min-height:calc(100vh - 64px); }
+    .loc-line { font-size:12.5px; color:var(--muted); margin-bottom:16px; }
+    .loc-line strong { color:var(--text); font-weight:600; }
+
+    .assump { padding:12px 0; border-bottom:1px solid var(--border); }
+    .assump:last-child { border-bottom:none; }
+    .assump-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+    .assump-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+    .assump-val { font-size:14.5px; font-weight:600; margin-bottom:4px; }
+    .assump-src { font-size:11px; color:var(--muted); }
+
+    .badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:600; padding:2px 8px 2px 6px; border-radius:999px; border:1px solid var(--border); background:var(--surfaceAlt); }
+    .badge .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .chip { font-size:12px; padding:5px 10px; border-radius:7px; border:1px solid var(--border); background:var(--surface); cursor:pointer; }
+    .chip.active { background:var(--accent); color:var(--accentText); border-color:var(--accent); }
+
+    .main { flex:1; padding:24px 28px; }
+    .card { border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:20px; margin-bottom:18px; }
+    .card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+    .card-head h2 { font-size:16px; }
+
+    .seg { display:inline-flex; padding:3px; background:var(--surfaceAlt); border:1px solid var(--border); border-radius:9px; }
+    .seg button { border:none; background:transparent; padding:6px 12px; font-size:12.5px; font-weight:600; color:var(--muted); border-radius:7px; cursor:pointer; }
+    .seg button.active { background:var(--surface); color:var(--text); box-shadow:0 1px 2px var(--shadow); }
+
+    .eler-total { font-family:'Source Serif 4',serif; font-size:34px; font-weight:700; }
+    .stack { display:flex; height:34px; border-radius:8px; overflow:hidden; margin:14px 0 10px 0; border:1px solid var(--border); }
+    .stack-seg { display:flex; align-items:center; justify-content:center; color:#fff; font-size:11.5px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+    .stack-legend { display:flex; gap:18px; flex-wrap:wrap; font-size:12px; }
+    .stack-legend div { display:flex; align-items:center; gap:6px; }
+    .swatch { width:9px; height:9px; border-radius:2px; }
+
+    .mc-range { margin-top:10px; font-size:12px; color:var(--muted); background:var(--surfaceAlt); border:1px dashed var(--border); padding:8px 12px; border-radius:8px; }
+
+    .tiles { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; }
+    .tile { border:1px solid var(--border); border-radius:12px; padding:14px; background:var(--surfaceAlt); }
+    .tile-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+    .tile-val { font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; }
+    .tile-sub { font-size:11px; color:var(--muted); margin-top:4px; }
+    .bench-bar { position:relative; height:6px; border-radius:3px; background:var(--border); margin-top:8px; }
+    .bench-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px; background:var(--accent); }
+    .bench-mark { position:absolute; top:-3px; width:2px; height:12px; background:var(--text); }
+
+    .water-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .water-label { width:130px; font-size:12px; color:var(--muted); flex-shrink:0; }
+    .water-bar-wrap { flex:1; height:14px; background:var(--surfaceAlt); border-radius:4px; overflow:hidden; border:1px solid var(--border); }
+    .water-bar { height:100%; }
+    .water-bar.hatched { background-image: repeating-linear-gradient(45deg, var(--muted) 0, var(--muted) 3px, transparent 3px, transparent 7px); opacity:.55; }
+    .water-val { width:56px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; flex-shrink:0; }
+
+    .run-btn { background:var(--accent); color:var(--accentText); border:none; border-radius:9px; padding:10px 16px; font-size:13.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:8px; }
+    .run-btn[disabled] { opacity:.6; cursor:default; }
+
+    .conv-chart { border:1px solid var(--border); border-radius:10px; background:var(--surfaceAlt); padding:12px; margin-top:6px; }
+    .conv-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:6px; font-family:'IBM Plex Mono',monospace; }
+
+    .opt-table { width:100%; border-collapse:collapse; margin-top:10px; font-size:12.5px; }
+    .opt-table td { padding:6px 8px; border-bottom:1px solid var(--border); }
+    .opt-table td:first-child { color:var(--muted); }
+    .opt-table td:last-child { text-align:right; font-family:'IBM Plex Mono',monospace; font-weight:600; }
+  </style>
+</helmet>
+<div class="stage" style="--bg:{{theme.bg}};--surface:{{theme.surface}};--surfaceAlt:{{theme.surfaceAlt}};--text:{{theme.text}};--muted:{{theme.muted}};--accent:{{theme.accent}};--accentText:{{theme.accentText}};--border:{{theme.border}};--shadow:{{theme.shadow}};">
+
+  <div class="header">
+    <div class="brand"><div class="brand-mark">A</div><div class="brand-name">APV+AD Atlas</div></div>
+    <div class="nav">
+      <div class="nav-tab">Map</div>
+      <div class="nav-tab active">Analyze</div>
+      <div class="nav-tab">Compare</div>
+    </div>
+    <button class="icon-btn" onClick="{{ toggleDark }}" title="Toggle theme">
+      <sc-if value="{{dark}}" hint-placeholder-val="{{false}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </sc-if>
+      <sc-if value="{{light}}" hint-placeholder-val="{{true}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
+      </sc-if>
+    </button>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="loc-line">Analyzing <strong>Ouagadougou region</strong><br/>12.37°N, −1.53°W</div>
+
+      <div class="assump">
+        <div class="assump-top"><span class="assump-label">Crop</span>
+          <span class="badge"><span class="dot" style="background:{{cropBadgeColor}};"></span>{{cropBadgeLabel}}</span>
+        </div>
+        <div class="assump-val">{{cropName}}</div>
+        <div class="assump-src">Mohammedi et al. 2023 — PAR<sub>sat</sub> {{cropPar}} W/m²</div>
+        <div class="chip-row">
+          <div class="chip {{chipTomato}}" onClick="{{ pickTomato }}">Tomato</div>
+          <div class="chip {{chipCassava}}" onClick="{{ pickCassava }}">Cassava</div>
+          <div class="chip {{chipMaize}}" onClick="{{ pickMaize }}">Maize</div>
+        </div>
+      </div>
+
+      <div class="assump">
+        <div class="assump-top"><span class="assump-label">Co-substrate</span>
+          <span class="badge"><span class="dot" style="background:{{subBadgeColor}};"></span>{{subBadgeLabel}}</span>
+        </div>
+        <div class="assump-val">{{subName}}</div>
+        <div class="assump-src">{{subSrc}}</div>
+        <div class="chip-row">
+          <div class="chip {{chipCattle}}" onClick="{{ pickCattle }}">Cattle manure</div>
+          <div class="chip {{chipPoultry}}" onClick="{{ pickPoultry }}">Poultry litter</div>
+        </div>
+      </div>
+
+      <div class="assump">
+        <div class="assump-top"><span class="assump-label">Growing season</span>
+          <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Sourced</span>
+        </div>
+        <div class="assump-val">1 Jul – 30 Oct · 122 days</div>
+        <div class="assump-src">FAO/GIEWS crop calendar — Burkina Faso</div>
+      </div>
+
+      <div class="assump">
+        <div class="assump-top"><span class="assump-label">Economics</span>
+          <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Country default</span>
+        </div>
+        <div style="font-size:12.5px;display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="display:flex;justify-content:space-between;"><span class="muted">Electricity</span><span class="mono">$0.12/kWh</span></div>
+          <div style="display:flex;justify-content:space-between;"><span class="muted">Discount rate</span><span class="mono">10%</span></div>
+          <div style="display:flex;justify-content:space-between;"><span class="muted">Grid EF</span><span class="mono">0.632 tCO2/MWh</span></div>
+          <div style="display:flex;justify-content:space-between;"><span class="muted">Carbon price</span><span class="mono">$12/tCO2</span></div>
+        </div>
+        <div class="assump-src" style="margin-top:6px;">IEA 2025 · Gold Standard voluntary market</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="card">
+        <div class="card-head">
+          <h2>eLER decomposition</h2>
+          <div class="seg">
+            <button class="{{defAClass}}" onClick="{{ setDefA }}">Definition A</button>
+            <button class="{{defBClass}}" onClick="{{ setDefB }}">Definition B</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:10px;">
+          <div class="eler-total">{{elerShown}}</div>
+          <sc-if value="{{optimized}}" hint-placeholder-val="{{false}}">
+            <span class="badge"><span class="dot" style="background:#2e9b5a;"></span>Optimized (DE + L-BFGS-B)</span>
+          </sc-if>
+        </div>
+        <div class="stack">
+          <div class="stack-seg" style="width:{{cropPct}}%;background:#4c87c2;">{{lerCrop}}</div>
+          <div class="stack-seg" style="width:{{pvPct}}%;background:#f5a623;">{{lerPvShown}}</div>
+          <div class="stack-seg" style="width:{{bioPct}}%;background:#2e9b5a;">{{lerBio}}</div>
+        </div>
+        <div class="stack-legend">
+          <div><span class="swatch" style="background:#4c87c2;"></span>LER<sub>crop</sub></div>
+          <div><span class="swatch" style="background:#f5a623;"></span>LER<sub>PV</sub> ({{defLabel}})</div>
+          <div><span class="swatch" style="background:#2e9b5a;"></span>LER<sub>biogas</sub></div>
+        </div>
+        <sc-if value="{{hasRange}}" hint-placeholder-val="{{false}}">
+          <div class="mc-range">Monte Carlo range (auto-triggered — this crop/substrate pair isn't independently validated): <strong class="mono">{{rangeLow}} – {{rangeHigh}}</strong></div>
+        </sc-if>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>4E — economic &amp; environmental</h2><span class="muted" style="font-size:12px;">Scenario S0 · baseline</span></div>
+        <div class="tiles">
+          <div class="tile">
+            <div class="tile-label">NPV, 20yr</div>
+            <div class="tile-val">${{npv}}k</div>
+          </div>
+          <div class="tile">
+            <div class="tile-label">IRR</div>
+            <div class="tile-val">{{irr}}%</div>
+            <div class="tile-sub">Payback {{payback}} yr</div>
+          </div>
+          <div class="tile">
+            <div class="tile-label">LCOE, PV</div>
+            <div class="tile-val">${{lcoe}}</div>
+            <div class="bench-bar"><div class="bench-fill" style="width:{{lcoePct}}%;"></div><div class="bench-mark" style="left:98%;"></div></div>
+            <div class="tile-sub">IRENA 2023 benchmark $0.049</div>
+          </div>
+          <div class="tile">
+            <div class="tile-label">CO2 avoided</div>
+            <div class="tile-val">{{co2}}</div>
+            <div class="tile-sub">tCO2 / ha / yr</div>
+          </div>
+        </div>
+        <sc-if value="{{showEconCaveat}}" hint-placeholder-val="{{false}}">
+          <div class="mc-range" style="margin-top:12px;">These 4E figures reuse the validated design/pricing model but haven't been independently re-optimized or field-checked for this crop/substrate pair — illustrative, not validated.</div>
+        </sc-if>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Water savings</h2></div>
+        <div class="water-row">
+          <div class="water-label">Growing-season (correct)</div>
+          <div class="water-bar-wrap"><div class="water-bar" style="width:{{lerWaterSeasonPct}}%;background:var(--accent);"></div></div>
+          <div class="water-val">{{lerWaterSeason}}%</div>
+        </div>
+        <div class="water-row">
+          <div class="water-label">Annual denominator (old)</div>
+          <div class="water-bar-wrap"><div class="water-bar hatched" style="width:{{lerWaterAnnualPct}}%;"></div></div>
+          <div class="water-val">{{lerWaterAnnual}}%</div>
+        </div>
+        <div class="muted" style="font-size:11.5px;">{{wsaved}} mm saved per growing season. Annual-denominator value shown hatched — reported for literature comparison only, not an agronomic indicator.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Full optimization</h2>
+          <button class="run-btn" onClick="{{ runOptimization }}" disabled="{{ runDisabled }}">
+            <sc-if value="{{running}}" hint-placeholder-val="{{false}}">Running…</sc-if>
+            <sc-if value="{{notRunning}}" hint-placeholder-val="{{true}}">Run full optimization (DE, ~2 min)</sc-if>
+          </button>
+        </div>
+        <sc-if value="{{running}}" hint-placeholder-val="{{false}}">
+          <div class="conv-chart">
+            <div class="conv-meta"><span>Generation {{gen}}/50</span><span>Best eLER {{bestSoFar}}</span></div>
+            <svg width="100%" height="140" viewBox="0 0 440 140" preserveAspectRatio="none">
+              <line x1="0" y1="139" x2="440" y2="139" stroke="{{ theme.border }}" stroke-width="1"/>
+              <polyline points="{{convPoints}}" fill="none" stroke="{{ theme.accent }}" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </sc-if>
+        <sc-if value="{{optimized}}" hint-placeholder-val="{{false}}">
+          <table class="opt-table">
+            <tr><td>Tilt angle β*</td><td>20.7°</td></tr>
+            <tr><td>Row spacing d*</td><td>3.03 m</td></tr>
+            <tr><td>Module height H*</td><td>1.50 m</td></tr>
+            <tr><td>Digester volume V*</td><td>2.64 m³</td></tr>
+            <tr><td>HRT*</td><td>31.8 days</td></tr>
+            <tr><td>PV heating fraction</td><td>0.050</td></tr>
+          </table>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script>
+const RESULTS = {
+  'tomato|cattle':  { tier:'validated',  eLER:1.723, crop:0.397, pv:0.691, bio:0.635, npv:802, irr:28.1, payback:3.5, lcoe:0.048, co2:861, wsaved:81, ws:15.6, wa:4.4, range:null },
+  'tomato|poultry': { tier:'literature', eLER:1.79,  crop:0.397, pv:0.691, bio:0.700, npv:845, irr:29.6, payback:3.3, lcoe:0.048, co2:878, wsaved:81, ws:15.6, wa:4.4, range:[1.64,1.94] },
+  'cassava|cattle': { tier:'literature', eLER:1.77,  crop:0.440, pv:0.691, bio:0.640, npv:815, irr:28.6, payback:3.4, lcoe:0.048, co2:865, wsaved:88, ws:16.9, wa:4.8, range:[1.58,1.96] },
+  'cassava|poultry':{ tier:'literature', eLER:1.83,  crop:0.440, pv:0.691, bio:0.700, npv:852, irr:29.9, payback:3.2, lcoe:0.048, co2:882, wsaved:88, ws:16.9, wa:4.8, range:[1.62,2.04] },
+  'maize|cattle':   { tier:'user',       eLER:1.95,  crop:0.620, pv:0.691, bio:0.640, npv:880, irr:31.0, payback:3.1, lcoe:0.048, co2:870, wsaved:70, ws:13.4, wa:3.8, range:[1.55,2.35] },
+  'maize|poultry':  { tier:'user',       eLER:2.01,  crop:0.620, pv:0.691, bio:0.700, npv:905, irr:31.9, payback:3.0, lcoe:0.048, co2:886, wsaved:70, ws:13.4, wa:3.8, range:[1.59,2.43] },
+};
+const CROP_META = {
+  tomato:  { name:'Tomato',  par:'174', tier:'validated' },
+  cassava: { name:'Cassava', par:'~150', tier:'literature' },
+  maize:   { name:'Maize',   par:'~400', tier:'user' },
+};
+const SUB_META = {
+  cattle:  { name:'Cattle manure (10 t/ha/yr)',  src:'Pilarski & Pilarska 2025', tier:'validated' },
+  poultry: { name:'Poultry litter (8 t/ha/yr)',  src:'Literature estimate — no site trial', tier:'literature' },
+};
+const TIER_COLOR = { validated:'#2e9b5a', literature:'#c68c40', user:'#8b8578' };
+const TIER_LABEL = { validated:'Validated', literature:'Literature-est.', user:'User-custom' };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark:false, crop:'tomato', sub:'cattle', def:'A', running:false, gen:0, history:[], optimized:false };
+    this.toggleDark = this.toggleDark.bind(this);
+    this.setDefA = this.setDefA.bind(this);
+    this.setDefB = this.setDefB.bind(this);
+    this.pickTomato = () => this.setState({ crop:'tomato', optimized:false });
+    this.pickCassava = () => this.setState({ crop:'cassava', optimized:false });
+    this.pickMaize = () => this.setState({ crop:'maize', optimized:false });
+    this.pickCattle = () => this.setState({ sub:'cattle', optimized:false });
+    this.pickPoultry = () => this.setState({ sub:'poultry', optimized:false });
+    this.runOptimization = this.runOptimization.bind(this);
+  }
+  toggleDark() { this.setState({ dark: !this.state.dark }); }
+  setDefA() { this.setState({ def:'A' }); }
+  setDefB() { this.setState({ def:'B' }); }
+  runOptimization() {
+    if (this.state.running) { return; }
+    const key = this.state.crop + '|' + this.state.sub;
+    const final = RESULTS[key].eLER;
+    this.setState({ running:true, gen:0, history:[], optimized:false });
+    this.timer = setInterval(() => {
+      const g = this.state.gen + 1;
+      const val = 1.30 + (final - 1.30) * (1 - Math.exp(-g / 11));
+      const hist = this.state.history.concat([val]);
+      if (g >= 50) {
+        clearInterval(this.timer);
+        this.setState({ gen: 50, history: hist, running:false, optimized:true });
+      } else {
+        this.setState({ gen: g, history: hist });
+      }
+    }, 70);
+  }
+  getTheme(dark) {
+    return dark ? {
+      bg:'#1c1a17', surface:'#242119', surfaceAlt:'#2b2720', text:'#ece7de',
+      muted:'#a79f8f', accent:'#8aa9c9', accentText:'#12212f', border:'#3a352d', shadow:'rgba(0,0,0,0.45)'
+    } : {
+      bg:'#faf8f4', surface:'#ffffff', surfaceAlt:'#f2ede3', text:'#221f1a',
+      muted:'#6b6558', accent:'#3f5f80', accentText:'#ffffff', border:'#e6ded0', shadow:'rgba(60,50,30,0.10)'
+    };
+  }
+  renderVals() {
+    const dark = !!this.state.dark;
+    const theme = this.getTheme(dark);
+    const cropKey = this.state.crop, subKey = this.state.sub;
+    const key = cropKey + '|' + subKey;
+    const r = RESULTS[key];
+    const cm = CROP_META[cropKey], sm = SUB_META[subKey];
+    const defA = r.eLER, defB = +(r.eLER + 0.031).toFixed(3);
+    const elerShown = (this.state.def === 'A' ? defA : defB).toFixed(3);
+    const pvShown = this.state.def === 'A' ? r.pv : +(r.pv + 0.031).toFixed(3);
+    const total = r.crop + pvShown + r.bio;
+    const hist = this.state.history;
+    const points = hist.map((v, i) => {
+      const x = (i / 49) * 440;
+      const y = 135 - ((v - 1.2) / 1.0) * 130;
+      return x.toFixed(1) + ',' + Math.max(5, y).toFixed(1);
+    }).join(' ');
+    return {
+      theme: theme, dark: dark, light: !dark,
+      cropName: cm.name, cropPar: cm.par,
+      cropBadgeColor: TIER_COLOR[cm.tier], cropBadgeLabel: TIER_LABEL[cm.tier],
+      subName: sm.name, subSrc: sm.src,
+      subBadgeColor: TIER_COLOR[sm.tier], subBadgeLabel: TIER_LABEL[sm.tier],
+      chipTomato: cropKey === 'tomato' ? 'active' : '',
+      chipCassava: cropKey === 'cassava' ? 'active' : '',
+      chipMaize: cropKey === 'maize' ? 'active' : '',
+      chipCattle: subKey === 'cattle' ? 'active' : '',
+      chipPoultry: subKey === 'poultry' ? 'active' : '',
+      defAClass: this.state.def === 'A' ? 'active' : '',
+      defBClass: this.state.def === 'B' ? 'active' : '',
+      defLabel: 'Def. ' + this.state.def,
+      elerShown: elerShown,
+      lerCrop: r.crop.toFixed(2), lerPvShown: pvShown.toFixed(2), lerBio: r.bio.toFixed(2),
+      cropPct: (r.crop / total * 100).toFixed(1),
+      pvPct: (pvShown / total * 100).toFixed(1),
+      bioPct: (r.bio / total * 100).toFixed(1),
+      hasRange: !!r.range,
+      rangeLow: r.range ? r.range[0].toFixed(2) : '',
+      rangeHigh: r.range ? r.range[1].toFixed(2) : '',
+      showEconCaveat: r.tier !== 'validated',
+      npv: r.npv, irr: r.irr.toFixed(1), payback: r.payback.toFixed(1),
+      lcoe: r.lcoe.toFixed(3), lcoePct: Math.min(100, (r.lcoe / 0.049) * 100).toFixed(0),
+      co2: r.co2,
+      wsaved: r.wsaved, lerWaterSeason: r.ws.toFixed(1), lerWaterAnnual: r.wa.toFixed(1),
+      lerWaterSeasonPct: Math.min(100, r.ws * 3.2).toFixed(0),
+      lerWaterAnnualPct: Math.min(100, r.wa * 3.2).toFixed(0),
+      running: this.state.running, notRunning: !this.state.running,
+      runDisabled: this.state.running,
+      optimized: this.state.optimized,
+      gen: this.state.gen, bestSoFar: hist.length ? hist[hist.length - 1].toFixed(3) : '—',
+      convPoints: points,
+      toggleDark: this.toggleDark,
+      setDefA: this.setDefA, setDefB: this.setDefB,
+      pickTomato: this.pickTomato, pickCassava: this.pickCassava, pickMaize: this.pickMaize,
+      pickCattle: this.pickCattle, pickPoultry: this.pickPoultry,
+      runOptimization: this.runOptimization,
+    };
+  }
+}
+</script>
+</body>
+</html>

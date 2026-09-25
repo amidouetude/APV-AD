@@ -6,104 +6,34 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-\hspace{1cm}This study presented the first four-climate-zone comparative
-optimization of integrated bifacial agrivoltaic and anaerobic digestion
-systems, introducing a novel three-component extended Land Equivalent
-Ratio as the optimization objective and a 4E analysis framework for
-comprehensive performance assessment. The following conclusions are
-supported by the validated simulation results.
+\hspace{1cm}This study presents a four-climate-zone comparative optimization of integrated bifacial agrivoltaic and anaerobic digestion systems, introducing a three-component extended Land Equivalent Ratio and a 4E analysis framework for performance assessment. The following conclusions are supported by the validated simulation results.
 
 \textbf{C1 --- The eLER framework confirms multi-output land
 	productivity at all four climate zones.}
-Optimised eLER values of 1.641 (Konya), 1.657 (Almer\'{i}a), 1.723
-(Ouagadougou), and 1.764 (Freiburg) confirm that integrated APV--AD
-systems use land more productively than three separate monocultures
-at every site. The two-component $LER_{\text{2C}}$ ranges from 1.030
-to 1.088 --- all sites exceed 1.0, confirming that the agrivoltaic
-system alone outperforms two separate monocultures even without the
-biogas contribution.
+Optimized eLER values of 1.641 (Konya), 1.657 (Almería), 1.723 (Ouagadougou), and 1.764 (Freiburg) show that integrated APV--AD systems use land more productively than three separate monocultures at every site. The agrivoltaic two-component $LER_{\text{2C}}$ ranges from 1.030 to 1.088, confirming that the APV system alone outperforms separate monocultures even without the biogas contribution.
 
 \textbf{C2 --- eLER is non-monotone with solar resource, driven by
 	PAR saturation.}
-Freiburg, with the lowest annual GHI (1\,150\,kWh\,m$^{-2}$),
-achieves the highest eLER (1.764), exceeding Konya despite 43\% more
-solar irradiance. The mechanism is PAR saturation: at high-irradiance
-sites, open-field PAR frequently exceeds the tomato light saturation
-point (\SI{174}{W\,m^{-2}}), inflating the $LER_{\text{crop}}$
-denominator and penalising the yield ratio. This finding challenges
-the conventional site-selection preference for maximum irradiance in
-agrivoltaic deployment and reframes the optimisation problem as
-matching solar resource to crop photosynthetic capacity rather than
-simply maximising PV output.
+Freiburg, with the lowest annual GHI (1\,150\,kWh\,m$^{-2}$), achieves the highest eLER (1.764), exceeding Konya despite 43\% more solar irradiance. The mechanism is PAR saturation: at high-irradiance sites, open-field PAR frequently exceeds the tomato light saturation point (\SI{174}{W\,m^{-2}}), inflating the $LER_{\text{crop}}$ denominator and penalising the yield ratio. This result suggests that agrivoltaic site selection should be framed as matching solar resource to crop photosynthetic capacity rather than simply maximizing PV output.
 
-\textbf{C3 --- Boundary convergence is a universal, climate-independent
-	structural result.}
+\textbf{C3 --- Boundary convergence is a robust result within the present parameterization.}
 The optimizer converges to the minimum physically permissible row
 spacing ($d_{\text{row}}^* = \SI{3.03}{m}$) and module height
 ($H_m^* = \SI{1.50}{m}$) at all four sites, despite GHI varying by
 a factor of 1.8 and mean annual temperature varying by
-17\,\si{\celsius}. This confirms that the eLER landscape has its
-global maximum at the physical constraint boundary at all study
-climates. Any mechanical access requirement beyond the minimum
-physical clearance imposes an eLER penalty (approximately
-0.04--0.06 per additional metre of row spacing in the earlier
-version of the model; see Section~\ref{sec:discussion_boundary}
-for a caveat on this figure) --- a design
-trade-off that must be explicitly evaluated for each farming
-system context.
+17\,\si{\celsius}. This indicates that, under the present constraints and parameterization, the eLER optimum lies on the boundary of the explored design space. Any mechanical access requirement beyond the minimum physical clearance imposes an eLER penalty that should be evaluated for each farming context.
 
-\textbf{C4 --- Thermal self-sufficiency is confirmed at all sites
-	with negligible heating allocation.}
-ESR values of 453--2\,000 at the optimised designs confirm that
-5\% of annual PV output is more than sufficient to cover all
-digester heating demand at every site and in every season, including
-January at Freiburg (winter T$_{\min} \approx -12$\,\si{\celsius}).
-Zero biogas is consumed for self-heating, confirming that the full
-biogas output is available for valorisation under all seven
-economic scenarios.
+\textbf{C4 --- Thermal self-sufficiency is achieved at all sites with negligible heating allocation.}
+ESR values of 453--2\,000 at the optimized designs indicate that allocating 5\% of annual PV output to digester heating is sufficient to cover heating demand at every site and in every season. Under the present assumptions, no biogas is required for self-heating, so the full biogas output remains available for valorisation across all seven economic scenarios.
 
-\textbf{C5 --- The carbon credit scenario (S6) is the dominant
-	economic strategy across all climate zones and market contexts.}
-S6 raises IRR by 1.7--4.6 percentage points above the baseline
-at all sites, achieving 12.7\% (Konya), 23.0\% (Almer\'{i}a),
-29.9\% (Ouagadougou), and 17.6\% (Freiburg). Ouagadougou provides
-the strongest investment case, with a payback period of 3.3 years
-and CO$_2$ avoidance of 861\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$,
-driven by the combination of high electricity price, optimal
-Arrhenius BMP at 33.2\,\si{\celsius}, and high grid emission
-factor. Extending carbon credit mechanisms to smallholder APV--AD
-installations in Sub-Saharan Africa and Central Asia is identified
-as the highest-leverage policy intervention for accelerating
-deployment.
+\textbf{C5 --- The carbon credit scenario (S6) provides the strongest economic uplift across all sites.}
+S6 raises IRR by 1.7--4.6 percentage points relative to the baseline at all sites, reaching 12.7\% (Konya), 23.0\% (Almería), 29.9\% (Ouagadougou), and 17.6\% (Freiburg). Ouagadougou offers the highest IRR in this study, with a payback period of 3.3 years and CO$_2$ avoidance of 861\,tCO$_2$\,ha$^{-1}$\,yr$^{-1}$. This result indicates that carbon-credit mechanisms could materially improve the investment case for APV--AD deployment, especially in regions with high grid-emission factors.
 
-\textbf{C6 --- Growing-season ET denominator correction materially
-	changes the water savings metric.}
-Reporting $LER_{\text{water}}$ with the annual ET$_0$ denominator
---- as in prior literature --- underestimates the agronomic water
-benefit by a factor of 1.3$\times$ (Konya, 189-day season) to
-3.5$\times$ (Ouagadougou, 122-day season). The corrected
-growing-season values of 15.6--22.4\% represent 81--159\,mm of
-irrigation water saved per growing season --- a quantity equivalent
-to extending the growing season by 2--4 weeks or irrigating an
-additional 16--22\% of land area. This correction is particularly
-consequential for Sub-Saharan Africa, where prior annual-denominator
-values of $\sim$4\% do not justify irrigation infrastructure
-investment, while the corrected seasonal value of 15.6\% does.
+\textbf{C6 --- The growing-season ET denominator correction materially changes the water-savings metric.}
+Reporting $LER_{\text{water}}$ with the annual ET$_0$ denominator underestimates the agronomic water benefit. The corrected growing-season values of 15.6--22.4\% correspond to 81--159\,mm of irrigation water saved per growing season, which is substantially more policy-relevant for irrigation planning than annualized values diluted by off-season months.
 
-\textbf{C7 --- All results are conservative lower bounds.}
-Both model validations exhibit systematic conservative bias: the crop
-yield model (V1 MAPE = 2.4\%) has a near-zero mean bias, while the
-BMP temperature model (V2 MAPE = 26.9\% in the operating range)
-systematically underestimates methane yield at temperatures below
-30\,\si{\celsius}. All reported eLER values, biogas yields, NPV,
-IRR, and CO$_2$ avoidance figures are therefore lower bounds on
-true system performance, with cold-climate sites (Konya, Freiburg)
-having the largest upside potential from improved BMP modelling.
+\textbf{C7 --- Several outputs should be interpreted as conservative.}
+The crop-yield validation shows good agreement with literature data, while the BMP temperature model remains conservative at lower temperatures. As a result, the reported biogas yields, eLER values, NPV, IRR, and CO$_2$ avoidance figures should be viewed as lower-bound estimates, with the largest upside potential in colder climates where improved BMP modelling would likely increase performance.
 
 \bigskip
-\noindent The integrated APV--AD framework developed in this study
-provides a replicable, climate-adaptive design tool for food-energy-water
-nexus planning across the semi-arid-to-temperate spectrum. The open-source
-simulation code, optimised design parameters, and full results database
-are available as supplementary material to facilitate replication and
-extension to additional crop species, climate zones, and policy contexts.
+\noindent Overall, the integrated APV--AD framework developed in this study provides a replicable, climate-adaptive decision tool for food--energy--water nexus planning across the semi-arid-to-temperate spectrum. The open-source simulation code, optimized design parameters, and full results database are provided as supplementary material to support replication and extension to additional crops, climates, and policy contexts.
