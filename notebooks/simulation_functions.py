@@ -153,20 +153,51 @@ def compute_shading(df: pd.DataFrame,
 
 def compute_POA(df: pd.DataFrame, beta_deg: float, lat_deg: float) -> pd.DataFrame:
     """
-    Compute plane-of-array (POA) irradiance for a south-facing fixed-tilt
+    Compute plane-of-array (POA) irradiance for an EQUATOR-FACING fixed-tilt
     surface using the isotropic sky model (Eq. 7–8).
 
     G_front = DNI*cos(theta_i) + DHI*(1+cos(beta))/2 + GHI*rho_g*(1-cos(beta))/2
     G_rear  = GHI * rho_g * (1 - F_shad) * phi_rear_fraction
     G_eff   = G_front + phi * G_rear
 
-    Angle of incidence (Eq. 8, CORRECTED):
-        cos(theta_i) = sin(delta)*sin(phi - beta) + cos(delta)*cos(H)*cos(phi - beta)
+    Angle of incidence (Eq. 8):
+        cos(theta_i) = sin(delta)*sin(phi_eff) + cos(delta)*cos(H)*cos(phi_eff)
+        phi_eff      = phi - beta   in the NORTHERN hemisphere (faces due south)
+                     = phi + beta   in the SOUTHERN hemisphere (faces due north)
 
-    This is the exact closed-form angle-of-incidence for a fixed, due-south
-    facing surface (Duffie & Beckman, "Solar Engineering of Thermal Processes"),
-    a function of declination (delta), hour angle (H), latitude (phi), and tilt
-    (beta). It correctly varies through the day as the sun moves east to west.
+    This is the exact closed-form angle-of-incidence of Duffie & Beckman
+    ("Solar Engineering of Thermal Processes") for a fixed collector turned
+    towards the equator, a function of declination (delta), hour angle (H),
+    latitude (phi), and tilt (beta). It correctly varies through the day as
+    the sun moves east to west.
+
+    HEMISPHERE CORRECTION (fixed 2026-09)
+    -------------------------------------
+    The previous version used (phi - beta) unconditionally — the Duffie &
+    Beckman form for surface azimuth gamma = 0, i.e. a due-south collector.
+    That is exact in the northern hemisphere and wrong everywhere south of
+    the equator, where the collector must face north (gamma = 180°). All four
+    published study sites are northern, so the error stayed invisible until
+    the model was applied across Africa.
+
+    Measured impact (audit/phase0, same climate, latitude varied so the
+    geometry is isolated): annual POA error from -8.1 % near the equator to
+    -32.0 % at 35°S, and up to -30.1 % on annual PV yield. Northern-hemisphere
+    results are unchanged to 0.000 %.
+
+    Sign convention — np.sign() is deliberately NOT used here. np.sign(0.0)
+    returns 0, which would cancel beta entirely at exactly lat = 0 and
+    silently treat the array as horizontal. The convention adopted is
+    lat >= 0 -> northern (faces south); at exactly the equator the two
+    orientations are equivalent over a full year by symmetry, so the choice
+    is arbitrary — but it must be explicit and tested rather than emergent.
+    See tests/test_hemisphere.py.
+
+    LIMITATION — the surface azimuth is not a free parameter. Only
+    equator-facing rows are representable. East-west oriented rows, a real
+    agrivoltaic configuration, would need the full Duffie & Beckman
+    expression with an explicit surface_azimuth argument; that refactor is
+    deliberately out of scope here (see docs/presizing_platform_roadmap.md).
 
     PRIOR VERSION (fixed 2026-08): used cos_theta_i = sin(alpha_s)*cos(beta)
     + cos(alpha_s)*sin(beta), which is algebraically sin(alpha_s + beta). This
@@ -181,9 +212,10 @@ def compute_POA(df: pd.DataFrame, beta_deg: float, lat_deg: float) -> pd.DataFra
     df       : DataFrame with GHI, DNI, DHI, F_shad, declination_deg,
                hour_angle_deg (all produced by compute_solar_angles)
     beta_deg : tilt angle (degrees)
-    lat_deg  : site latitude (degrees) — required for the angle-of-incidence
-               formula; NOT optional, since south-facing AoI depends on
-               (phi - beta), not on beta alone.
+    lat_deg  : site latitude (degrees, NEGATIVE in the southern hemisphere)
+               — required both for the angle-of-incidence formula, which
+               depends on (phi ∓ beta) rather than on beta alone, and to
+               decide which way the collector faces.
 
     Returns
     -------
@@ -196,10 +228,15 @@ def compute_POA(df: pd.DataFrame, beta_deg: float, lat_deg: float) -> pd.DataFra
     dec_r = np.radians(df["declination_deg"].values)
     ha_r  = np.radians(df["hour_angle_deg"].values)
 
-    # Angle of incidence on tilted, due-south surface (Duffie & Beckman)
+    # Angle of incidence on a tilted, equator-facing surface (Duffie & Beckman).
+    # hemisphere = +1 north (collector faces due south), -1 south (faces due north).
+    # np.sign() is NOT used: np.sign(0.0) == 0 would drop beta at the equator.
+    hemisphere = 1.0 if lat_deg >= 0 else -1.0
+    phi_eff_r  = lat_r - hemisphere * beta_r
+
     cos_theta_i = np.clip(
-        np.sin(dec_r) * np.sin(lat_r - beta_r)
-        + np.cos(dec_r) * np.cos(ha_r) * np.cos(lat_r - beta_r),
+        np.sin(dec_r) * np.sin(phi_eff_r)
+        + np.cos(dec_r) * np.cos(ha_r) * np.cos(phi_eff_r),
         0, 1
     )
 

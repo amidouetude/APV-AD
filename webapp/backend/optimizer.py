@@ -16,6 +16,8 @@ import config_00  # noqa: E402
 import simulation_functions as sim  # noqa: E402
 from scipy.optimize import differential_evolution, minimize  # noqa: E402
 
+from model_bridge import runtime_site  # noqa: E402  (installs the site registry)
+
 
 def optimize_site(key: str, site_dict: dict, hourly_df, scenario: str = "S0",
                    PAR_sat: float = 174.0, progress_cb=None, max_generations=None):
@@ -27,7 +29,6 @@ def optimize_site(key: str, site_dict: dict, hourly_df, scenario: str = "S0",
 
     Returns (x_opt: list[float], full_result: dict, history: list[float]).
     """
-    config_00.SITES[key] = site_dict
     n_gen = max_generations or config_00.DE_SETTINGS["max_generations"]
     history = []
 
@@ -42,7 +43,10 @@ def optimize_site(key: str, site_dict: dict, hourly_df, scenario: str = "S0",
             progress_cb(len(history), val)
         return False
 
-    try:
+    # The site definition is visible only inside this context -- see
+    # model_bridge's module docstring for what the previous shared-dict
+    # injection did under concurrency.
+    with runtime_site(key, site_dict):
         DE = config_00.DE_SETTINGS
         result = differential_evolution(
             neg_eLER,
@@ -68,5 +72,3 @@ def optimize_site(key: str, site_dict: dict, hourly_df, scenario: str = "S0",
         full = sim.eLER_objective(x_opt, hourly_df, key, scenario=scenario,
                                    PAR_sat=PAR_sat, return_full=True)
         return list(x_opt), full, history
-    finally:
-        config_00.SITES.pop(key, None)

@@ -15,6 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "notebooks"))
 import config_00  # noqa: E402
 import simulation_functions as sim  # noqa: E402
+
+from model_bridge import runtime_site  # noqa: E402  (installs the site registry)
 import numpy as np  # noqa: E402
 
 
@@ -35,7 +37,6 @@ def run_pareto(key: str, site_dict: dict, hourly_df, pop_size: int = 50,
     from pymoo.algorithms.moo.nsga2 import NSGA2
     from pymoo.optimize import minimize
 
-    config_00.SITES[key] = site_dict
     bounds = config_00.DE_SETTINGS["bounds"]
     lb = np.array([b[0] for b in bounds])
     ub = np.array([b[1] for b in bounds])
@@ -64,7 +65,8 @@ def run_pareto(key: str, site_dict: dict, hourly_df, pop_size: int = 50,
             if progress_cb:
                 progress_cb(algorithm.n_gen, n_gen)
 
-    try:
+    # Per-request site scope -- see model_bridge's module docstring.
+    with runtime_site(key, site_dict):
         problem = EnergyWaterProblem()
         algorithm = NSGA2(pop_size=pop_size)
         res = minimize(problem, algorithm, ("n_gen", n_gen), seed=seed,
@@ -73,5 +75,3 @@ def run_pareto(key: str, site_dict: dict, hourly_df, pop_size: int = 50,
         eLER = -res.F[:, 0]
         LER_water = -res.F[:, 1]
         return eLER, LER_water, res.X
-    finally:
-        config_00.SITES.pop(key, None)

@@ -90,6 +90,19 @@ jobs:
           EXPORT_CELL_INDEX = 8
 
           namespace = {}
+          # Functions executed from a string have co_filename == "<string>".
+          # Populate linecache so inspect.getsource() in the notebook export
+          # cell can recover their source exactly as it does in Jupyter.
+          import linecache
+
+          def exec_cell(source):
+              filename = f"<notebook-cell-{len(linecache.cache)}>"
+              lines = source.splitlines(keepends=True)
+              linecache.cache[filename] = (
+                  len(source), None, lines, filename
+              )
+              exec(compile(source, filename, "exec"), namespace)
+
           exec("import numpy as np", namespace)
           exec("import pandas as pd", namespace)
           sys.path.insert(0, "notebooks")
@@ -97,14 +110,14 @@ jobs:
 
           for idx in DEF_CELL_INDICES:
               src = "".join(nb["cells"][idx]["source"])
-              exec(src, namespace)
+              exec_cell(src)
 
           export_src = "".join(nb["cells"][EXPORT_CELL_INDEX]["source"])
           export_src_ci = export_src.replace(
               'out_path = Path.cwd() / "simulation_functions.py"',
               'out_path = Path("/tmp/simulation_functions_regenerated.py")'
           )
-          exec(export_src_ci, namespace)
+          exec_cell(export_src_ci)
 
           regenerated = Path("/tmp/simulation_functions_regenerated.py").read_text()
           checked_in = checked_in_path.read_text()

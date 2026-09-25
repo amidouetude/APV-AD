@@ -1,0 +1,49 @@
+{
+  "B1": {
+    "ref_eLER": {
+      "tomate": 1.723,
+      "mais": 2.207
+    },
+    "ref_biogas": {
+      "tomate": 5.98,
+      "mais": 4.42
+    },
+    "n_threads": 12,
+    "n_ok": 0,
+    "n_contamines": 1,
+    "contamines": [
+      "mais#5"
+    ],
+    "erreurs": {
+      "tomate#0": "KeyError: '_runtime_12.37_-1.53'",
+      "mais#3": "KeyError: '_runtime_12.37_-1.53'",
+      "mais#2": "KeyError: '_runtime_12.37_-1.53'",
+      "tomate#1": "KeyError: '_runtime_12.37_-1.53'",
+      "mais#0": "KeyError: '_runtime_12.37_-1.53'",
+      "mais#1": "KeyError: '_runtime_12.37_-1.53'",
+      "mais#4": "KeyError: '_runtime_12.37_-1.53'",
+      "tomate#2": "KeyError: '_runtime_12.37_-1.53'",
+      "tomate#4": "KeyError: '_runtime_12.37_-1.53'",
+      "tomate#5": "KeyError: '_runtime_12.37_-1.53'",
+      "tomate#3": "KeyError: '_runtime_12.37_-1.53'"
+    }
+  },
+  "B2": {
+    "n_threads": 10,
+    "n_reussis": 1,
+    "n_erreurs": 9,
+    "erreurs": {
+      "t3": "KeyError: '_runtime_12.37_-1.53'",
+      "t4": "KeyError: '_runtime_12.37_-1.53'",
+      "t8": "KeyError: '_runtime_12.37_-1.53'",
+      "t2": "KeyError: '_runtime_12.37_-1.53'",
+      "t5": "KeyError: '_runtime_12.37_-1.53'"
+    }
+  },
+  "B3": {
+    "n_threads": 8,
+    "n_ok": 8,
+    "n_incoherents": 0,
+    "erreurs": {}
+  }
+}

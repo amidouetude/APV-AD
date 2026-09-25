@@ -1,0 +1,19 @@
+fichier,ligne,hypothese,extrait
+notebooks/config_00.py,56,borne basse d'inclinaison propre au site,"""min_beta_deg"":     20.0,           # latitude-based minimum tilt (Konya 37.87°N)"
+notebooks/config_00.py,93,borne basse d'inclinaison propre au site,"""min_beta_deg"":     20.0,           # latitude-based min tilt (Almeria 36.83°N)"
+notebooks/config_00.py,130,borne basse d'inclinaison propre au site,"""min_beta_deg"":     12.0,           # latitude-based min tilt (Ouagadougou 12.37°N)"
+notebooks/config_00.py,167,borne basse d'inclinaison propre au site,"""min_beta_deg"":     22.0,           # latitude-based min tilt (Freiburg 47.99°N)"
+notebooks/simulation_functions.py,111,hypothese plein sud mentionnee en commentaire,Δγ     = azimuth difference (0 for south-facing rows)
+notebooks/simulation_functions.py,131,azimut de rangee suppose nul,delta_gamma     = 0.0      # azimuth difference — south-facing rows
+notebooks/simulation_functions.py,131,hypothese plein sud mentionnee en commentaire,delta_gamma     = 0.0      # azimuth difference — south-facing rows
+notebooks/simulation_functions.py,156,hypothese plein sud mentionnee en commentaire,Compute plane-of-array (POA) irradiance for a south-facing fixed-tilt
+notebooks/simulation_functions.py,166,hypothese plein sud mentionnee en commentaire,"This is the exact closed-form angle-of-incidence for a fixed, due-south"
+notebooks/simulation_functions.py,174,hypothese plein sud mentionnee en commentaire,"the sun is still due south, overestimating cos(theta_i) — and therefore"
+notebooks/simulation_functions.py,185,hypothese plein sud mentionnee en commentaire,"formula; NOT optional, since south-facing AoI depends on"
+notebooks/simulation_functions.py,199,hypothese plein sud mentionnee en commentaire,"# Angle of incidence on tilted, due-south surface (Duffie & Beckman)"
+notebooks/simulation_functions.py,201,forme plein sud codee en dur (Duffie gamma=0),np.sin(dec_r) * np.sin(lat_r - beta_r)
+notebooks/simulation_functions.py,202,forme plein sud codee en dur (Duffie gamma=0),"+ np.cos(dec_r) * np.cos(ha_r) * np.cos(lat_r - beta_r),"
+notebooks/simulation_functions.py,598,hypothese plein sud mentionnee en commentaire,Rows run East-West (perpendicular to South-facing panels).
+notebooks/simulation_functions.py,709,borne basse d'inclinaison propre au site,"min_beta = SITES[site].get(""min_beta_deg"", 15.0)"
+webapp/backend/api.py,151,borne basse d'inclinaison propre au site,"raise HTTPException(status_code=422, detail=""Design vector infeasible for this site (che"
+webapp/backend/model_bridge.py,91,borne basse d'inclinaison propre au site,"min_beta_deg, crop/substrate/economic parameters -- see config_00.SITES"

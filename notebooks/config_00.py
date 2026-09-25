@@ -53,7 +53,7 @@ SITES = {
         "lat":              37.87,          # degrees North
         "lon":              32.49,          # degrees East
         "elevation_m":      1016,           # m above sea level
-        "min_beta_deg":     20.0,           # latitude-based minimum tilt (Konya 37.87°N)
+        "min_beta_deg":     20.0,           # beta_min_operational (Konya 37.87°N) — voir section 2bis
         "koppen":           "BSk",
         "timezone_utc":     3,              # UTC+3
 
@@ -90,7 +90,7 @@ SITES = {
         "lat":              36.83,
         "lon":              -2.46,
         "elevation_m":      20,
-        "min_beta_deg":     20.0,           # latitude-based min tilt (Almeria 36.83°N)
+        "min_beta_deg":     20.0,           # beta_min_operational (Almeria 36.83°N) — voir section 2bis
         "koppen":           "BSh",
         "timezone_utc":     1,              # UTC+1 (CET)
 
@@ -127,7 +127,7 @@ SITES = {
         "lat":              12.37,
         "lon":              -1.53,
         "elevation_m":      303,
-        "min_beta_deg":     12.0,           # latitude-based min tilt (Ouagadougou 12.37°N)
+        "min_beta_deg":     12.0,           # beta_min_operational (Ouagadougou 12.37°N) — voir section 2bis
         "koppen":           "BSh",
         "timezone_utc":     0,              # UTC+0
 
@@ -164,7 +164,7 @@ SITES = {
         "lat":              47.99,
         "lon":              7.85,
         "elevation_m":      278,
-        "min_beta_deg":     22.0,           # latitude-based min tilt (Freiburg 47.99°N)
+        "min_beta_deg":     22.0,           # beta_min_operational (Freiburg 47.99°N) — voir section 2bis
         "koppen":           "Cfb",
         "timezone_utc":     1,              # UTC+1 (CET)
 
@@ -195,6 +195,42 @@ SITES = {
         "carbon_price_usd_tCO2": 65.0,     # EU ETS 2024
     },
 }
+
+# =============================================================================
+# 2bis. SEMANTIQUE DES BORNES D'INCLINAISON  (clarifie 2026-09)
+# =============================================================================
+# Trois grandeurs distinctes sont trop souvent confondues sous le seul nom
+# "min_beta_deg". Elles n'ont ni la meme origine ni le meme statut :
+#
+#   beta_opt_radiative   inclinaison qui maximise le POA annuel. Grandeur
+#                        PHYSIQUE, calculable, proche de 0.4-0.5 x |latitude|
+#                        (Finding 2 du manuscrit).
+#
+#   beta_min_operational plancher impose par l'EXPLOITATION, pas par
+#                        l'irradiance : evacuation de l'eau de pluie et
+#                        auto-nettoyage (delestage des poussieres, pertinent
+#                        en zone d'harmattan), tenue structurelle, acces pour
+#                        la maintenance. C'est ce que "min_beta_deg" encode
+#                        en pratique.
+#
+#   beta_used            valeur effectivement retenue par l'optimiseur, soit
+#                        max(beta_opt_radiative, beta_min_operational, borne
+#                        basse de DE_SETTINGS).
+#
+# Pourquoi cela compte : l'audit phase 0 (audit/phase0/) a mesure que la borne
+# basse de DE_SETTINGS (15 deg) est ACTIVE de -7.5 deg a +22.5 deg de latitude,
+# soit l'essentiel de la ceinture intertropicale, et que les quatre sites
+# publies convergent tous a 0.5-1.4 deg au-dessus de leur borne effective.
+# La "boundary-convergence finding" du manuscrit decrit donc une borne
+# saturante, pas une propriete de l'optimum agrivoltaique. La penalite
+# energetique reste modeste (POA -3.9 % au maximum) parce que la courbe
+# POA(beta) est plate pres de son optimum, mais l'inclinaison rapportee pour
+# un site equatorial n'est PAS une recommandation de conception issue de la
+# physique -- c'est le plancher d'exploitation.
+#
+# A faire remonter dans l'interface et dans le texte : afficher laquelle des
+# trois contraintes est saturante, plutot qu'un seul chiffre.
+# =============================================================================
 
 # =============================================================================
 # 3. PHYSICAL MODEL PARAMETERS
@@ -278,7 +314,9 @@ PARAMS = {
 DE_SETTINGS = {
     # Design variable bounds — (lower, upper) — order must match VARIABLE_NAMES
     "bounds": [
-        (15.0,  40.0),      # beta — panel tilt angle (degrees) — min 15° physical constraint
+        (15.0,  40.0),      # beta — inclinaison (deg). La borne basse est une contrainte
+                    # D'EXPLOITATION (auto-nettoyage), pas l'optimum radiatif :
+                    # elle est saturante de -7.5° à +22.5° de latitude. Section 2bis.
         (3.0,   14.0),      # d_row — row spacing (m) — min 3.0m prevents module overlap at beta>=15°
         (1.5,   5.0),       # H_m — module bottom-edge height (m) — min 1.5m clearance
         (2.0,   50.0),      # V_dig — digester volume (m³) — small farm scale

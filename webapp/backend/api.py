@@ -13,10 +13,11 @@ full sketch; /api/pareto is not built yet):
 Run locally:
   uvicorn api:app --reload --port 8000
 
-Known limitation: JOBS and the SITES-injection it relies on
-(optimizer.optimize_site) are process-global, in-memory state -- fine for
-a single-user dev server, not safe for concurrent multi-worker deployment
-as-is (same caveat as model_bridge.register_runtime_site's docstring).
+Concurrency: the site definition for a given request is scoped to that
+request's context (see model_bridge.runtime_site); concurrent requests on
+the same coordinates no longer collide. JOBS itself is still a
+process-global in-memory dict -- fine for a single-worker dev server, but
+it must move to shared storage before running multiple workers.
 """
 import copy
 import sys
@@ -28,12 +29,15 @@ from typing import Optional
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "notebooks"))
 import config_00  # noqa: E402
 
-from model_bridge import evaluate_catalog_site, evaluate_point, OUTPUTS_CSV_DIR  # noqa: E402
+from model_bridge import (  # noqa: E402
+    evaluate_catalog_site, evaluate_point, OUTPUTS_CSV_DIR, UnknownSiteError,
+)
 from pvgis_client import fetch_tmy, add_growing_season  # noqa: E402
 from economics import compute_4e  # noqa: E402
 from optimizer import optimize_site  # noqa: E402
@@ -52,6 +56,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(UnknownSiteError)
+def _unknown_site_handler(request, exc: UnknownSiteError):
+    """
+    Surface a site-resolution failure as an explicit 422, never as a bare
+    KeyError escaping to an undocumented HTTP 500. Before the 2026-09
+    concurrency fix this was the dominant failure mode under load -- see
+    model_bridge's module docstring and audit/phase0/.
+    """
+    return JSONResponse(
+        status_code=422,
+        content={"detail": f"Site resolution failed: {exc.args[0] if exc.args else exc}"},
+    )
 
 CATALOG_SITES = list(config_00.SITES.keys())  # ["Konya", "Almeria", "Ouagadougou", "Freiburg"]
 
@@ -216,8 +234,13 @@ def _run_optimize_job(job_id: str, req: OptimizeRequest) -> None:
             "result": full,
             "economics": fourE,
         }
+    except UnknownSiteError as exc:
+        job["status"] = "error"
+        job["error_kind"] = "configuration"
+        job["error"] = str(exc)
     except Exception as exc:  # noqa: BLE001 -- surfaced to the client via job["error"]
         job["status"] = "error"
+        job["error_kind"] = "internal"
         job["error"] = str(exc)
 
 
@@ -289,8 +312,13 @@ def _run_pareto_job(job_id: str, req: ParetoRequest) -> None:
                 for i in order
             ],
         }
+    except UnknownSiteError as exc:
+        job["status"] = "error"
+        job["error_kind"] = "configuration"
+        job["error"] = str(exc)
     except Exception as exc:  # noqa: BLE001
         job["status"] = "error"
+        job["error_kind"] = "internal"
         job["error"] = str(exc)
 
 

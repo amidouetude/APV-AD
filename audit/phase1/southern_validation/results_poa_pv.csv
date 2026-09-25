@@ -1,0 +1,6 @@
+site,role,lat,lon,GHI_kWh_m2,orientation,POA_corrige,POA_legacy,ecart_POA_pct,PV_corrige_MWh_ha,PV_legacy_MWh_ha,ecart_PV_pct
+Ouagadougou,controle NORD,12.37,-1.53,2291.7,sud (equateur),2342.1,2342.1,0.0,718.6,718.6,0.0
+Nairobi,quasi-equatorial,-1.29,36.82,2047.1,nord (equateur),1925.8,2010.7,4.41,620.2,646.1,4.18
+Lusaka,austral tropical,-15.42,28.28,2198.3,nord (equateur),2288.4,1919.2,-16.13,731.7,618.4,-15.48
+Windhoek,austral subtropical,-22.57,17.08,2243.4,nord (equateur),2395.0,1892.4,-20.99,765.1,610.6,-20.2
+Le Cap,austral tempere,-33.92,18.42,1967.3,nord (equateur),2131.0,1632.7,-23.38,699.2,542.4,-22.43
